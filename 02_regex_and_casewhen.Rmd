@@ -1,0 +1,56 @@
+---
+title: "Regular expressions, if_else, case_when"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+## Regex
+
+There's so much to say about regex.  We'll say the absolute minimum and leave you with a [link to more resources](https://cs.lmu.edu/~ray/notes/regex/).  One approach is to watch a short youtube video on the general concept of _regular expressions_.  Then use the [`stringr` library](https://stringr.tidyverse.org) to apply the regex concept in R and the Tidyverse.  For my own approach, I use the [stringr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf) as a help in understanding how to apply the regex concepts in the R context.  Nonetheless, even the cheatsheet can sometimes be confusing.  Regex is a deceptively deep topic.  Start small and build.  
+
+regex symbol | regex function
+---:|:---  
+`\d` | a digit  
+`$` | the end of the pattern  
+`^` | the begining of the pattern  
+`\w` | a word character  
+`+` | a multiplier:  1 or more 
+`*` | a multiplier:  0 or more 
+`\s` | a space  
+`.` | a wildcard  (matches all symbols)
+`()` | a capture group  
+
+> NOTE: in R you have to escape the back-slash.  i.e `\\`.  So `\d` is written as `\\d`
+
+```{r}
+starwars |> 
+  select(!is.list) |>
+  mutate(last_height_number = str_extract(height, "\\d$")) |> 
+  mutate(first_height_number = str_extract(height, "^\\d")) |> 
+  mutate(first_name = str_extract(name, "^\\w+")) |> 
+  mutate(numer_of_names = str_count(name, "[\\s\\-]") + 1) |> 
+  mutate(switch_names = str_replace(name, "(\\w+)\\s(.*)", "\\2, \\1")) |> 
+  mutate(double_consonants = str_detect(name, "tt|ll|ff|ss|bb|cc|rr|gg")) |>
+  mutate(replace_dashes = if_else(str_detect(name, "-"), str_replace_all(name, "-", " FOO "), "")) #|> 
+  # filter(str_detect(name, regex("skywalker", ignore_case = TRUE)))
+```
+
+
+## `if_else()`
+
+```{r}
+starwars |>
+  filter(homeworld == "Tatooine") |>
+  mutate(skin_color = if_else(sex == "none", "powder coated aluminum", skin_color ))
+```
+
+## `case_when()`
+
+```{r}
+
+```
+
