@@ -4,3 +4,4 @@
 .httr-oauth
 .DS_Store
 data/name.basics.tsv.gz
+data/title.ratings.tsv.gz
