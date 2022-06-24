@@ -7,6 +7,66 @@ output: html_notebook
 
 Custom functions can be used to accomplish different operations -- or clean up code.  A standard rule of thumb is that if you have to type the same code three or more times, it's worth the effor to make that part of the code a function.  While this is certainly true for experienced coders, for the unititated coders you may spend more time writing the function. Nonetheless, functional programming is very useful.  For a more complete treatment of [functions, see the chapter](https://r4ds.had.co.nz/functions.html) in _R for Data Science_ by Wickham and Grolemund.
 
+```{r}
+library(tidyverse)
+```
+
+
+## first look
+
+```{r}
+multiplybytwo <- function(n) {
+    return(2 * n)
+}
+
+plotcars <- function(df) {
+  plot(df)
+}
+
+```
+
+```{r}
+multiplybytwo(9)
+plotcars(cars)
+```
+```{r}
+make_key <- . %>% 
+  mutate(key = name) %>%  
+  mutate(key = str_to_lower(key)) %>%  
+  mutate(key = str_extract(key, "\\w+$")) %>% 
+  mutate(first_part = str_to_lower(str_extract(name, "^\\w{1,3}")))  %>% 
+  mutate(key = str_glue("{key}_{first_part}")) %>% 
+  select(-first_part)
+
+starwars |>
+  make_key() |>
+  select(name, key)
+```
+
+
+```{r}
+my_key_func <- function(df) {
+  df |> 
+  mutate(key = name) |>  
+  mutate(key = str_to_lower(key)) |>  
+  mutate(key = str_extract(key, "\\w+$")) |> 
+  mutate(first_part = str_to_lower(str_extract(name, "^\\w{1,3}")))  |> 
+  mutate(key = str_glue("{key}_{first_part}")) |> 
+  select(-first_part)
+}
+
+starwars %>% 
+  my_key_func() |>
+  select(name, key)
+```
+
+
+```{r}
+starwars |> 
+  mutate(foo = str_to_lower(str_replace(name, "(^\\w{3}).*\\s(\\w+)", "\\2_\\1"))) |>
+  select(name, foo)
+```
+
 
 
 ```{r}
@@ -23,6 +83,15 @@ multiply_by_two <- function(my_x) {
 foo_two <- function(my_df, my_var) {
   mutate(my_df, doubled = {{ my_var }} * 2)
 }
+```
+
+
+```{r}
+make_me_a_plot(starwars)
+
+multiply_by_two(starwars)
+
+foo_two(starwars, mass)
 ```
 
 
