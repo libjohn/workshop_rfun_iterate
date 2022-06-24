@@ -11,9 +11,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-- applied data cleaning/wrangling ; iteration ; file handling
-- day three tips, case study (iterate ingest read_csv ; clean / regex map() ; nested data frames ; write)
-- functions
+## applied data cleaning/wrangling & iteration  
+
+- file handling
+- day three tips, case study (iterate ingest read_csv ; clean / regex ; functions ; nested data frames ; map ; write)
+- clean nba data - soup-to-nuts
+- complex excel sheets ingest
 
 
 # workshop_rfun_iterate

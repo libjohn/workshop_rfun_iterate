@@ -52,6 +52,23 @@ foo_df
 
 You can do a similar iteration with excel worksheests within excel workbooks.  A well composed [article explains these excel workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html) combining the power of the `purrr` and `readxl` packages. 
 
+## download some large files
+
+Get IMDB data from https://www.imdb.com/interfaces/
+
+```{r}
+fs::dir_create("data")
+
+if(!fs::file_exists("data/title.ratings.tsv.gz")) {
+  download.file("https://datasets.imdbws.com/title.ratings.tsv.gz", "data/title.ratings.tsv.gz")  
+}
+
+if(!fs::file_exists("data/name.basics.tsv.gz")) {
+  download.file("https://datasets.imdbws.com/name.basics.tsv.gz", "data/name.basics.tsv.gz")  
+}
+```
+
+
 ## clean names
 
 The `janitor` packages has a handy function:  `clean_names()`.  This helps keep your variable names tidy.
