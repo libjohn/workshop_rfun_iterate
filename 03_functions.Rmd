@@ -67,7 +67,9 @@ starwars |>
   select(name, foo)
 ```
 
+## Tidy evaluation
 
+Read more about [Data maksing, env-variables, and indirection](https://dplyr.tidyverse.org/articles/programming.html#data-masking)
 
 ```{r}
 make_me_a_plot <- function(df) {
