@@ -51,6 +51,17 @@ starwars |>
 ## `case_when()`
 
 ```{r}
+medium_worlds <- c("Alderaan", "Coruscant", "Kamino")
 
+starwars |>
+  filter(homeworld %in% medium_worlds) |>
+  select(!is.list) |>
+  mutate(notes = case_when(
+    homeworld == "Alderaan"  ~ "extreme destruction",
+    homeworld == "Kamino"    ~ "super-earth",
+    homeworld == "Coruscant" ~ "Exoplanet"
+  )) |>
+  # relocate(notes, .after = name) |>
+  select(species, starts_with("n"), homeworld)
 ```
 
