@@ -1,0 +1,34 @@
+---
+title: "functions"
+output: html_notebook
+---
+
+## Functions
+
+Custom functions can be used to accomplish different operations -- or clean up code.  A standard rule of thumb is that if you have to type the same code three or more times, it's worth the effor to make that part of the code a function.  While this is certainly true for experienced coders, for the unititated coders you may spend more time writing the function. Nonetheless, functional programming is very useful.  For a more complete treatment of [functions, see the chapter](https://r4ds.had.co.nz/functions.html) in _R for Data Science_ by Wickham and Grolemund.
+
+
+
+```{r}
+make_me_a_plot <- function(df) {
+  df %>% 
+    ggplot(aes(height, mass)) +
+    geom_point() 
+}
+
+multiply_by_two <- function(my_x) {
+  mutate(my_x, doubled = height * 2)
+}
+
+foo_two <- function(my_df, my_var) {
+  mutate(my_df, doubled = {{ my_var }} * 2)
+}
+```
+
+
+```{r}
+gender_subsetted_starwars %>% 
+  mutate(mass_height_plot = map(data, make_me_a_plot)) %>% 
+  mutate(mass_height_2x = map(data, ~ multiply_by_two(.x))) %>%
+  mutate(foo = map(data, ~ foo_two(.x, height))) 
+```
