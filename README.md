@@ -1,10 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
--   applied data cleaning/wrangling ; iteration ; file handling
+## applied data cleaning/wrangling & iteration
+
+-   file handling
 -   day three tips, case study (iterate ingest read_csv ; clean / regex
-    map() ; nested data frames ; write)
--   functions
+    ; functions ; nested data frames ; map ; write)
+-   clean nba data - soup-to-nuts
+-   complex excel sheets ingest
 
 # workshop_rfun_iterate
 
