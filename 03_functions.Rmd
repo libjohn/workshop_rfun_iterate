@@ -108,19 +108,13 @@ foo_two(starwars, mass) |>
 ```
 
 ```{r}
+starwars$height * 2
+
+map_dbl(starwars$height, ~ .x * 2)
+
 starwars |>
   mutate(double = map_dbl(height, ~ .x * 2)) |>
   select(height, double)
-
-map_dbl(starwars$height, ~ .x * 2)
 ```
 
 
-
-
-```{r}
-gender_subsetted_starwars %>% 
-  # mutate(mass_height_plot = map(data, ~ .x %>% make_me_a_plot)) %>% 
-  mutate(mass_height_2x = map(data, ~ multiply_by_two(.x))) %>%
-  mutate(foo = map(data, ~ foo_two(.x, height))) 
-```
