@@ -29,6 +29,8 @@ plotcars <- function(df) {
 multiplybytwo(9)
 plotcars(cars)
 ```
+A tidyverse way to make a function:
+
 ```{r}
 make_key <- . %>% 
   mutate(key = name) %>%  
@@ -43,6 +45,7 @@ starwars |>
   select(name, key)
 ```
 
+The base-R way to do the same as above:
 
 ```{r}
 my_key_func <- function(df) {
@@ -60,16 +63,19 @@ starwars %>%
   select(name, key)
 ```
 
+Or, a more complicated regex that accomplishes nearly the same goals as the custom functions above. 
 
 ```{r}
 starwars |> 
-  mutate(foo = str_to_lower(str_replace(name, "(^\\w{3}).*\\s(\\w+)", "\\2_\\1"))) |>
+  mutate(foo = str_to_lower(str_replace(name, "(^\\w{3}).*\\s(\\w+$)", "\\2_\\1"))) |>
   select(name, foo)
 ```
 
 ## Tidy evaluation
 
 Read more about [Data maksing, env-variables, and indirection](https://dplyr.tidyverse.org/articles/programming.html#data-masking)
+
+In short, you need to use curly-curly brases around the tibble's variable names when referencing those variable names within your function.
 
 ```{r}
 make_me_a_plot <- function(df) {
@@ -78,28 +84,43 @@ make_me_a_plot <- function(df) {
     geom_point() 
 }
 
+make_me_a_plot(starwars)
+```
+
+
+```{r}
 multiply_by_two <- function(my_x) {
   mutate(my_x, doubled = height * 2)
 }
 
-foo_two <- function(my_df, my_var) {
-  mutate(my_df, doubled = {{ my_var }} * 2)
-}
+multiply_by_two(starwars) |>
+  select(height, doubled)
 ```
 
 
 ```{r}
-make_me_a_plot(starwars)
+foo_two <- function(my_df, my_var) {
+  mutate(my_df, doubled = {{ my_var }} * 2)
+}
 
-multiply_by_two(starwars)
-
-foo_two(starwars, mass)
+foo_two(starwars, mass) |>
+  select(mass, doubled)
 ```
+
+```{r}
+starwars |>
+  mutate(double = map_dbl(height, ~ .x * 2)) |>
+  select(height, double)
+
+map_dbl(starwars$height, ~ .x * 2)
+```
+
+
 
 
 ```{r}
 gender_subsetted_starwars %>% 
-  mutate(mass_height_plot = map(data, make_me_a_plot)) %>% 
+  # mutate(mass_height_plot = map(data, ~ .x %>% make_me_a_plot)) %>% 
   mutate(mass_height_2x = map(data, ~ multiply_by_two(.x))) %>%
   mutate(foo = map(data, ~ foo_two(.x, height))) 
 ```

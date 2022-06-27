@@ -1,0 +1,57 @@
+---
+title: "nesting data frames"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+starwars |>
+  group_by(gender) |>
+  nest()
+```
+
+```{r}
+starwars |>
+  nest(-gender)
+```
+
+```{r}
+starwars |>
+  nest(-gender) |>
+  mutate(my_plot = map(data, ~ make_me_a_plot(.x)))
+```
+
+```{r}
+starwars |>
+  nest(-gender) |>
+  mutate(my_plot = map(data, ~ make_me_a_plot(.x))) # |> # make_me_a_plot function is in lesson 3
+  # pull(my_plot)
+
+starwars |> 
+  nest(-gender) |> 
+  group_by(gender) |>
+  mutate(my_plot = map(data, ~ make_me_a_plot(.x))) |> 
+  mutate(my_plot_with_title = map(my_plot, ~ .x + ggtitle(gender))) |>
+  pull(my_plot_with_title)
+```
+
+```{r}
+starwars |>
+  nest(-sex) |>
+  mutate(my_plot = map(data, plot_mh)) |>
+  mutate(my_plot = map(my_plot, ~ .x + labs(title = sex))) |> 
+  mutate(my_model = map(data, ~ lm(mass ~ height, data = .x))) |>
+  mutate(my_tidy_model = map(my_model, ~ .x |> broom::tidy())) |> 
+  unnest(my_tidy_model) # |>
+  # filter(term != "(Intercept)") |>
+  # filter(p.value < 0.05) |>
+  # mutate(my_reg_plot = map(data, ~ .x |> 
+  #                            ggplot(aes(height, mass)) +
+  #                            geom_smooth(method = lm))) |>
+  # pull(my_reg_plot)
+```
+
