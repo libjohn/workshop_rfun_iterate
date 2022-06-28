@@ -1,0 +1,132 @@
+---
+title: "iterte with Excel files"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(fs)
+library(rvest)
+```
+
+census pulse survey
+https://www.census.gov/newsroom/press-kits/2020/pulse-surveys.html
+
+census pulse surveys household experience data
+https://www.census.gov/data/experimental-data-products/household-pulse-survey.html
+
+Summary Navigation page:
+https://www.census.gov/programs-surveys/household-pulse-survey/data.html
+
+weekly pulse surveys
+https://www.census.gov/data/tables/2020/demo/hhp/hhp13.html
+
+Example week 13 housing pulse survey file 2b
+https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk7/housing2b_se_week7.xlsx
+https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk13/housing2b_se_week13.xlsx
+https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk37/housing2b_week37.xlsx
+https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx
+
+
+
+```{r}
+my_url <- "https://www.census.gov/programs-surveys/household-pulse-survey/data.html"
+base_url <- "https://www.census.gov/"
+
+my_results <- read_html(my_url)
+```
+
+
+```{r}
+
+link_text_1 <- my_results %>% 
+  html_nodes(".uscb-title-3") %>% 
+  html_text2()
+link_text_1
+
+# link_text2 <- my_results %>% 
+#   html_nodes("a.uscb-list-item") %>% # .uscb-title-3
+#   html_text2()
+# link_text2
+
+link_url <- my_results %>% 
+  html_nodes("a.uscb-list-item") %>% 
+  html_attr("href")
+link_url
+  
+
+my_crawl <- tibble(link_text_1, link_url, base_url) %>% 
+  filter(str_detect(link_text_1, "Household Pulse Survey:")) %>% 
+  # mutate(link_text2 = str_replace_all(link_text2, "\\n", "|")) %>% 
+  mutate(full_url = str_c(base_url, link_url)) %>% 
+  unite(fu, base_url, link_url, remove = TRUE, sep = "") %>% 
+  mutate(full_url = str_replace(full_url, 'gov//data', 'gov/data')) %>% 
+  mutate(fu = str_replace(fu, 'gov//data', 'gov/data')) %>% 
+  relocate(full_url)
+my_crawl
+```
+
+```{r}
+foo_results <- 
+  my_crawl %>% head() %>% 
+  select(link_text_1, full_url) %>% 
+  nest(data = -link_text_1) %>% 
+  mutate(my_rawhtml = map(data, ~ {
+    Sys.sleep(2)
+    .x %>%
+      pull(full_url) %>% 
+      read_html() %>% 
+      html_nodes("a") %>%
+      html_attr("href") %>% 
+      tibble() 
+    }))
+```
+
+```{r}
+foo_results %>% 
+  unnest(my_rawhtml) %>% 
+  rename(rawhtml = 3) %>% 
+  filter(str_detect(rawhtml, "housing2b"))
+```
+
+```{r}
+frug_df <- foo_results %>% 
+  unnest(my_rawhtml) %>% 
+  rename(rawhtml = 3) %>% 
+  filter(str_detect(rawhtml, "housing2b")) %>%
+  mutate(download_xworkbook_url = str_glue("https:{rawhtml}") ) %>% 
+  mutate(my_filename = fs::path_file(rawhtml)) 
+frug_df 
+```
+
+```{r}
+fs::dir_create("data/xl_workbooks")
+
+walk2(frug_df$download_xworkbook_url, 
+      str_glue("data/xl_workbooks/{frug_df$my_filename}"), 
+      curl::curl_download, mode = "wb")
+```
+
+
+```{r}
+my_xl_df <- read_xlsx("data/xl_workbooks/housing2b_week41.xlsx",
+                      sheet = "NC", 
+                      skip = 4)
+my_xl_df <- my_xl_df %>% 
+  janitor::clean_names()
+
+my_xl_df %>% 
+  filter(select_characteristics != "Total") %>% 
+  mutate(sub_group = if_else(is.na(total1), select_characteristics, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  filter(sub_group == "Education")
+```
+
+https://readxl.tidyverse.org/articles/readxl-workflows.html
+
+```{r}
+fs::dir_delete("data/xl_workbooks")
+```
+
