@@ -1,53 +1,24 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## applied data cleaning/wrangling & iteration
+# README
 
--   file handling
--   day three tips, case study (iterate ingest read_csv ; clean / regex
-    ; functions ; nested data frames ; map ; write)
--   clean nba data - soup-to-nuts
--   complex excel sheets ingest
+Practical R/data-wrangling **Tips** and **Tricks**: custom functions,
+regex, and iteration. Learn techniques for common needs such as
+web-scraping multiple files, ingesting multiple files, transforming
+messy data into tidy data, quickly cleaning column names, separating or
+uniting variable values, and nesting data.
 
-# workshop_rfun_iterate
+## Applied topics
 
-<!-- badges: start -->
-<!-- badges: end -->
+-   File handling: ingesting multiple CSV files ; multi-value fields  
+-   Regular expressions and pattern matching: working with strings
+    -   `if_else()` and `case_when()`  
+-   Custom functions: leverage R as a *functional coding* language  
+-   Nesting data-frames: preparing to iterate over list columns  
+-   Data wrangling case study with Excel; how to use `fill()`(“fill
+    down”) and `pivot_longer()`
+-   Harvesting data from the web
 
-## Raw Materials
-
-iteration data cleaning
-
-refq_general/iteration_purrr refq_general/dplyr_programming.Rmd
-
-refq\_ general/clean_data_applied.Rmd refq_general/clean_data
-
-### janitor::clean_names()
-
-### with excel
-
-\~/refq_general/clean_data/01_trying_it_out.nb.html
-
-### dplyr and the pain of dirty data & case_when()
-
-\~/refq_general/clean_data_applied.nb.html
-
-### funcitons / iteration purrr v for_loops / Regex
-
-\~/refq_general/iteration_purrr/purrr_map_outline.nb.html
-
-### iterating with ggplot2 and models
-
-\~/r4ds/map_list_nest.nb.html
-
-### time series and models (lubridate / clock)
-
-\~/r4ds/data_import_to_regression.nb.html
-
-### include some tips
-
+**See Also** these awesome tips
 <https://oliviergimenez.github.io/tidyverse-tips/>
-
-### message HR data
-
-\~/r4ds/clean_data.nb.html
