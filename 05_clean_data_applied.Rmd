@@ -70,6 +70,8 @@ names(my_df)
 
 Many of the more complicated data transformation steps below would be unnecessary if the data were stored in a tidy format (e.g. a tidy CSV file.)  Nonetheless, it's common to run across messy data like this.  Let's see how we'll fix this mess...
 
+Of note:  Below we also use the `across()` function.  Similary to `group_by()`, the `across()` function enables grouping wide data to apply functions.  As with many other tidyverse functions, this action is further enabled by [tidy selection functions](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html).
+
 ```{r}
 my_levels <- rev(c("No confidence",	"Slight confidence", "Moderate confidence", 
                "High confidence", "Payment is/will be deferred", "Did not report"))
@@ -91,7 +93,7 @@ my_df %>%
   mutate(my_category = fct_relevel(my_category, my_levels)) %>%
   ggplot(aes(totals, my_category)) +
   geom_col() +
-  scale_x_continuous(labels = scales::label_dollar(scale_cut = scales::cut_short_scale())) +  
+  scale_x_continuous(labels = scales::label_comma(scale_cut = scales::cut_short_scale())) +  
   facet_wrap(~ fct_relevel(select_characteristics, my_educ_levels)) +
   theme(plot.title.position = "plot") +
   labs(title = str_wrap(chart_title, 80), 
@@ -100,7 +102,7 @@ my_df %>%
 ```
 ## Reproducibility
 
-Aside from the code above, we'll make a copy of the the lightly transfomred data and store it in a CSV format within our project folder.
+Aside from the code above, we'll make a copy of the the lightly transformed data and store it in a CSV format within our project folder.
 
 ```{r}
 fs::dir_create("data/census-pulse-survey_cleaned")
