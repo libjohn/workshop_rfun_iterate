@@ -1,11 +1,13 @@
 ---
 title: "functions"
+author: "John Little"
+date: "`r Sys.Date()`"
 output: html_notebook
 ---
 
 ## Functions
 
-Custom functions can be used to accomplish different operations -- or clean up code.  A standard rule of thumb is that if you have to type the same code three or more times, it's worth the effor to make that part of the code a function.  While this is certainly true for experienced coders, for the unititated coders you may spend more time writing the function. Nonetheless, functional programming is very useful.  For a more complete treatment of [functions, see the chapter](https://r4ds.had.co.nz/functions.html) in _R for Data Science_ by Wickham and Grolemund.
+Custom functions can be used to accomplish different operations -- or clean up code.  A standard rule of thumb is that if you have to type the same code three or more times, it's worth the effort to make that code into a function.  While this is certainly true for experienced coders, uninitiated coders may spend more time writing the function.  Nonetheless the time saved by not troubleshooting typos could be even greater. Bottom line: functional programming is useful.  For a more complete treatment of [functions, see the chapter](https://r4ds.had.co.nz/functions.html) in _R for Data Science_ by Wickham and Grolemund.
 
 ```{r}
 library(tidyverse)
@@ -28,6 +30,12 @@ plotcars <- function(df) {
 ```{r}
 multiplybytwo(9)
 plotcars(cars)
+
+my_hm <- starwars %>% 
+  select(height, mass) %>% 
+  drop_na()
+
+plotcars(my_hm)
 ```
 A tidyverse way to make a function:
 
@@ -75,7 +83,7 @@ starwars |>
 
 Read more about [Data maksing, env-variables, and indirection](https://dplyr.tidyverse.org/articles/programming.html#data-masking)
 
-In short, you need to use curly-curly brases around the tibble's variable names when referencing those variable names within your function.
+In short, you need to use curly-curly braces (i.e. _embrace_) around the tibble's variable names when referencing those variable names within your function.
 
 ```{r}
 make_me_a_plot <- function(df) {
@@ -100,11 +108,13 @@ multiply_by_two(starwars) |>
 
 ```{r}
 foo_two <- function(my_df, my_var) {
-  mutate(my_df, doubled = {{ my_var }} * 2)
+  mutate(my_df, doubled = {{ my_var }} * 2) |>
+  select({{ my_var}}, doubled)
 }
 
-foo_two(starwars, mass) |>
-  select(mass, doubled)
+foo_two(starwars, height)
+
+foo_two(starwars, mass) 
 ```
 
 ```{r}

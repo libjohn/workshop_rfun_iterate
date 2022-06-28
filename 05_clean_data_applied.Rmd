@@ -1,17 +1,34 @@
 ---
-title: "clean data"
+title: "Wrangling data"
+author: "John Little"
+date:  "`r Sys.Date()`"
 output: html_notebook
 ---
+
+In this lesson we ingest an untidy excel file.  Then we transform and subset a portion of the data to make a faceted bar graph.  The data cleaning portion of the code code demonstrates how to manipulate excel files, how to leverage categorical data as factors, how pivot data into a long-tidy format, and how to use file system tools to manipulate files.
+
+There are many challenges with using untidy data.  This excel file is probably intended as a report and uses formatting that makes it harder to compute or analyze the data.  For example there is a double row of column headers which are four rows below the first line of data.  We clean up the column names with a combination of tools and techniques, including using the `janitor::clean_names()` function.
+
+After we clean-up and pivot the data, we make a nice faceted graph and tell a visual story.  The visual story is easier to perceive than a table of numbers.  We also leverage many ggplot2 features.
+
+Lastly, for reproducibility purposes we save a copy of the lightly transformed CSV file and the original excel file.
+
+In the next lesson we'll show some critical steps and share documentation that you might use to ingest each of the weekly files.  
+
+## Load library packages
 
 ```{r}
 library(tidyverse)
 library(readxl)
 library(fs)
 ```
+## Ingest Data
+
+The data are from the Census household pulse surveys.
 
 [Household Pulse Survey Data Tables]("https://www.census.gov/programs-surveys/household-pulse-survey/data.html") >   
-[Week 1 Household Pulse Survey: April 23 - May 5]("https://www.census.gov/data/tables/2020/demo/hhp/hhp1.html") > Housing Tables > [Table 2b. Confidence in Ability to Make Next Month's Payment for Renter Occupied Housing]("https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk1/housing2b_week1.xlsx")
-  
+[Week 1 Household Pulse Survey: April 23 - May 5]("https://www.census.gov/data/tables/2020/demo/hhp/hhp1.html") > Housing Tables > [Table 2b. Confidence in Ability to Make Next Month's Payment for Renter Occupied Housing]("https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk1/housing2b_week1.xlsx")  
+
 
 ```{r}
 my_data_url <- "https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk1/housing2b_week1.xlsx"
@@ -35,6 +52,7 @@ chart_metadata <- read_xlsx("data/excel/housing2b_week1.xlsx",
                             n_max = 3,
                             col_names = FALSE) %>% 
   pull(1)
+
 chart_title <- chart_metadata[1]
 chart_source <- chart_metadata[2]
 chart_subtitle <- chart_metadata[3]
@@ -42,15 +60,15 @@ chart_subtitle <- chart_metadata[3]
 my_df <- my_df %>%
   janitor::clean_names()
 
-
 glimpse(my_df)
 
 names(my_df_varnames)[4:9]
 names(my_df)[4:9] <- names(my_df_varnames)[4:9]  
 names(my_df)
-# this file is deleted in the last code chunk of this script.
 ```
+## Analyze Data
 
+Many of the more complicated data transformation steps below would be unnecessary if the data were stored in a tidy format (e.g. a tidy CSV file.)  Nonetheless, it's common to run across messy data like this.  Let's see how we'll fix this mess...
 
 ```{r}
 my_levels <- rev(c("No confidence",	"Slight confidence", "Moderate confidence", 
@@ -76,11 +94,20 @@ my_df %>%
   scale_x_continuous(labels = scales::label_dollar(scale_cut = scales::cut_short_scale())) +  
   facet_wrap(~ fct_relevel(select_characteristics, my_educ_levels)) +
   theme(plot.title.position = "plot") +
-  labs(title = str_wrap(chart_title, 80), subtitle = str_glue("NC ", chart_subtitle),
+  labs(title = str_wrap(chart_title, 80), 
+       subtitle = str_glue("NC ", chart_subtitle),
        caption = chart_source, x = "", y = "")
 ```
+## Reproducibility
+
+Aside from the code above, we'll make a copy of the the lightly transfomred data and store it in a CSV format within our project folder.
 
 ```{r}
-fs::dir_delete("data/excel")
+fs::dir_create("data/census-pulse-survey_cleaned")
+write_csv(my_df, "data/census-pulse-survey_cleaned/housing2b_week1.csv")
+# fs::dir_delete("data/excel")
 ```
 
+## Next steps
+
+This particular report series (Census Pulse survey data) has at least 46 other companion files.  It's an ongoing pulse survey so there will be more.  If I want to work with all of the files systematically, I'll need to use a combination of techniques demonstrated above, combine those techniques with custom functions and purrr/map style iteraetion (demonstrated in earlier lessons), and device a scheme to download all the files which are all linked from separate web pages with URLs that are challenging to predict.  So, we'll need to crawl the census website.  In the next lesson, we'll use the `rvest` library package and the `purrr` package to harvest the files from the Census website.    

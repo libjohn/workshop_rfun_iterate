@@ -1,12 +1,19 @@
 ---
-title: "nesting data frames"
+title: "Nesting data frames"
+author: "John Little"
+date: "`r Sys.Date()`"
 output: html_notebook
 ---
+
+One way to leverage what we've learned in previous lessons (functions, purrr/map, regex, ggplot2, dplyr) is to use the `nest` function.  Nesting will create group-specific tibbles upon which which you can map more functional analysis.
 
 ```{r}
 library(tidyverse)
 ```
 
+## `group_by` and nest
+
+While `group_by` is not specifically required (see next code-chunk) to `nest`, I find that it helps me when I'm trying to leverage ggplot functions as you'll see below.
 
 ```{r}
 starwars |>
@@ -14,23 +21,34 @@ starwars |>
   nest()
 ```
 
-```{r}
-starwars |>
-  nest(data = -gender)
-```
+### `nest` without group_by
+
 
 ```{r}
 starwars |>
-  nest(data = -gender) |>
-  mutate(my_plot = map(data, make_me_a_plot)) # make_me_a_plot function comes from lesson 3
+  nest(-gender)
 ```
 
+## map a custom function over a nested group
+
+Building on lesson three where we created custom functions, we can map those functions onto our embedded tibbles
+
 ```{r}
+make_me_a_plot <- function(df) {
+  df %>% 
+    ggplot(aes(height, mass)) +
+    geom_point() 
+}
+
 starwars |>
   nest(data = -gender) |>
-  mutate(my_plot = map(data, make_me_a_plot)) # |> # make_me_a_plot function is in lesson 3
+  mutate(my_plot = map(data, make_me_a_plot)) #|>
   # pull(my_plot)
+```
 
+Adding titles to the plots requires the `group_by()` function
+
+```{r}
 starwars |> 
   nest(my_df = -gender) |> 
   group_by(my_df) |>
@@ -39,20 +57,25 @@ starwars |>
   pull(my_plot_with_title)
 ```
 
+### Models and mapping other functions
+
+As with other functions, you can map linear regressions -- `lm()` -- and other functions.  Once the model is embeded as a list within a data frame, you can map the `broom::tidy()` function onto the model.  Then `unnest()` the tidied _model_  and manipulate the data with standard dplyr verbs.
+
 ```{r}
 starwars |>
-  nest(-sex) |>
-  mutate(my_plot = map(data, plot_mh)) |>
   group_by(sex) |>
+  nest(-sex) |>
+  mutate(my_plot = map(data, make_me_a_plot)) |>
   mutate(my_plott = map(my_plot, ~ .x + labs(title = sex))) |> 
   mutate(my_model = map(data, ~ lm(mass ~ height, data = .x))) |>
   mutate(my_tidy_model = map(my_model, broom::tidy)) |> 
-  unnest(my_tidy_model) # |>
+  unnest(my_tidy_model) #|>
   # filter(term != "(Intercept)") |>
   # filter(p.value < 0.05) |>
   # mutate(my_reg_plot = map(data, ~ .x |>
   #                            ggplot(aes(height, mass)) +
-  #                            geom_smooth(method = lm))) |>
+  #                            geom_smooth(method = lm, se = FALSE) +
+  #                            geom_point())) |>
   # pull(my_reg_plot)
 ```
 

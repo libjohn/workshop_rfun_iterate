@@ -1,7 +1,13 @@
 ---
 title: "Regular expressions, if_else, case_when"
+author: "John Little"
+date: "`r Sys.Date()`"
 output: html_notebook
 ---
+
+`regex` is used to find patterns in your data.  This is helpful for data cleaning and for normalizing data, e.g. when a sub-field of data needs to be liberated from a more expansive variable.
+
+`if_else` and `case_when` can be used to conditionally change data values.
 
 ```{r}
 library(tidyverse)
@@ -13,16 +19,16 @@ library(tidyverse)
 There's so much to say about regex.  We'll say the absolute minimum and leave you with a [link to more resources](https://cs.lmu.edu/~ray/notes/regex/).  One approach is to watch a short youtube video on the general concept of _regular expressions_.  Then use the [`stringr` library](https://stringr.tidyverse.org) to apply the regex concept in R and the Tidyverse.  For my own approach, I use the [stringr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf) as a help in understanding how to apply the regex concepts in the R context.  Nonetheless, even the cheatsheet can sometimes be confusing.  Regex is a deceptively deep topic.  Start small and build.  
 
 regex symbol | regex function
----:|:---  
-`\d` | a digit  
-`$` | the end of the pattern  
-`^` | the begining of the pattern  
-`\w` | a word character  
-`+` | a multiplier:  1 or more 
-`*` | a multiplier:  0 or more 
-`\s` | a space  
-`.` | a wildcard  (matches all symbols)
-`()` | a capture group  
+------------:|:--------------  
+        `\d` | a digit  
+        `$`  | the end of the pattern  
+        `^`  | the begining of the pattern  
+        `\w` | a word character  
+        `+`  | a multiplier:  1 or more 
+        `*`  | a multiplier:  0 or more 
+        `\s` | a space  
+        `.`  | a wildcard  (matches all symbols)
+        `()` | a capture group  
 
 > NOTE: in R you have to escape the back-slash.  i.e `\\`.  So `\d` is written as `\\d`
 
@@ -57,8 +63,8 @@ starwars |>
   filter(homeworld %in% medium_worlds) |>
   select(!is.list) |>
   mutate(notes = case_when(
-    homeworld == "Alderaan"  ~ "extreme destruction",
-    homeworld == "Kamino"    ~ "super-earth",
+    homeworld == "Alderaan"  ~ "Extreme destruction",
+    homeworld == "Kamino"    ~ "Super-earth",
     homeworld == "Coruscant" ~ "Exoplanet"
   )) |>
   # relocate(notes, .after = name) |>

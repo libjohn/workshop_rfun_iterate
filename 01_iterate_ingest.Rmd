@@ -1,20 +1,37 @@
 ---
 title: "Iterate Ingest"
+author: "John Little"
+date: "`r Sys.Date()`"
 output: html_notebook
 ---
+
+In this lesson we'll learn how to ingest multiple CSV files into a single data frame, also known as a _tibble_.  To do this, I'll use a file system package, `fs` that helps manipulate the files.  I'll introduce the technique of mapping over rows using the `purrr` package, but the purr lesson come later.  
+
+## Load library packages
 
 ```{r}
 library(tidyverse)
 library(fs)
 ```
 
+## Iterate over files
+
+1. Get a list of CSV files in a particular directory
+2. Use the `read_csv` function to ingest all those files into a single tibble.  
+
+Since the `read_csv` function is vectorized, this task only requires putting the filenames into a character vector.  
+
 ```{r}
 my_files <- fs::dir_ls("data", glob = "*.csv")
-my_files 
+my_files
+```
 
+
+```{r}
 my_big_df <- read_csv(my_files, id = "filename")
 ```
 
+Since all the files have the same formatting and structure, it's easy.  Throughout this series I'll introduce techniques to wrangle untidy, inconsistent, or messy files into a clean and tidy tibble.
 
 ```{r}
 my_big_df 
@@ -23,7 +40,13 @@ my_big_df
 
 ## purrr - first look
 
-using `map()` to iterate a function by row of a tibble
+As noted, not all files are easily ingested into a single tibble.  One common problem is when we have consistent data variables but due to inconsistencies in the data, the `read_csv` function makes inconsistent guess as to the data types of the variables.  This causes errors.  We can solve this problem by iterating over each file more systematically while forcing `read_csv` to assign data types to the same variables across files.  
+
+R is a functional language and `read_csv` is one function among many that exist within the thousands of packages developed by the R community.  We can also create customized functions.  But we may still need to apply a function to a list of data.  This is where the `purrr` package comes in, allowing us to use the `map_` family of functions.  These are similar to the _apply_ family of functions but often more consistently documented and by extention often easier to use.  
+
+But before we get in too deep on functions, let me demonstrate how a function can be mapped across a list of data.
+
+One way to use `map()` is to iterate a function,row by row over a tibble.  Many R and tidyverse functions do this well so this initial example may seem a bit verbose.  Stay tuned and you'll see how it can all be put together.
 
 Example:  
 `map(my_df, my_func)`
@@ -50,11 +73,17 @@ foo_df
 
 ### Excel
 
-You can do a similar iteration with excel worksheests within excel workbooks.  A well composed [article explains these excel workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html) combining the power of the `purrr` and `readxl` packages. 
+You can do a similar iteration with excel workbooks and worksheests.  A well composed [article explains these excel workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html) combining the power of the `purrr` and `readxl` packages. Lessons five and six will show more examples of working with multiple excel files.
 
-## download some large files
+## Examples and tips of working with files found on the internet. 
+
+For the remainder of this lesson, we'll simply apply the idea of download data from the web and iterating over the files during ingest.  We'll make a nice little visualization that is more satisfying than looking at a raw table of data. I use the `fs` library to manipulate the file system.  Since the files are relatively large, I delete them at the end.  
+
+### Compressed files can remain compressed
 
 Get IMDB data from https://www.imdb.com/interfaces/
+
+Even though these TSV (Tab Separated Values) files are compressed (.gz), they're still large.  It's nice to know that the `readr` functions will uncompress the files -- so you don't have to.
 
 ```{r}
 fs::dir_create("data")
@@ -87,7 +116,7 @@ imdb_names_df
 
 ## Multi-value fields
 
-Introducing `separate_rows` and `separate()` plus a very early view at using a regular expression, or regex to find patterns in text.  IN this case, counting the commas in a multi-value field.
+Introducing `separate_rows` and `separate()`, plus a very early view at using a regular expression, or regex to find patterns in text.  In this case, counting the commas in a multi-value field.
 
 ```{r}
 imdb_names_df %>% 
@@ -99,6 +128,7 @@ imdb_names_df %>%
   separate(known_for_titles, into = c("foo_1", "foo_2", "foo_3", "foo_4"), sep = ",")
 ```
 
+## Tall/Long data
 
 The process of using separate_rows has the effect of making the tibble **tall** rather than wide.  Making data tall or wide  is typically accomplished with the `pivot_longer` and `pivot_wider` functions.  A good reason to pivot tall is to leverage the convenience of iteration.  In the example below, `separate_rows` effectively pivots a 1000 observations (rows) tibble into a nearly 3000 rows tibble.  In this way, separate_rows is a specialized compound function using `separate()`, `pivot_longer()`, and `drop_na()`.  By making these transformations, it becomes easier iterate in ggplot2, ie. to calculate the frequency of categories for a bar plot. 
 
@@ -107,15 +137,6 @@ imdb_names_df %>%
   separate_rows(primary_profession, sep = ",") %>% 
   ggplot(aes(y = fct_rev(fct_infreq(primary_profession)))) +
   geom_bar()
-
-# imdb_names_df %>% 
-#   select(primary_name, primary_profession) %>% 
-#   separate(primary_profession, into = c("foo_1", "foo_2", "foo_3"), sep = ",") %>% 
-#   pivot_longer(foo_1:foo_3, names_to = "prof_field", values_to = "primary_profession") %>% 
-#   drop_na(primary_profession) %>% 
-#   count(primary_profession)  %>% 
-#   ggplot(aes(y = reorder(primary_profession, n), x = n)) +
-#   geom_col()
 ```
 
 
