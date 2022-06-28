@@ -37,11 +37,15 @@ starwars |>
   select(!is.list) |>
   mutate(last_height_number = str_extract(height, "\\d$")) |> 
   mutate(first_height_number = str_extract(height, "^\\d")) |> 
+  relocate(height, .after = first_height_number) |>
   mutate(first_name = str_extract(name, "^\\w+")) |> 
-  mutate(numer_of_names = str_count(name, "[\\s\\-]") + 1) |> 
-  mutate(switch_names = str_replace(name, "(\\w+)\\s(.*)", "\\2, \\1")) |> 
+  mutate(numer_of_names = str_count(name, "\\s") + 1) |>
+  mutate(number_of_vowels = str_count(name, "[aeiouAEIOU]")) |>
+  mutate(switch_names = str_replace(name, "(\\w+)\\s(.*)", "\\2, \\1")) |>
+  relocate(name, .after = first_name) |>
   mutate(double_consonants = str_detect(name, "tt|ll|ff|ss|bb|cc|rr|gg")) |>
-  mutate(replace_dashes = if_else(str_detect(name, "-"), str_replace_all(name, "-", " FOO "), "")) #|> 
+  mutate(replace_dashes = if_else(str_detect(name, "-"), str_replace_all(name, "-", " FOO "), "")) |>
+  mutate(repd = str_replace_all(name, "-", " FOO "))
   # filter(str_detect(name, regex("skywalker", ignore_case = TRUE)))
 ```
 
