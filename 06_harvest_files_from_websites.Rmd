@@ -104,10 +104,16 @@ walk2(download_target_urls$download_xworkbook_url,
       curl::curl_download, mode = "wb")
 ```
 
+What files did I just download?
+
+```{r}
+fs::dir_ls("data/xl_workbooks") %>% 
+  enframe()
+```
 
 ## Put a bow on it.
 
-Below shows loading a single excel file from the several that were downloaded.  Read more about [readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html)
+Below shows ingesting a single excel file from among the several that were downloaded.  To do more processing of the multiple workbook files see the earlier lessons.  To learn more about working with the multiple worksheets withing the workbooks, read about [readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html)
 
 ```{r}
 my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
@@ -132,7 +138,7 @@ my_xl_df %>%
   relocate(sub_group) %>% 
   filter(sub_group == "Education")
 ```
-## Delete the files downloaded
+## Delete the downloaded files
 
 ```{r}
 fs::dir_delete("data/xl_workbooks")
