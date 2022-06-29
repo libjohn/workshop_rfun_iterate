@@ -30,7 +30,10 @@ plotcars <- function(df) {
 ```{r}
 multiplybytwo(9)
 plotcars(cars)
+```
 
+
+```{r}
 my_hm <- starwars %>% 
   select(height, mass) %>% 
   drop_na()
