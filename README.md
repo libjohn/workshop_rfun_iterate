@@ -5,9 +5,9 @@
 
 Practical R/data-wrangling **Tips** and **Tricks**: custom functions,
 regex, and iteration. Learn techniques for common needs such as
-web-scraping multiple files, ingesting multiple files, transforming
-messy data into tidy data, quickly cleaning column names, separating or
-uniting variable values, and nesting data.
+data-scraping, ingesting multiple files, transforming messy data into
+tidy data, quickly cleaning column names, separating or uniting variable
+values, and nesting data.
 
 ## Applied topics
 
@@ -20,5 +20,9 @@ uniting variable values, and nesting data.
     down”) and `pivot_longer()`
 -   Harvesting data from the web
 
-**See Also** these awesome tips
-<https://oliviergimenez.github.io/tidyverse-tips/>
+**See Also**
+
+-   these awesome tips
+    <https://oliviergimenez.github.io/tidyverse-tips/>  
+-   [The complications of privacy and research with scraped
+    data](https://reallifemag.com/fair-game/)
