@@ -38,6 +38,12 @@ my_big_df
   # count(rideable_type) %>% 
 ```
 
+```{r}
+readr::read_csv(my_files, id = "filename", 
+                col_types = cols(start_station_id = col_character()))
+```
+
+
 ## purrr - first look
 
 As noted, not all files are easily ingested into a single tibble.  One common problem is when we have consistent data variables but due to inconsistencies in the data, the `read_csv` function makes inconsistent guess as to the data types of the variables.  This causes errors.  We can solve this problem by iterating over each file more systematically while forcing `read_csv` to assign data types to the same variables across files.  
@@ -52,12 +58,6 @@ Example:
 `map(my_df, my_func)`
 
 In this case, we want to force the column data type using a `read_csv()` argument: `col_types`.  We can still do this without `purrr::map()` but the code chunk below introduces you to the functions within `map()`. The purrr functions are powerful.  We will talk more about this concept.
-
-```{r}
-readr::read_csv(my_files, id = "filename", 
-                col_types = cols(start_station_id = col_character()))
-```
-
 
 ### map
 
@@ -133,6 +133,8 @@ imdb_names_df %>%
 The process of using separate_rows has the effect of making the tibble **tall** rather than wide.  Making data tall or wide  is typically accomplished with the `pivot_longer` and `pivot_wider` functions.  A good reason to pivot tall is to leverage the convenience of iteration.  In the example below, `separate_rows` effectively pivots a 1000 observations (rows) tibble into a nearly 3000 rows tibble.  In this way, separate_rows is a specialized compound function using `separate()`, `pivot_longer()`, and `drop_na()`.  By making these transformations, it becomes easier iterate in ggplot2, ie. to calculate the frequency of categories for a bar plot. 
 
 ```{r}
+imdb_names_df
+
 imdb_names_df %>% 
   separate_rows(primary_profession, sep = ",") %>% 
   ggplot(aes(y = fct_rev(fct_infreq(primary_profession)))) +
