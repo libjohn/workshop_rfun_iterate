@@ -6,8 +6,8 @@
 Practical R/data-wrangling **Tips** and **Tricks**: custom functions,
 regex, and iteration. Learn techniques for common needs such as
 data-scraping, ingesting multiple files, transforming messy data into
-tidy data, quickly cleaning column names, separating or uniting variable
-values, and nesting data.
+tidy data, quickly cleaning column names, separating multi-value fields,
+uniting variable values, and nesting data.
 
 ## Applied topics
 
