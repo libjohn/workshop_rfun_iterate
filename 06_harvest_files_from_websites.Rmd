@@ -45,7 +45,7 @@ my_results <- read_html(my_url)
 Crawl the target webpages to gather a list of URLs for files that may be download
 
 ```{r}
-link_text_1 <- my_results %>% 
+link_text <- my_results %>% 
   html_nodes(".uscb-title-3") %>% 
   html_text2()
 
@@ -54,8 +54,8 @@ link_url <- my_results %>%
   html_attr("href")
   
 
-my_crawl <- tibble(link_text_1, link_url, base_url) %>% 
-  filter(str_detect(link_text_1, "Household Pulse Survey:")) %>% 
+my_crawl <- tibble(link_text, link_url, base_url) %>% 
+  filter(str_detect(link_text, "Household Pulse Survey:")) %>% 
   unite(full_url, base_url, link_url, remove = TRUE, sep = "") %>% 
   mutate(full_url = str_replace(full_url, 'gov//data', 'gov/data')) %>% 
   relocate(full_url)
@@ -68,9 +68,9 @@ Use `map()` with `nest()`, `Sys.sleep()` and `libary(rvest)` to gather the targe
 crawl_results <- 
   my_crawl %>% 
   slice(1:6) %>% 
-  select(link_text_1, full_url) %>% 
-  nest(data = -link_text_1) %>% 
-  mutate(my_rawhtml = map(data, ~ {
+  # select(link_text_1, full_url) %>% 
+  nest(parenturl = -link_text) %>% 
+  mutate(my_rawhtml = map(parenturl, ~ {
     Sys.sleep(2)    ## DO THIS.  Pause 2 seconds between each file.  ##
     .x %>%
       pull(full_url) %>% 
@@ -80,7 +80,6 @@ crawl_results <-
       tibble() 
     }))
 ```
-
 
 Subset the list of downloadable files to only the `housing2b` files.
 
@@ -138,6 +137,55 @@ my_xl_df %>%
   relocate(sub_group) %>% 
   filter(sub_group == "Education")
 ```
+```{r}
+# read_excel(my_files, sheet = "NC", range = "A8:J132")
+# read_excel(my_files, sheet = "SC", range = "A8:J132")
+
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x), .id = "sheet")
+
+ranges <- list("A8:J132", cell_rows(8:132))
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map2_df(., ranges, ~ read_excel(path, sheet = .x, 
+                                  range = "A8:J132",
+                                  col_names = FALSE), .id = "sheet")
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet")
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE,
+                         col_types = c("text", rep("numeric", 9))),
+         .id = "sheet") %>% 
+  filter(`...1` != "Total") %>% 
+  mutate(sub_group = if_else(is.na(`...2`), `...1`, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  drop_na(4) %>% 
+  filter(sub_group == "Education") %>% 
+  pivot_longer(4:last_col(), names_to = "my_category") %>% 
+  group_by(sub_group, sheet, 3, my_category) %>% 
+  summarise(totals = sum(value, na.rm = TRUE)) %>% 
+  ggplot(aes(my_category, totals)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~ sheet)
+```
+
 ## Delete the downloaded files
 
 ```{r}

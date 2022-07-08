@@ -11,7 +11,7 @@
 
 <meta name="author" content="John Little" />
 
-<meta name="date" content="2022-06-29" />
+<meta name="date" content="2022-07-07" />
 
 <title>Iterate crawling and downloading files</title>
 
@@ -1766,7 +1766,7 @@ pre code {
 
 <h1 class="title toc-ignore">Iterate crawling and downloading files</h1>
 <h4 class="author">John Little</h4>
-<h4 class="date">2022-06-29</h4>
+<h4 class="date">2022-07-07</h4>
 
 </div>
 
@@ -1834,8 +1834,8 @@ my_results &lt;- read_html(my_url)</code></pre>
 be download</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlua190ZXh0XzEgPC0gbXlfcmVzdWx0cyAlPiUgXG4gIGh0bWxfbm9kZXMoXCIudXNjYi10aXRsZS0zXCIpICU+JSBcbiAgaHRtbF90ZXh0MigpXG5cbmxpbmtfdXJsIDwtIG15X3Jlc3VsdHMgJT4lIFxuICBodG1sX25vZGVzKFwiYS51c2NiLWxpc3QtaXRlbVwiKSAlPiUgXG4gIGh0bWxfYXR0cihcImhyZWZcIilcbiAgXG5cbm15X2NyYXdsIDwtIHRpYmJsZShsaW5rX3RleHRfMSwgbGlua191cmwsIGJhc2VfdXJsKSAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KGxpbmtfdGV4dF8xLCBcIkhvdXNlaG9sZCBQdWxzZSBTdXJ2ZXk6XCIpKSAlPiUgXG4gIHVuaXRlKGZ1bGxfdXJsLCBiYXNlX3VybCwgbGlua191cmwsIHJlbW92ZSA9IFRSVUUsIHNlcCA9IFwiXCIpICU+JSBcbiAgbXV0YXRlKGZ1bGxfdXJsID0gc3RyX3JlcGxhY2UoZnVsbF91cmwsICdnb3YvL2RhdGEnLCAnZ292L2RhdGEnKSkgJT4lIFxuICByZWxvY2F0ZShmdWxsX3VybClcbm15X2NyYXdsXG5gYGAifQ== -->
-<pre class="r"><code>link_text_1 &lt;- my_results %&gt;% 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlua190ZXh0IDwtIG15X3Jlc3VsdHMgJT4lIFxuICBodG1sX25vZGVzKFwiLnVzY2ItdGl0bGUtM1wiKSAlPiUgXG4gIGh0bWxfdGV4dDIoKVxuXG5saW5rX3VybCA8LSBteV9yZXN1bHRzICU+JSBcbiAgaHRtbF9ub2RlcyhcImEudXNjYi1saXN0LWl0ZW1cIikgJT4lIFxuICBodG1sX2F0dHIoXCJocmVmXCIpXG4gIFxuXG5teV9jcmF3bCA8LSB0aWJibGUobGlua190ZXh0LCBsaW5rX3VybCwgYmFzZV91cmwpICU+JSBcbiAgZmlsdGVyKHN0cl9kZXRlY3QobGlua190ZXh0LCBcIkhvdXNlaG9sZCBQdWxzZSBTdXJ2ZXk6XCIpKSAlPiUgXG4gIHVuaXRlKGZ1bGxfdXJsLCBiYXNlX3VybCwgbGlua191cmwsIHJlbW92ZSA9IFRSVUUsIHNlcCA9IFwiXCIpICU+JSBcbiAgbXV0YXRlKGZ1bGxfdXJsID0gc3RyX3JlcGxhY2UoZnVsbF91cmwsICdnb3YvL2RhdGEnLCAnZ292L2RhdGEnKSkgJT4lIFxuICByZWxvY2F0ZShmdWxsX3VybClcbm15X2NyYXdsXG5gYGAifQ== -->
+<pre class="r"><code>link_text &lt;- my_results %&gt;% 
   html_nodes(&quot;.uscb-title-3&quot;) %&gt;% 
   html_text2()
 
@@ -1844,17 +1844,17 @@ link_url &lt;- my_results %&gt;%
   html_attr(&quot;href&quot;)
   
 
-my_crawl &lt;- tibble(link_text_1, link_url, base_url) %&gt;% 
-  filter(str_detect(link_text_1, &quot;Household Pulse Survey:&quot;)) %&gt;% 
+my_crawl &lt;- tibble(link_text, link_url, base_url) %&gt;% 
+  filter(str_detect(link_text, &quot;Household Pulse Survey:&quot;)) %&gt;% 
   unite(full_url, base_url, link_url, remove = TRUE, sep = &quot;&quot;) %&gt;% 
   mutate(full_url = str_replace(full_url, &#39;gov//data&#39;, &#39;gov/data&#39;)) %&gt;% 
   relocate(full_url)
 my_crawl</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NDYsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNDYgeCAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnFXWVcyN2JSaFNHYWNWT0V4ZHBBM1FEWEVCRWFjN3c2clFQUVlPaUNKQW1TQjZhTjRPV0o1WmhtaFI0c2VNMzc2RTc2eEs2a0xqRHVWQThBNHhrY0F6SUppbjkzMXo0emVGWW45NStvY2RmamozUGUrSWRIc3k4SjBmODBIdjYrMGNDRVhqZTRZeWZIWGlIM3ZQKzd6ZitxVi80UVgveEpYOEY2bzNYNjdiZE5DZUx4ZTN0YmJCaVpkTTF3VVYxc3pqUDIzelI1bWNGYXhhd0JGaWNzK3Rxc1Y1ditsY1lCK3YydW5CQ1JPNkkwQjFCM1JFd0FVRXdncmdqbHM0SW1ya2pVbmRFNG82WVlxZUJtR0tuZ1poaXA0R1lZcWVCY0xlVHV0dEozZTBFZHp2QjNVNXd0eFBjN1FSM084SGRUbkMzRTZiWXVjU0lLWFlhaUNsMllnU1pZcWVCbUdLbmdaaGlwNEdZWXFlQm1HS25nWmhpcDRHWVlxZUJjTGVUdU50SmtKMG5VeENaTXlGMUppVE9oTmlaRURrVFFtY0NkU2FBTTBGSmlmOFJXUDdOMkpVZnh2NmZWZGV3ZFZXYyt4KzdvbUgrNTY2K1lYY24vcnV1WkQ3eDUrcUFxbHdzYzVFMTkyWlRYeFkrSkR6NVByL3pzMWQrdjRmMnZQcytIY2wwYUUyL3ordlYycWRMLzcvN2Z4U0tFQlVPWlpqdUNZUEl5bU1TcW13bXMyQWZibDUyZVgzblF5emlmN0N6V3B3bkNuQWlBY1FLZU10VzdQcU0xVDVrZ3FDQlpJa0p5LzBFSWdEYlU2b0lyd1dCWmxiQ1o3WnBVU2Mrck5wS0lQUWMvaVlSNlNNUUpCS0lFVlBQeGE4U2tqd0dZakNHc1NTU1lmZnZUWGZSTmExUFVxbUNQS042TXFXR2RJZUdNaENPMHlSR0psRzdodSs2Z3F0QXhtR3RNTWlzM1VLeFhvQktDWHBPaEpNN0hPeVR5aDRCMFhlTnlLUmR2bjZsS1hORk1zRkJ1M045a09nVnd4bDZ2VkFSQkx0cWFwbW5RM1R3WEs1eHNDdW1sblU0V3VNUTQ3QmRMYld1azlFaWh3emRWckE3cGFyTHVFQkV5RWV3Q3pWVUJOUTJRWXNiN0VZTmNZcnJ5OUFCV2FGZ2gxZTZRaTBOZ2dLa0VyQy94TVc0UHFWNENJK29jQm11VDJCTWd0MjJ2Nm9iRllrd0lrRVZqdGkxR3doRUxzNHRrYUo1SkhiOWRFMVU3ZzZFREFQc0NnNUZOVVExZG5CWURjS3U0YlljcWdmZFFBUlVwb25keGxGRmpjMHluYUl5VGV4T2pqSm1tUTdSc2lCMkszVnB6VkNaSm1xM0lPc1AyVlh5ZUlIa1E1anJrb3UySjhRdW8vaDRwbk84dnpLM2tEbTdncklablV0UWMzYnRaRG1POUc2SVA0YkdPYnRyY3UrVTZoeFFsTE1ySm5QYjNWZXNjb0hJN2RtMGhUcVdvWlJkSmxINXQ1MUVxVjFiTmZHSW5LdUhEMHJ0MnFQMWQwdWxpTzdoWEZhT25TbTlveVNBNy9XK1J4UlZ1Y2o0anZ5b3pLOVpvN2JGTTNYeDJkZXVLRTY3V20rNGZ5d3V5NnZUbG4xclQ0bVJmMTVYdDRGbXZPZ1o5L3pYdzhQRHYyWkRxeUp2ZEVQNjRuRy9aUSsrMWp6UHo3NGJrUitxVFh0WmxUdzA2Ny9GUHpMQ0I3Vng0ZWV1N0h0eVBsK3R1L0pxVHZzR3hOdnk1NFU2RGtiSE05bms3RUdoamhUcUtTc3ZMa3VtKzE3a1oweFB4azk4eEdMQUFaL1pzdFVqNFZlYm9LM2FYSC91ZUZVVitvb1ltL2Y5Zng0YndUQzlHQUFBIn0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NDYsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNDYgeCAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnFXWVcyN2JSaFNHYWNWT2F3RXBXblFEWEVCRmFjN3c2clFQUVlLaUNKQTJhQjZhdDRDV0o1WmhtaFI0c2VNMzd5RTc2eEs2a0xqRHVWQThBNHhrY0F6WUptbjlIem5VTnovSCt2dk5SenIvT1BjODc1bDNmRFR6bnAzd1RlLzU2L2NFSXZDODR4bmZPL0tPdmRQKzl4ZitxcC81Um4vd1IvNGRxRCs4M0xUdHRqbGJMdS91N29JMUs1dXVDUzZyMitWRjN1YkxOajh2V0xPRUZjRHlndDFVeTgxbTIzK0hjYkJwYndvblJPU09DTjBSMUIwQkV4QUVJNGc3WXVXTW9KazdJblZISk82SUtYWWFpQ2wyR29ncGRocUlLWFlhQ0hjN3FidWQxTjFPY0xjVDNPMEVkenZCM1U1d3R4UGM3UVIzTzJHS25TdU1tR0tuZ1poaUowYVFLWFlhaUNsMkdvZ3BkaHFJS1hZYWlDbDJHb2dwZGhxSUtYWWFDSGM3aWJ1ZEJObDVOZ1dST1JOU1owTGlUSWlkQ1pFeklYUW1VR2NDT0JPVWxQZ2ZnZFUvakYzN1llei9VWFVOMjFURmhmKytLeHJtZitqcVczWi81ci90U3VZVGY2RTJxTXJGTWhkWmM2KzI5VlhoUThLVDcvSjdQL3ZGNzlmUW52ZlFweU9aRHEzcGQzbTkzdmgwNWYvMzhGV2hDRkhoVUlicGdUQ0lyTndtb2NwbU1ndjI0ZVpsbDlmM1BzUWkvanM3cjhWK29nQm5Fa0NzZ0Rkc3pXN09XZTFESmdnYVNGYVlzRHBNSUFLdzI2V0s4RklRYUdZbGZHRGJGbDNFWCt1MkVnaDlEMytUaVBRSkNCSUp4SWlwNzhXdkVwSThCV0l3aHJFa2ttSDM3MVYzMlRXdFQxS3BndHlqK21aS0Rla2VEV1VnSEtkSmpFeWlkZzNmZGdWWGdZekRXbUdRV2J1RllyNEFsUkwwbkFnbjl6allKNVU5QXFMZk5TS1Rkdm42bWFiTUZja0VCKzNPOVVHaVp3eG42UGxDUlJEc3FxbHBuZzdSd1hNNXg4R3VtSnJXNFdpT1E0ekRkclhVdkU1R2t4d3k5TGFDM1NuVkx1T0NpSkNQWUJkcWFBUjBib0ltTjlpTkd1SVU5OHR3QWJLaFlJOVh1cUZXQmtFQlVnazRYSEV4N3FjVUQrRUpEWmZoZmdMakp0aHQrN082VlpFSUl4TFVjTVN1M1VBZ2NuTHVpQlRkUjJMWFQzZWljbmNnWkJoZ1YzQW8xUkIxN09Dd0dvUmR3MTBkcWdmZFFBUlUwOFJ1NDZoUlk3T21VMVRUeE83a0tHUFdkSWltQmJGYnFhczFRelZOMUdwQjlnL1pWM204SVBrUUZycHkwZktFMkdVVUw4OTBqbCt2ekMxbHpxNmdQSTNPSmVoMGR1MWtIVWQ2TmNRZlErT2MzVFc1ZGtwMURpaksyUldUdWQzcUsxYTVRT1FPTE5wQ0hjdFF5aTZUYVA3ZFJhTFV2cVdhZUVRdTFNTUhwZmF0MGZwM1M2V0l2c0tGYkk2OUtiMmlKSURmNjBPUEtLcHlrZkVaK1VtWjM3QkdMWXRuNnVEM243dWkrTlRWZXNGOVdseVYxNTlhOXFVMTBxZDFkUmRvd291ZThNQi9QRDQrL211ZVpsM2tqVDZOUGpqdkYrekI1NXJuK2Q0M0kvSmR0VzJ2cXBLSFp2MW4rQ2RHK0tnMkR2elVsZjJWWEN6V202NjhYcEMrQzcyNWVJSDhlcUcyZzlIMlRKNTA5cWhnSndyMm5KV1hWeVhUVjEvazUwemZqQi80bU1XUUEzNW55MWFQaFI5dGdyWnFjLzI2K2JvcTlCRXhPdS9iLzJGUWljZTlHQUFBIn0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["full_url"],"name":[1],"type":["chr"],"align":["left"]},{"label":["link_text_1"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp46.html","2":"Week 46 Household Pulse Survey: June 1 - June 13"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp45.html","2":"Week 45 Household Pulse Survey: April 27 - May 9, 2022"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp44.html","2":"Week 44 Household Pulse Survey: March 30 – April 11"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp43.html","2":"Week 43 Household Pulse Survey: March 2 – March 14"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp42.html","2":"Week 42 Household Pulse Survey: January 26 – February 7"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp41.html","2":"Week 41 Household Pulse Survey: December 29 – January 10"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp40.html","2":"Week 40 Household Pulse Survey: December 1 – December 13"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp39.html","2":"Week 39 Household Pulse Survey: September 29 – October 11"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp38.html","2":"Week 38 Household Pulse Survey: September 15 – September 27"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp37.html","2":"Week 37 Household Pulse Survey: September 1 – September 13"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp36.html","2":"Week 36 Household Pulse Survey: August 18 – August 30"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp35.html","2":"Week 35 Household Pulse Survey: August 4 – August 16"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp34.html","2":"Week 34 Household Pulse Survey: July 21 – August 2"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp33.html","2":"Week 33 Household Pulse Survey: June 23 – July 5"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp32.html","2":"Week 32 Household Pulse Survey: June 9 – June 21"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp31.html","2":"Week 31 Household Pulse Survey: May 26 – June 7"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp30.html","2":"Week 30 Household Pulse Survey: May 12 – May 24"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp29.html","2":"Week 29 Household Pulse Survey: April 28 – May 10"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp28.html","2":"Week 28 Household Pulse Survey: April 14 – April 26"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp27.html","2":"Week 27 Household Pulse Survey: March 17 – March 29"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp26.html","2":"Week 26 Household Pulse Survey: March 3 – March 15"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp25.html","2":"Week 25 Household Pulse Survey: February 17 – March 1"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp24.html","2":"Week 24 Household Pulse Survey: February 3 – February 15"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp23.html","2":"Week 23 Household Pulse Survey: January 20 – February 1"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp22.html","2":"Week 22 Household Pulse Survey: January 6 – January 18"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp21.html","2":"Week 21 Household Pulse Survey: December 9 – December 21"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp20.html","2":"Week 20 Household Pulse Survey: November 25 – December 7"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp19.html","2":"Week 19 Household Pulse Survey: November 11 – November 23"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp18.html","2":"Week 18 Household Pulse Survey: October 28 – November 9"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp17.html","2":"Week 17 Household Pulse Survey: October 14 – October 26"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp16.html","2":"Week 16 Household Pulse Survey: September 30 – October 12"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp15.html","2":"Week 15 Household Pulse Survey: September 16 – September 28"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp14.html","2":"Week 14 Household Pulse Survey: September 2 – September 14"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp13.html","2":"Week 13 Household Pulse Survey: August 19 – August 31"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp12.html","2":"Week 12 Household Pulse Survey: July 16 - July 21"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp11.html","2":"Week 11 Household Pulse Survey: July 9 - July 14"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp10.html","2":"Week 10 Household Pulse Survey: July 2 - July 7"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp9.html","2":"Week 9 Household Pulse Survey: June 25 - June 30"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp8.html","2":"Week 8 Household Pulse Survey: June 18 - June 23"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp7.html","2":"Week 7 Household Pulse Survey: June 11 - June 16"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp6.html","2":"Week 6 Household Pulse Survey: June 4 - June 9"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp5.html","2":"Week 5 Household Pulse Survey: May 28 - June 2"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp4.html","2":"Week 4 Household Pulse Survey: May 21 - May 26"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp3.html","2":"Week 3 Household Pulse Survey: May 14 - May 19"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp2.html","2":"Week 2 Household Pulse Survey: May 7 - May 12"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp1.html","2":"Week 1 Household Pulse Survey: April 23 - May 5"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[46]},"pages":{}}}
+{"columns":[{"label":["full_url"],"name":[1],"type":["chr"],"align":["left"]},{"label":["link_text"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp46.html","2":"Week 46 Household Pulse Survey: June 1 - June 13"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp45.html","2":"Week 45 Household Pulse Survey: April 27 - May 9, 2022"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp44.html","2":"Week 44 Household Pulse Survey: March 30 – April 11"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp43.html","2":"Week 43 Household Pulse Survey: March 2 – March 14"},{"1":"https://www.census.gov/data/tables/2022/demo/hhp/hhp42.html","2":"Week 42 Household Pulse Survey: January 26 – February 7"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp41.html","2":"Week 41 Household Pulse Survey: December 29 – January 10"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp40.html","2":"Week 40 Household Pulse Survey: December 1 – December 13"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp39.html","2":"Week 39 Household Pulse Survey: September 29 – October 11"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp38.html","2":"Week 38 Household Pulse Survey: September 15 – September 27"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp37.html","2":"Week 37 Household Pulse Survey: September 1 – September 13"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp36.html","2":"Week 36 Household Pulse Survey: August 18 – August 30"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp35.html","2":"Week 35 Household Pulse Survey: August 4 – August 16"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp34.html","2":"Week 34 Household Pulse Survey: July 21 – August 2"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp33.html","2":"Week 33 Household Pulse Survey: June 23 – July 5"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp32.html","2":"Week 32 Household Pulse Survey: June 9 – June 21"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp31.html","2":"Week 31 Household Pulse Survey: May 26 – June 7"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp30.html","2":"Week 30 Household Pulse Survey: May 12 – May 24"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp29.html","2":"Week 29 Household Pulse Survey: April 28 – May 10"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp28.html","2":"Week 28 Household Pulse Survey: April 14 – April 26"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp27.html","2":"Week 27 Household Pulse Survey: March 17 – March 29"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp26.html","2":"Week 26 Household Pulse Survey: March 3 – March 15"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp25.html","2":"Week 25 Household Pulse Survey: February 17 – March 1"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp24.html","2":"Week 24 Household Pulse Survey: February 3 – February 15"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp23.html","2":"Week 23 Household Pulse Survey: January 20 – February 1"},{"1":"https://www.census.gov/data/tables/2021/demo/hhp/hhp22.html","2":"Week 22 Household Pulse Survey: January 6 – January 18"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp21.html","2":"Week 21 Household Pulse Survey: December 9 – December 21"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp20.html","2":"Week 20 Household Pulse Survey: November 25 – December 7"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp19.html","2":"Week 19 Household Pulse Survey: November 11 – November 23"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp18.html","2":"Week 18 Household Pulse Survey: October 28 – November 9"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp17.html","2":"Week 17 Household Pulse Survey: October 14 – October 26"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp16.html","2":"Week 16 Household Pulse Survey: September 30 – October 12"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp15.html","2":"Week 15 Household Pulse Survey: September 16 – September 28"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp14.html","2":"Week 14 Household Pulse Survey: September 2 – September 14"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp13.html","2":"Week 13 Household Pulse Survey: August 19 – August 31"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp12.html","2":"Week 12 Household Pulse Survey: July 16 - July 21"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp11.html","2":"Week 11 Household Pulse Survey: July 9 - July 14"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp10.html","2":"Week 10 Household Pulse Survey: July 2 - July 7"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp9.html","2":"Week 9 Household Pulse Survey: June 25 - June 30"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp8.html","2":"Week 8 Household Pulse Survey: June 18 - June 23"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp7.html","2":"Week 7 Household Pulse Survey: June 11 - June 16"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp6.html","2":"Week 6 Household Pulse Survey: June 4 - June 9"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp5.html","2":"Week 5 Household Pulse Survey: May 28 - June 2"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp4.html","2":"Week 4 Household Pulse Survey: May 21 - May 26"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp3.html","2":"Week 3 Household Pulse Survey: May 14 - May 19"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp2.html","2":"Week 2 Household Pulse Survey: May 7 - May 12"},{"1":"https://www.census.gov/data/tables/2020/demo/hhp/hhp1.html","2":"Week 1 Household Pulse Survey: April 23 - May 5"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[46]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -1865,13 +1865,13 @@ my_crawl</code></pre>
 target URLs that will be downloaded.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3Jhd2xfcmVzdWx0cyA8LSBcbiAgbXlfY3Jhd2wgJT4lIFxuICBzbGljZSgxOjYpICU+JSBcbiAgc2VsZWN0KGxpbmtfdGV4dF8xLCBmdWxsX3VybCkgJT4lIFxuICBuZXN0KGRhdGEgPSAtbGlua190ZXh0XzEpICU+JSBcbiAgbXV0YXRlKG15X3Jhd2h0bWwgPSBtYXAoZGF0YSwgfiB7XG4gICAgU3lzLnNsZWVwKDIpICAgICMjIERPIFRISVMuICBQYXVzZSAyIHNlY29uZHMgYmV0d2VlbiBlYWNoIGZpbGUuICAjI1xuICAgIC54ICU+JVxuICAgICAgcHVsbChmdWxsX3VybCkgJT4lIFxuICAgICAgcmVhZF9odG1sKCkgJT4lIFxuICAgICAgaHRtbF9ub2RlcyhcImFcIikgJT4lXG4gICAgICBodG1sX2F0dHIoXCJocmVmXCIpICU+JSBcbiAgICAgIHRpYmJsZSgpIFxuICAgIH0pKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3Jhd2xfcmVzdWx0cyA8LSBcbiAgbXlfY3Jhd2wgJT4lIFxuICBzbGljZSgxOjYpICU+JSBcbiAgIyBzZWxlY3QobGlua190ZXh0XzEsIGZ1bGxfdXJsKSAlPiUgXG4gIG5lc3QocGFyZW50dXJsID0gLWxpbmtfdGV4dCkgJT4lIFxuICBtdXRhdGUobXlfcmF3aHRtbCA9IG1hcChwYXJlbnR1cmwsIH4ge1xuICAgIFN5cy5zbGVlcCgyKSAgICAjIyBETyBUSElTLiAgUGF1c2UgMiBzZWNvbmRzIGJldHdlZW4gZWFjaCBmaWxlLiAgIyNcbiAgICAueCAlPiVcbiAgICAgIHB1bGwoZnVsbF91cmwpICU+JSBcbiAgICAgIHJlYWRfaHRtbCgpICU+JSBcbiAgICAgIGh0bWxfbm9kZXMoXCJhXCIpICU+JVxuICAgICAgaHRtbF9hdHRyKFwiaHJlZlwiKSAlPiUgXG4gICAgICB0aWJibGUoKSBcbiAgICB9KSlcbmBgYCJ9 -->
 <pre class="r"><code>crawl_results &lt;- 
   my_crawl %&gt;% 
   slice(1:6) %&gt;% 
-  select(link_text_1, full_url) %&gt;% 
-  nest(data = -link_text_1) %&gt;% 
-  mutate(my_rawhtml = map(data, ~ {
+  # select(link_text_1, full_url) %&gt;% 
+  nest(parenturl = -link_text) %&gt;% 
+  mutate(my_rawhtml = map(parenturl, ~ {
     Sys.sleep(2)    ## DO THIS.  Pause 2 seconds between each file.  ##
     .x %&gt;%
       pull(full_url) %&gt;% 
@@ -1896,10 +1896,10 @@ target URLs that will be downloaded.</p>
   mutate(my_filename = fs::path_file(rawhtml)) 
 download_target_urls</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjUsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCA1Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnUxWTNXNmJNQmdsZisyYWFUOVN0V21YZm9BRmlpR3QybDFOcTZacFVxV3EwN1JLdTBBR25JRGk0TWlHa3R6MUhmYUdlNGhkTmpOZ3FvUW1NQTJxN1NLUkNMYnhPWnhqdmk5ODhkWDV0ZEcvN2l1SzBsRzZyYmJTNlltbXN2ZmhVb2REcUNqZHR1aTFsSzV5a0p6bll0YWhhQ1J6WG9xakx5OGNmOE40QXN3aCtFUWpqajFLWEhBWkVZN0JsNGpkNE1VWmVEOWpQZ0h3QkF6QUJWcUEwN2NBSGtGWUU2M2NKdWhoaGphM29pOFFjenhnSElHZnR6OGtsYTQzQVRZenNGRUJoaWsyYSt0bUE5alREQXUzWWoraklFSnNBZUJ4Q3YrSWJaYjJUNW9pT01zSTlLMEU1OWpCVXhzekFFOVRocHhRUDJxQ1FUbE1ZeStMeFphTXhUeEkzM2xoT09Obm1oYkhzZXJnZ0VkY0hkTWJ6VVVoMGtKa0U4eTFKSHcwRjArcDVubXo1RENIcWhkT1NTSGVld0dhWWw3Z2Z6S0tDTEVpOW1DeVF4RFBKM2ZrNEY1b0U4c2R5VjVIOUdTem44aFJSMHpjb01CendHaXM1amQrSm83MnJmaGFpbzg0M1QyYTZmYXkzR2RuK2RmV3VzdEhkMkx1blB4M1RveWRrLy9PQ2R3NStmZE85SFVuK3M1Sk0wN1dTdEtyVkR0Y0ZUOWpkQ3hZK0lDbk5RYlB4RXMzaVljMHl1S0pPZFE4VVpYNHdSamFWaXpxRlBHaW5CTStsOHhmRzJMbWVBTjVIZGxtVWJiWmxHeHpnMnl6S2RsR1ViYlJsR3hqZzJ5aktkbXdLQnMySlJ0dWtBMGJrSzBuNUhwUnR0NkE3QWZNdVd4SnJuUldVL042NWNmbE1STDBlNlA4RzlPMHZvWHlaSzF2b1RKbDYxc29UOXo2RmlyVHQ3NkY4aVN1YjZFeWxXdForSU9Fcm1XaE1xM1hYdVJ0ZWN2dW1FUTQvelByZUlnaEo4UnN3eXY2VlZrU3Y2bkl3Q0xZckFDYlpXQ2pBbXlVZ1dFRkdKYUI5UXJ3NmtyZmwxUTlPZjhwOFlPSkZlSjVhT241NGlmRmttenZNeFNuQlZuV2ZlM1NPQ0FVdWRZOHBteGlVenBKeXpISk5WMVlJNS9nWUh1Wjlhdnd3UFBLYnExQVM1N3kybjdHUHAyRlBnMjQ0Rm5kT3J6ZlUyU0ZnUmRSa0dod0I0NFhCWlBCTUEyWXJFSlZwS0NXSE12YnZTM3JzNGVEc1Iva3NkZ2p5TWE1M2VkTUxFYXl5YUxPbUIrRXVSTXh5dFdRaHVpKytIUW95VWV5Q0w3N0RZZldaSVl5RlFBQSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjUsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCA1Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnUxWTNXNmJNQmdsZisyYWFkT21hdE11ZVlBRmlpR3QwbDFOcTZacFVxV3EwN1JLdTBBR25JRGlZR1JEU2U3NkRudkRQY1F1bTVrZmR3bE5ZQnBVNjBVaUVXempjempIZkYvNDRzdXpLNzEvMVpja3FTTjFXMjJwMCtOTmFlL0RoUWFHUUpLNmJkNXJTVjNwSURuUCtheEQza2ptdk9CSFA3OXcvQTJocVd3TTVVOGtZc2dsMkpFdklzeVEvQ1dpMTJoeEtyOFBxSWRsY0NJUDVITzRrRWR2WlhBRVFFMjBkSk9naHhuYTJJbytoOVIyWmYxSS9ubnpJNmZTdENiQVJnYldLOEFneFdadHpXZ0FPOHF3WUN2Mk0vUWpTQmN5T0U3aEg1RkYwLzVKVXdTbkdZRzJsZUFNMldobUlTcURVY29nQ0xXakpoaWt3elQyc2xoczViRW9ndlNkRzRZQk8xWFZPSTRWRy9rc1lzcUVYS3NPREtFYVFnc2pwaWJob3pwb1JsVFhEWkxER0NwdU9NT0ZlTy81Y0laWWdmL0pPTUxZak9pOXlUYUdURXp1NUlON29ZVk5aNXozT3J5WE4vdUpIR1ZNK1EwS1BBZVV4SXE0OFROK3RHLzQxNUovK09uMndVeTNsK1UrTzh0L3R0WmRQcmdUWStmazBUblJkMDRlblJPd2MvTC9uV2pyVHJTZGsyYWNySldrbDZsMnNDbytvR1RDV2RpQXBUVUd5OFRuYmhJUGFaVEZVMk9vdXJ3cThmd0pzTXlZMXluOFJUbkhiSjR6ZjIySW1hRU41SFZrRzBYWlJsT3lqUTJ5amFaazYwWFplbE95OVEyeTlhWmtnNkpzMEpSc3NFRTJhRUMybHBCclJkbGFBN0x2TVF2Wk9iblVXVTNOcTVVZmw0ZEkwTytOOG05TTAvb1d5cE8xdm9YS2xLMXZvVHh4NjF1b1ROLzZGc3FUdUw2RnlsU3VaZUV2RXJxV2hjcTBYbnVSdC9OYmRpYzRRdUxQck8xQ0N1MFEwUTJ2NkZkbFNmeW1JZ09MWUtNQ2JKU0I5UXF3WGdZR0ZXQlFCdFlxd0tzcmZWZFM5Y1RxWXMrZm1pR2FoMklnZ0JUNVlWSmtaUVA3Rk1acFRaWjFYenNrOWpHQmpqbVBDWjFhaEV6TlA1T2Z6aGJtMk1QSTMxNXAvU284YzFIY3JkVm95WU5lMjlMWUowSG9FWjl4bnRYZHc3dHRSVm9ZZUJuNWlRWm5ZTHVSUHgxb1lKaEdUVmFtU3Jta1ZqNG0ycjB0aTdTSC9Jbm5pNERzWVdnaFlmZzU1Y3VSN0xRb0FmVjhzWWg5UHNxVWtJVHdyZ0sxQ1JZaldSamYvZ1pESFJzZk54VUFBQT09In0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["link_text_1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["data"],"name":[2],"type":["list"],"align":["right"]},{"label":["rawhtml"],"name":[3],"type":["chr"],"align":["left"]},{"label":["download_xworkbook_url"],"name":[4],"type":["S3: glue"],"align":["right"]},{"label":["my_filename"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"Week 45 Household Pulse Survey: April 27 - May 9, 2022","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx","5":"housing2b_week45.xlsx"},{"1":"Week 45 Household Pulse Survey: April 27 - May 9, 2022","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_se_week45.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_se_week45.xlsx","5":"housing2b_se_week45.xlsx"},{"1":"Week 44 Household Pulse Survey: March 30 – April 11","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_week44.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_week44.xlsx","5":"housing2b_week44.xlsx"},{"1":"Week 44 Household Pulse Survey: March 30 – April 11","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_se_week44.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_se_week44.xlsx","5":"housing2b_se_week44.xlsx"},{"1":"Week 43 Household Pulse Survey: March 2 – March 14","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_week43.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_week43.xlsx","5":"housing2b_week43.xlsx"},{"1":"Week 43 Household Pulse Survey: March 2 – March 14","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_se_week43.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_se_week43.xlsx","5":"housing2b_se_week43.xlsx"},{"1":"Week 42 Household Pulse Survey: January 26 – February 7","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_week42.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_week42.xlsx","5":"housing2b_week42.xlsx"},{"1":"Week 42 Household Pulse Survey: January 26 – February 7","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_se_week42.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_se_week42.xlsx","5":"housing2b_se_week42.xlsx"},{"1":"Week 41 Household Pulse Survey: December 29 – January 10","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_week41.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_week41.xlsx","5":"housing2b_week41.xlsx"},{"1":"Week 41 Household Pulse Survey: December 29 – January 10","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_se_week41.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_se_week41.xlsx","5":"housing2b_se_week41.xlsx"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+{"columns":[{"label":["link_text"],"name":[1],"type":["chr"],"align":["left"]},{"label":["parenturl"],"name":[2],"type":["list"],"align":["right"]},{"label":["rawhtml"],"name":[3],"type":["chr"],"align":["left"]},{"label":["download_xworkbook_url"],"name":[4],"type":["S3: glue"],"align":["right"]},{"label":["my_filename"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"Week 45 Household Pulse Survey: April 27 - May 9, 2022","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx","5":"housing2b_week45.xlsx"},{"1":"Week 45 Household Pulse Survey: April 27 - May 9, 2022","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_se_week45.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_se_week45.xlsx","5":"housing2b_se_week45.xlsx"},{"1":"Week 44 Household Pulse Survey: March 30 – April 11","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_week44.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_week44.xlsx","5":"housing2b_week44.xlsx"},{"1":"Week 44 Household Pulse Survey: March 30 – April 11","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_se_week44.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk44/housing2b_se_week44.xlsx","5":"housing2b_se_week44.xlsx"},{"1":"Week 43 Household Pulse Survey: March 2 – March 14","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_week43.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_week43.xlsx","5":"housing2b_week43.xlsx"},{"1":"Week 43 Household Pulse Survey: March 2 – March 14","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_se_week43.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk43/housing2b_se_week43.xlsx","5":"housing2b_se_week43.xlsx"},{"1":"Week 42 Household Pulse Survey: January 26 – February 7","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_week42.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_week42.xlsx","5":"housing2b_week42.xlsx"},{"1":"Week 42 Household Pulse Survey: January 26 – February 7","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_se_week42.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk42/housing2b_se_week42.xlsx","5":"housing2b_se_week42.xlsx"},{"1":"Week 41 Household Pulse Survey: December 29 – January 10","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_week41.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_week41.xlsx","5":"housing2b_week41.xlsx"},{"1":"Week 41 Household Pulse Survey: December 29 – January 10","2":"<tibble>","3":"//www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_se_week41.xlsx","4":"https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk41/housing2b_se_week41.xlsx","5":"housing2b_se_week41.xlsx"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -1924,7 +1924,7 @@ walk2(download_target_urls$download_xworkbook_url,
 <pre class="r"><code>fs::dir_ls(&quot;data/xl_workbooks&quot;) %&gt;% 
   enframe()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnUxVVFXdURNQmlOVVZzVXVnMzJJd2FEV3FvdDdMNzlnTEZUYjVMYXRJcFpVcEs0ZXR5djNyRXVzY25vTEd6a3ZBbnE5NzI4OTVKSGpDOVBxeXhleFFBQUh3UWVCSDZvU2pCNmZKNm55eFNBQUtyT0F3R0k5THRWckZ0VmFQQkczYkVadU44Z2lXWXR5UStNMTJ2R2FqRXJXU01xdWt2WHVjRDVBZU42TVU5YUlsb1hSZXFzeUp3VkMyZkY4bHh4OTVQaU12YnY5TlNObnJuUkYyNTBFeFg0LzV2OWR6YjcyNUVQQzRLRU1NY2RHbkM4RmZrZXlkSzBVVkVpamdxSnVXcU9Rd09LWHZIUUlOQ2dKYndoMHVDQkt1THNrRmpsUkN2ZjFhUHJ1bzhURVhiRzBRcGlIUy9aY3UxN3VZZ3gyOHVLVVdVRzllOHJISWc5UGdDdUc2b24zMHlMc3FIMTlLSC8rdlh3NlpxWU9qNnI0V2xLM3k0c05GWWpUSGNWL1FwTDBCb1QwMXlwa0gzR1pNOHJLbTBTaFlwRU1va3NMeTRZc1VpZkRSdy9BVUpjMXBTMkJRQUEifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnUxVTNVNkRNQmp0K05rQ3lZekdoekF4R2N0Z2l3K2dEMkM4MmgzcFdEY0l0U1Z0RVM1OWFpK0hMYlJtc2tUVGF5VUJ2dTl3em1sUDJ2THl0RTNDYlFnQWNJRTNjWURyeXhKTUg1OVg4U1lHd0hOa053RWVDTlM3bGF4YldTandXdDZoL25DL2h3SXVXNXcybEpVN1NrdSt6R25OQzNLTWR5bEhhWU5RdVY1RkxlYXRqU0syVmlUV2lyVzFZbk91dVB0SmNSbjdkM3BzUjAvczZHczd1bzRLM1AvRi9qdUwvZTNJK3htR25Pdmo3bWh3ZHVCcEJVV3UyeURMSVlPWlFFdzJwN0VCZ2E5b2JPQXAwQkRlSUs3UlNCVXcya1JHT1ZmS2Qvbm91dTVqSURxZGRqU0NVTVdMRGt6NVhrNWlSaXRSVUNMTkhQWDc4a2ZpQ1JzQk56VlJnKzhYV1Y2VGNyR0tIL3I5cndqRE5kZDFlRlk3dzZDdW1acXZ6YWFJSEF2eUZSZkRIY0s2dVpJeCs1UlJ4UW9pVEJhSjhraFFBUTB2ekNnMlNKOE9uRDRCaDJLKzJiZ0ZBQUE9In0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["value"],"name":[2],"type":["S3: fs_path"],"align":["right"]}],"data":[{"1":"data/xl_workbooks/housing2b_se_week41.xlsx","2":"data/xl_workbooks/housing2b_se_week41.xlsx"},{"1":"data/xl_workbooks/housing2b_se_week42.xlsx","2":"data/xl_workbooks/housing2b_se_week42.xlsx"},{"1":"data/xl_workbooks/housing2b_se_week43.xlsx","2":"data/xl_workbooks/housing2b_se_week43.xlsx"},{"1":"data/xl_workbooks/housing2b_se_week44.xlsx","2":"data/xl_workbooks/housing2b_se_week44.xlsx"},{"1":"data/xl_workbooks/housing2b_se_week45.xlsx","2":"data/xl_workbooks/housing2b_se_week45.xlsx"},{"1":"data/xl_workbooks/housing2b_week41.xlsx","2":"data/xl_workbooks/housing2b_week41.xlsx"},{"1":"data/xl_workbooks/housing2b_week42.xlsx","2":"data/xl_workbooks/housing2b_week42.xlsx"},{"1":"data/xl_workbooks/housing2b_week43.xlsx","2":"data/xl_workbooks/housing2b_week43.xlsx"},{"1":"data/xl_workbooks/housing2b_week44.xlsx","2":"data/xl_workbooks/housing2b_week44.xlsx"},{"1":"data/xl_workbooks/housing2b_week45.xlsx","2":"data/xl_workbooks/housing2b_week45.xlsx"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
@@ -1960,14 +1960,20 @@ my_files</code></pre>
                       sheet = &quot;NC&quot;, 
                       skip = 4)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi4zYFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi40YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi41YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi42YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi43YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzIHJlbnQuLi44YFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi4zYFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi40YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi41YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi42YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi43YFxuKiBgQ29uZmlkZW5jZSB0byBwYXkgbmV4dCBtb250aOKAmXMgcmVudGAgLT4gYENvbmZpZGVuY2UgdG8gcGF5IG5leHQgbW9udGjigJlzXG4gIHJlbnQuLi44YFxuIn0= -->
 <pre><code>New names:
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...3`
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...4`
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...5`
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...6`
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...7`
-* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s rent...8`</code></pre>
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...3`
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...4`
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...5`
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...6`
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...7`
+* `Confidence to pay next month’s rent` -&gt; `Confidence to pay next month’s
+  rent...8`</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfeGxfZGYgPC0gbXlfeGxfZGYgJT4lIFxuICBqYW5pdG9yOjpjbGVhbl9uYW1lcygpXG5cbm15X3hsX2RmICU+JSBcbiAgZmlsdGVyKHNlbGVjdF9jaGFyYWN0ZXJpc3RpY3MgIT0gXCJUb3RhbFwiKSAlPiUgXG4gIG11dGF0ZShzdWJfZ3JvdXAgPSBpZl9lbHNlKGlzLm5hKHRvdGFsMSksIHNlbGVjdF9jaGFyYWN0ZXJpc3RpY3MsIE5BX2NoYXJhY3Rlcl8pKSAlPiUgXG4gIGZpbGwoc3ViX2dyb3VwLCAuZGlyZWN0aW9uID0gXCJkb3duXCIpICU+JSBcbiAgcmVsb2NhdGUoc3ViX2dyb3VwKSAlPiUgXG4gIGZpbHRlcihzdWJfZ3JvdXAgPT0gXCJFZHVjYXRpb25cIilcbmBgYCJ9 -->
 <pre class="r"><code>my_xl_df &lt;- my_xl_df %&gt;% 
@@ -1980,13 +1986,745 @@ my_xl_df %&gt;%
   relocate(sub_group) %&gt;% 
   filter(sub_group == &quot;Education&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6MTEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNSB4IDExIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnExVXpXN1VNQkQyYnBORjNhcUFxRUJja01LQlk1ZjRKN1p6aFZadzRJRGcwbHVVT21ZVGtkb3J4MUhMcmEvQjYvRWFTQzNPTnM2V1JSR3NSQ1R2enU4MzQ1bnhmRG81dy9Pek9RQmdEd1NUS2RnTEhRbG1iejlDbENBQWdxbmpKaUFBKzkzL2xiTTZjc1NCTzQvZENYdkYvbW5SaXR4V1d2MFh3Vi9BbjM2UVRSUFpNbGRSV1MzTHFCR2wxbld2ZlBKK0k0cTBpZDZkbmdCdzNXbGVmdFlYTWhLNnJ1VlN2czZiUm9zcXQvTEg5ZmNtS3VUU1NOa2J2bmlUaTFMVzJ0eFRkVkJkTUdtRzdGeG10KzdyNDg1UWpCQ1BQVWNwUkp3T0hFb3hRNTRqQkJLS1JuQkNGRFBLUEVNUUhQeENuTWFjREdZWUoyd01nM0JPZlNvaDVTUWRZa1BNT1J0VW1KSWtHYnNRakZHU2JCdzVJekhad0dCTzhSQ09NQVpIWUNiSFE0RVNBamQ0aUtkMFNHU0dFY1hwV0NZRHhKOUVnQmxNLzlrdFlDbnlTUWZRMVhhc2ZqaUdjYnlwUXhyVHhLdGdtbEovaVNEQmhJejJnUEJOdmR3QU1KSU1BeEJqeG9kSzRKZ3lHRzg5dFZEbEY3THBzUS84UzJqYTgyeHBkTHZxQmM4YVdVdGhNMUhtSmhkV21xcXhsV2c4c3RVMnIySFB2UkphZmFrS3FZVE1yTTVXK2JkTXlTdWJYV2hseTZ6SmpGUTJ3N3NZazEyTWsxMk02UzdHYkJkajduZUlGcUpkVmJMSUxpdGI2dGF1MWIzeWVWRVZtZEtkYktXTjdkQ3NWSzJSVzAzYU4vcHk0UnQxNk03MDJ2MjRHZmk1M1UxUnUzM1RkOU1MNTBWdTg4VVg0L3dkZDdQbDhrQ3Z1cFhubktaSC9YamRkNTZZTGNHalZuV1pGTWVpYk5YWDQrNVJ6TmZxdSsrd3A4Tjc5TUZkeU9rdCtIM2h6cVJhVmtyNjNPdjhYUHJ0K3REZGVIM2h4Y3BVUTczbVR0b3MxdFBtSlc3TmVzbjZidURtRnl1QTRFZHBCZ0FBIn0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6MTEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNSB4IDExIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnExVXpXN1VNQkQyYnBORjNhb0lVWUc0SUlVRHh5N3hUMnpuQ3EzZ3dBSEJwYmNvZGR4TlJHcXZIRWN0dDc0R3I4ZHJJTFU0MnpoYkZrV3dFcEdjek84MzQ1bkpmRDQ1dy9Pek9RQmdEd1NUS2RnTEhRbG03ejVCbENBQWdxbmpKaUFBKzkzMzJsa2RPZUxBblNmdWhMMWkvN1JvUlc0cnJmNkw0Qy9neno3S3BvbHNtYXVvckpabDFJaFM2N3BYUHYyd0VVWGFSTzlQVHdDNDZUU3Z2dWhMR1FsZDEzSXAzK1JObzBXVlcvbmo1bnNURlhKcHBPd05YNzdOUlNscmJSNm9PcWd1bURSRGRpNnpPL2YwY1djb1JvakhucU1VSWs0SERxV1lJYzhSQWdsRkl6Z2hpaGxsbmlFSURuNGhUbU5PQmpPTUV6YUdRVGluUHBXUWNwSU9zU0htbkEwcVRFbVNqRjBJeGloSk5vNmNrWmhzWURDbmVBaEhHSU1qTUpQam9VQUpnUnM4eEZNNkpETERpT0owTEpNQjRrOGl3QXltLyt3V3NCVDVwQVBvYWp0V1B4ekRPTjdVSVkxcDRsVXdUYW0vUkpCZ1FrWjdRUGltWG00QUdFbUdBWWd4NDBNbGNFd1pqTGQrdFZEbGw3THBzUS84bjlDMDU5blM2SGJWQzU0M3NwYkNacUxNVFM2c05GVmpLOUY0Wkt0dFhzT2VleTIwdXFnS3FZVE1yTTVXK2JkTXlXdWJYV3BseTZ6SmpGUTJ3N3NZazEyTWsxMk02UzdHYkJkajduZUlGcUpkVmJMSXJpcGI2dGF1MWIzeVJWRVZtZEtkYktXTjdkQ3NWSzJSVzAzYU4vcHE0UnQxNk03MHhyM2NEUHpjN3FhbzNiN3B1K21GOHlLMytlTENPSC9IM1c2NVBOS3JidVU1cCtsUlAxNFBuU2RtUy9Da1ZWMG14YkVvVy9YMUdIWnpPVi9yNzUvRG5nNGYwQWYzTWFkMzRQZU5PNU5xV1NucGs2L3pjK25YNjJOMzVmV05GeXRURFFXYk8ybXpXSStibDdnOTZ5WHJ5NEhiWDI2NU00OXFCZ0FBIn0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["sub_group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["select_characteristics"],"name":[2],"type":["chr"],"align":["left"]},{"label":["total1"],"name":[3],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_3"],"name":[4],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_4"],"name":[5],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_5"],"name":[6],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_6"],"name":[7],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_7"],"name":[8],"type":["chr"],"align":["left"]},{"label":["confidence_to_pay_next_month_s_rent_8"],"name":[9],"type":["chr"],"align":["left"]},{"label":["occupied_without_rent"],"name":[10],"type":["chr"],"align":["left"]},{"label":["did_not_report_to_tenure"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"Education","2":"Education","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA"},{"1":"Education","2":"Less than high school","3":"202280","4":"20767","5":"48860","6":"102552","7":"-","8":"-","9":"-","10":"30100","11":"44804"},{"1":"Education","2":"High school or GED","3":"661286","4":"42172","5":"68492","6":"187404","7":"254152","8":"-","9":"-","10":"109065","11":"629745"},{"1":"Education","2":"Some college/associate’s degree","3":"629372","4":"39084","5":"138870","6":"133863","7":"289670","8":"-","9":"7923","10":"19962","11":"403782"},{"1":"Education","2":"Bachelor’s degree or higher","3":"441462","4":"23357","5":"36455","6":"44771","7":"326395","8":"3719","9":"1421","10":"5344","11":"306710"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfZmlsZXMgJT4lXG4gIGV4Y2VsX3NoZWV0cygpICU+JSAgIFxuICBzZXRfbmFtZXMoKSAlPiUgXG4gIGdyZXAoXCJbTlNdQ1wiLCAuLCB2YWx1ZSA9IFRSVUUpICU+JSBcbiAgbWFwX2RmKC4sIH4gcmVhZF9leGNlbChwYXRoLCBzaGVldCA9IC54LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICByYW5nZSA9IFwiQTg6SjEzMlwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgIGNvbF9uYW1lcyA9IEZBTFNFLFxuICAgICAgICAgICAgICAgICAgICAgICAgIGNvbF90eXBlcyA9IGMoXCJ0ZXh0XCIsIHJlcChcIm51bWVyaWNcIiwgOSkpKSxcbiAgICAgICAgIC5pZCA9IFwic2hlZXRcIikgJT4lIFxuICBmaWx0ZXIoYC4uLjFgICE9IFwiVG90YWxcIikgJT4lIFxuICBtdXRhdGUoc3ViX2dyb3VwID0gaWZfZWxzZShpcy5uYShgLi4uMmApLCBgLi4uMWAsIE5BX2NoYXJhY3Rlcl8pKSAlPiUgXG4gIGZpbGwoc3ViX2dyb3VwLCAuZGlyZWN0aW9uID0gXCJkb3duXCIpICU+JSBcbiAgcmVsb2NhdGUoc3ViX2dyb3VwKSAlPiUgXG4gIGRyb3BfbmEoNCkgJT4lIFxuICBmaWx0ZXIoc3ViX2dyb3VwID09IFwiRWR1Y2F0aW9uXCIpICU+JSBcbiAgcGl2b3RfbG9uZ2VyKDQ6bGFzdF9jb2woKSwgbmFtZXNfdG8gPSBcIm15X2NhdGVnb3J5XCIpICU+JSBcbiAgZ3JvdXBfYnkoc3ViX2dyb3VwLCBzaGVldCwgMywgbXlfY2F0ZWdvcnkpICU+JSBcbiAgc3VtbWFyaXNlKHRvdGFscyA9IHN1bSh2YWx1ZSwgbmEucm0gPSBUUlVFKSkgJT4lIFxuICBnZ3Bsb3QoYWVzKG15X2NhdGVnb3J5LCB0b3RhbHMpKSArXG4gIGdlb21fY29sKCkgK1xuICBjb29yZF9mbGlwKCkgK1xuICBmYWNldF93cmFwKH4gc2hlZXQpXG5cbmBgYCJ9 -->
+<pre class="r"><code>my_files %&gt;%
+  excel_sheets() %&gt;%   
+  set_names() %&gt;% 
+  grep(&quot;[NS]C&quot;, ., value = TRUE) %&gt;% 
+  map_df(., ~ read_excel(path, sheet = .x, 
+                         range = &quot;A8:J132&quot;,
+                         col_names = FALSE,
+                         col_types = c(&quot;text&quot;, rep(&quot;numeric&quot;, 9))),
+         .id = &quot;sheet&quot;) %&gt;% 
+  filter(`...1` != &quot;Total&quot;) %&gt;% 
+  mutate(sub_group = if_else(is.na(`...2`), `...1`, NA_character_)) %&gt;% 
+  fill(sub_group, .direction = &quot;down&quot;) %&gt;% 
+  relocate(sub_group) %&gt;% 
+  drop_na(4) %&gt;% 
+  filter(sub_group == &quot;Education&quot;) %&gt;% 
+  pivot_longer(4:last_col(), names_to = &quot;my_category&quot;) %&gt;% 
+  group_by(sub_group, sheet, 3, my_category) %&gt;% 
+  summarise(totals = sum(value, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(my_category, totals)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~ sheet)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEwIC8gUjEwQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMCAvIFIxMEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTAgLyBSMTBDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjEwIC8gUjEwQzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTEgLyBSMTFDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExIC8gUjExQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMSAvIFIxMUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTEgLyBSMTFDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMiAvIFIxMkM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTIgLyBSMTJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEyIC8gUjEyQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMiAvIFIxMkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTIgLyBSMTJDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMyAvIFIxM0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTMgLyBSMTNDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNCAvIFIxNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTQgLyBSMTRDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzE0IC8gUjE0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNiAvIFIxNkMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTYgLyBSMTZDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzE2IC8gUjE2Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxNiAvIFIxNkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTYgLyBSMTZDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzE3IC8gUjE3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxNyAvIFIxN0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTggLyBSMThDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzE5IC8gUjE5Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxOSAvIFIxOUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMjAgLyBSMjBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzIyIC8gUjIyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgyMiAvIFIyMkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMjUgLyBSMjVDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDI1IC8gUjI1Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMyNyAvIFIyN0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMjcgLyBSMjdDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzI3IC8gUjI3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgyNyAvIFIyN0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMjcgLyBSMjdDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjI3IC8gUjI3QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMjggLyBSMjhDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzI4IC8gUjI4Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgyOCAvIFIyOEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMjkgLyBSMjlDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTI5IC8gUjI5QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYyOSAvIFIyOUM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMjkgLyBSMjlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDI5IC8gUjI5Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkyOSAvIFIyOUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMzEgLyBSMzFDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzMxIC8gUjMxQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgzMSAvIFIzMUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMzEgLyBSMzFDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzMzIC8gUjMzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgzMyAvIFIzM0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMzQgLyBSMzRDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzM0IC8gUjM0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgzNCAvIFIzNEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMzQgLyBSMzRDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjM0IC8gUjM0QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMzUgLyBSMzVDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTM1IC8gUjM1QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEczNSAvIFIzNUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMzUgLyBSMzVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTM1IC8gUjM1Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEozNSAvIFIzNUMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzM2IC8gUjM2QzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQzNiAvIFIzNkM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMzYgLyBSMzZDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzM2IC8gUjM2Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkzNiAvIFIzNkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMzggLyBSMzhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDM4IC8gUjM4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc0MCAvIFI0MEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINDAgLyBSNDBDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTQwIC8gUjQwQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo0MCAvIFI0MEMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzQxIC8gUjQxQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU0MSAvIFI0MUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNDEgLyBSNDFDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTQxIC8gUjQxQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg0MyAvIFI0M0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJNDMgLyBSNDNDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzQ0IC8gUjQ0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc0NSAvIFI0NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNDYgLyBSNDZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDQ2IC8gUjQ2QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU0NiAvIFI0NkM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNDYgLyBSNDZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDQ2IC8gUjQ2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk0NiAvIFI0NkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNDcgLyBSNDdDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDQ3IC8gUjQ3Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk0NyAvIFI0N0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGNDkgLyBSNDlDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzQ5IC8gUjQ5Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg0OSAvIFI0OUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNTAgLyBSNTBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDUwIC8gUjUwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc1MSAvIFI1MUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNTUgLyBSNTVDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzU1IC8gUjU1Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg1NSAvIFI1NUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNTYgLyBSNTZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzU3IC8gUjU3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg1NyAvIFI1N0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBENTggLyBSNThDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTU4IC8gUjU4QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEY1OCAvIFI1OEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNTggLyBSNThDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDU4IC8gUjU4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk1OCAvIFI1OEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjAgLyBSNjBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDYwIC8gUjYwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc2MSAvIFI2MUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjIgLyBSNjJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDYzIC8gUjYzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc2NCAvIFI2NEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINjQgLyBSNjRDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDY1IC8gUjY1QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc2NSAvIFI2NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINjUgLyBSNjVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTY1IC8gUjY1Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM2NiAvIFI2NkMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjYgLyBSNjZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDY2IC8gUjY2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk2NiAvIFI2NkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjkgLyBSNjlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzcxIC8gUjcxQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg3MSAvIFI3MUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNzMgLyBSNzNDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTczIC8gUjczQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEY3MyAvIFI3M0M2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzMgLyBSNzNDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDczIC8gUjczQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk3MyAvIFI3M0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzYgLyBSNzZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDc2IC8gUjc2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU3NyAvIFI3N0M1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGNzcgLyBSNzdDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzc3IC8gUjc3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk3NyAvIFI3N0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzkgLyBSNzlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDc5IC8gUjc5Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo3OSAvIFI3OUMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzgwIC8gUjgwQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk4MCAvIFI4MEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDODEgLyBSODFDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzgxIC8gUjgxQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg4MSAvIFI4MUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDODIgLyBSODJDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzgyIC8gUjgyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg4MiAvIFI4MkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEODMgLyBSODNDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzgzIC8gUjgzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg4MyAvIFI4M0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDODQgLyBSODRDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzg0IC8gUjg0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg4NCAvIFI4NEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJODQgLyBSODRDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjg0IC8gUjg0QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDODUgLyBSODVDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDg1IC8gUjg1QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU4NSAvIFI4NUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIODUgLyBSODVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTg1IC8gUjg1Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo4NSAvIFI4NUMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzg2IC8gUjg2QzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ4NiAvIFI4NkM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHODYgLyBSODZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDg2IC8gUjg2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo4NiAvIFI4NkMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzg3IC8gUjg3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc4OSAvIFI4OUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTAgLyBSOTBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDkwIC8gUjkwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk5MSAvIFI5MUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTIgLyBSOTJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDkyIC8gUjkyQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM5MyAvIFI5M0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFOTMgLyBSOTNDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDkzIC8gUjkzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk5MyAvIFI5M0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIOTQgLyBSOTRDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTk0IC8gUjk0Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg5NSAvIFI5NUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTYgLyBSOTZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDk2IC8gUjk2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo5NiAvIFI5NkMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzk3IC8gUjk3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg5NyAvIFI5N0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTggLyBSOThDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDk4IC8gUjk4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc5OSAvIFI5OUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIOTkgLyBSOTlDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjk5IC8gUjk5QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTAwIC8gUjEwMEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTAxIC8gUjEwMUMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTAxIC8gUjEwMUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTAxIC8gUjEwMUM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTAxIC8gUjEwMUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTAxIC8gUjEwMUM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTAxIC8gUjEwMUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAxIC8gUjEwMUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTAxIC8gUjEwMUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTAzIC8gUjEwM0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTAzIC8gUjEwM0M0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTAzIC8gUjEwM0M1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTAzIC8gUjEwM0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAzIC8gUjEwM0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTAzIC8gUjEwM0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTA0IC8gUjEwNEMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTA0IC8gUjEwNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTA0IC8gUjEwNEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTA0IC8gUjEwNEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTA0IC8gUjEwNEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTA0IC8gUjEwNEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTA0IC8gUjEwNEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTA0IC8gUjEwNEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTA1IC8gUjEwNUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTA1IC8gUjEwNUM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTA1IC8gUjEwNUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTA1IC8gUjEwNUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTA1IC8gUjEwNUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTA1IC8gUjEwNUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTA2IC8gUjEwNkMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTA2IC8gUjEwNkMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTA2IC8gUjEwNkM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTA2IC8gUjEwNkM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTA2IC8gUjEwNkM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTA2IC8gUjEwNkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTA2IC8gUjEwNkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTA2IC8gUjEwNkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTA2IC8gUjEwNkMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEwOCAvIFIxMDhDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDEwOCAvIFIxMDhDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEwOCAvIFIxMDhDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEwOCAvIFIxMDhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEwOCAvIFIxMDhDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEwOCAvIFIxMDhDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExMCAvIFIxMTBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExMCAvIFIxMTBDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExMSAvIFIxMTFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExMiAvIFIxMTJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjExMiAvIFIxMTJDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEIxMTMgLyBSMTEzQzI6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMTMgLyBSMTEzQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMTMgLyBSMTEzQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMTMgLyBSMTEzQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMTMgLyBSMTEzQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMTMgLyBSMTEzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMTMgLyBSMTEzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMTMgLyBSMTEzQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMTMgLyBSMTEzQzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTE0IC8gUjExNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTE0IC8gUjExNEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTE0IC8gUjExNEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE0IC8gUjExNEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTE0IC8gUjExNEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTE2IC8gUjExNkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTE3IC8gUjExN0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE3IC8gUjExN0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE4IC8gUjExOEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTE4IC8gUjExOEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTE4IC8gUjExOEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTE4IC8gUjExOEMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTExOSAvIFIxMTlDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjExOSAvIFIxMTlDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExOSAvIFIxMTlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExOSAvIFIxMTlDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjExOSAvIFIxMTlDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMjAgLyBSMTIwQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMjAgLyBSMTIwQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMjAgLyBSMTIwQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMjAgLyBSMTIwQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjAgLyBSMTIwQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMjAgLyBSMTIwQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjIgLyBSMTIyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjIgLyBSMTIyQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjQgLyBSMTI0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjQgLyBSMTI0Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMjQgLyBSMTI0QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTI1IC8gUjEyNUMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTI1IC8gUjEyNUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTI1IC8gUjEyNUM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTI1IC8gUjEyNUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTI1IC8gUjEyNUM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTI1IC8gUjEyNUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTI1IC8gUjEyNUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTI1IC8gUjEyNUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTI1IC8gUjEyNUMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEyNiAvIFIxMjZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEyNiAvIFIxMjZDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjEyNiAvIFIxMjZDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEyNiAvIFIxMjZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEyNiAvIFIxMjZDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEyOCAvIFIxMjhDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEyOSAvIFIxMjlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEzMCAvIFIxMzBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEzMCAvIFIxMzBDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEzMCAvIFIxMzBDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEzMSAvIFIxMzFDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDEzMSAvIFIxMzFDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjEzMSAvIFIxMzFDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEzMSAvIFIxMzFDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEzMSAvIFIxMzFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEzMSAvIFIxMzFDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjEzMSAvIFIxMzFDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMzIgLyBSMTMyQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMzIgLyBSMTMyQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMzIgLyBSMTMyQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMzIgLyBSMTMyQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMzIgLyBSMTMyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMzIgLyBSMTMyQzk6IGdvdCAnLSdcbiJ9 -->
+<pre><code>Warning: Expecting numeric in G10 / R10C7: got &#39;-&#39;
+Warning: Expecting numeric in H10 / R10C8: got &#39;-&#39;
+Warning: Expecting numeric in I10 / R10C9: got &#39;-&#39;
+Warning: Expecting numeric in J10 / R10C10: got &#39;-&#39;
+Warning: Expecting numeric in G11 / R11C7: got &#39;-&#39;
+Warning: Expecting numeric in H11 / R11C8: got &#39;-&#39;
+Warning: Expecting numeric in I11 / R11C9: got &#39;-&#39;
+Warning: Expecting numeric in J11 / R11C10: got &#39;-&#39;
+Warning: Expecting numeric in F12 / R12C6: got &#39;-&#39;
+Warning: Expecting numeric in G12 / R12C7: got &#39;-&#39;
+Warning: Expecting numeric in H12 / R12C8: got &#39;-&#39;
+Warning: Expecting numeric in I12 / R12C9: got &#39;-&#39;
+Warning: Expecting numeric in J12 / R12C10: got &#39;-&#39;
+Warning: Expecting numeric in I13 / R13C9: got &#39;-&#39;
+Warning: Expecting numeric in J13 / R13C10: got &#39;-&#39;
+Warning: Expecting numeric in C14 / R14C3: got &#39;-&#39;
+Warning: Expecting numeric in F14 / R14C6: got &#39;-&#39;
+Warning: Expecting numeric in G14 / R14C7: got &#39;-&#39;
+Warning: Expecting numeric in C16 / R16C3: got &#39;-&#39;
+Warning: Expecting numeric in D16 / R16C4: got &#39;-&#39;
+Warning: Expecting numeric in G16 / R16C7: got &#39;-&#39;
+Warning: Expecting numeric in H16 / R16C8: got &#39;-&#39;
+Warning: Expecting numeric in I16 / R16C9: got &#39;-&#39;
+Warning: Expecting numeric in G17 / R17C7: got &#39;-&#39;
+Warning: Expecting numeric in H17 / R17C8: got &#39;-&#39;
+Warning: Expecting numeric in H18 / R18C8: got &#39;-&#39;
+Warning: Expecting numeric in G19 / R19C7: got &#39;-&#39;
+Warning: Expecting numeric in H19 / R19C8: got &#39;-&#39;
+Warning: Expecting numeric in G20 / R20C7: got &#39;-&#39;
+Warning: Expecting numeric in G22 / R22C7: got &#39;-&#39;
+Warning: Expecting numeric in H22 / R22C8: got &#39;-&#39;
+Warning: Expecting numeric in G25 / R25C7: got &#39;-&#39;
+Warning: Expecting numeric in H25 / R25C8: got &#39;-&#39;
+Warning: Expecting numeric in C27 / R27C3: got &#39;-&#39;
+Warning: Expecting numeric in D27 / R27C4: got &#39;-&#39;
+Warning: Expecting numeric in G27 / R27C7: got &#39;-&#39;
+Warning: Expecting numeric in H27 / R27C8: got &#39;-&#39;
+Warning: Expecting numeric in I27 / R27C9: got &#39;-&#39;
+Warning: Expecting numeric in J27 / R27C10: got &#39;-&#39;
+Warning: Expecting numeric in E28 / R28C5: got &#39;-&#39;
+Warning: Expecting numeric in G28 / R28C7: got &#39;-&#39;
+Warning: Expecting numeric in H28 / R28C8: got &#39;-&#39;
+Warning: Expecting numeric in C29 / R29C3: got &#39;-&#39;
+Warning: Expecting numeric in E29 / R29C5: got &#39;-&#39;
+Warning: Expecting numeric in F29 / R29C6: got &#39;-&#39;
+Warning: Expecting numeric in G29 / R29C7: got &#39;-&#39;
+Warning: Expecting numeric in H29 / R29C8: got &#39;-&#39;
+Warning: Expecting numeric in I29 / R29C9: got &#39;-&#39;
+Warning: Expecting numeric in C31 / R31C3: got &#39;-&#39;
+Warning: Expecting numeric in G31 / R31C7: got &#39;-&#39;
+Warning: Expecting numeric in H31 / R31C8: got &#39;-&#39;
+Warning: Expecting numeric in I31 / R31C9: got &#39;-&#39;
+Warning: Expecting numeric in G33 / R33C7: got &#39;-&#39;
+Warning: Expecting numeric in H33 / R33C8: got &#39;-&#39;
+Warning: Expecting numeric in C34 / R34C3: got &#39;-&#39;
+Warning: Expecting numeric in G34 / R34C7: got &#39;-&#39;
+Warning: Expecting numeric in H34 / R34C8: got &#39;-&#39;
+Warning: Expecting numeric in I34 / R34C9: got &#39;-&#39;
+Warning: Expecting numeric in J34 / R34C10: got &#39;-&#39;
+Warning: Expecting numeric in D35 / R35C4: got &#39;-&#39;
+Warning: Expecting numeric in E35 / R35C5: got &#39;-&#39;
+Warning: Expecting numeric in G35 / R35C7: got &#39;-&#39;
+Warning: Expecting numeric in H35 / R35C8: got &#39;-&#39;
+Warning: Expecting numeric in I35 / R35C9: got &#39;-&#39;
+Warning: Expecting numeric in J35 / R35C10: got &#39;-&#39;
+Warning: Expecting numeric in C36 / R36C3: got &#39;-&#39;
+Warning: Expecting numeric in D36 / R36C4: got &#39;-&#39;
+Warning: Expecting numeric in E36 / R36C5: got &#39;-&#39;
+Warning: Expecting numeric in G36 / R36C7: got &#39;-&#39;
+Warning: Expecting numeric in I36 / R36C9: got &#39;-&#39;
+Warning: Expecting numeric in G38 / R38C7: got &#39;-&#39;
+Warning: Expecting numeric in H38 / R38C8: got &#39;-&#39;
+Warning: Expecting numeric in G40 / R40C7: got &#39;-&#39;
+Warning: Expecting numeric in H40 / R40C8: got &#39;-&#39;
+Warning: Expecting numeric in I40 / R40C9: got &#39;-&#39;
+Warning: Expecting numeric in J40 / R40C10: got &#39;-&#39;
+Warning: Expecting numeric in C41 / R41C3: got &#39;-&#39;
+Warning: Expecting numeric in E41 / R41C5: got &#39;-&#39;
+Warning: Expecting numeric in G41 / R41C7: got &#39;-&#39;
+Warning: Expecting numeric in I41 / R41C9: got &#39;-&#39;
+Warning: Expecting numeric in H43 / R43C8: got &#39;-&#39;
+Warning: Expecting numeric in I43 / R43C9: got &#39;-&#39;
+Warning: Expecting numeric in G44 / R44C7: got &#39;-&#39;
+Warning: Expecting numeric in G45 / R45C7: got &#39;-&#39;
+Warning: Expecting numeric in C46 / R46C3: got &#39;-&#39;
+Warning: Expecting numeric in D46 / R46C4: got &#39;-&#39;
+Warning: Expecting numeric in E46 / R46C5: got &#39;-&#39;
+Warning: Expecting numeric in G46 / R46C7: got &#39;-&#39;
+Warning: Expecting numeric in H46 / R46C8: got &#39;-&#39;
+Warning: Expecting numeric in I46 / R46C9: got &#39;-&#39;
+Warning: Expecting numeric in G47 / R47C7: got &#39;-&#39;
+Warning: Expecting numeric in H47 / R47C8: got &#39;-&#39;
+Warning: Expecting numeric in I47 / R47C9: got &#39;-&#39;
+Warning: Expecting numeric in F49 / R49C6: got &#39;-&#39;
+Warning: Expecting numeric in G49 / R49C7: got &#39;-&#39;
+Warning: Expecting numeric in H49 / R49C8: got &#39;-&#39;
+Warning: Expecting numeric in G50 / R50C7: got &#39;-&#39;
+Warning: Expecting numeric in H50 / R50C8: got &#39;-&#39;
+Warning: Expecting numeric in G51 / R51C7: got &#39;-&#39;
+Warning: Expecting numeric in C55 / R55C3: got &#39;-&#39;
+Warning: Expecting numeric in G55 / R55C7: got &#39;-&#39;
+Warning: Expecting numeric in H55 / R55C8: got &#39;-&#39;
+Warning: Expecting numeric in G56 / R56C7: got &#39;-&#39;
+Warning: Expecting numeric in G57 / R57C7: got &#39;-&#39;
+Warning: Expecting numeric in H57 / R57C8: got &#39;-&#39;
+Warning: Expecting numeric in D58 / R58C4: got &#39;-&#39;
+Warning: Expecting numeric in E58 / R58C5: got &#39;-&#39;
+Warning: Expecting numeric in F58 / R58C6: got &#39;-&#39;
+Warning: Expecting numeric in G58 / R58C7: got &#39;-&#39;
+Warning: Expecting numeric in H58 / R58C8: got &#39;-&#39;
+Warning: Expecting numeric in I58 / R58C9: got &#39;-&#39;
+Warning: Expecting numeric in G60 / R60C7: got &#39;-&#39;
+Warning: Expecting numeric in H60 / R60C8: got &#39;-&#39;
+Warning: Expecting numeric in G61 / R61C7: got &#39;-&#39;
+Warning: Expecting numeric in G62 / R62C7: got &#39;-&#39;
+Warning: Expecting numeric in H63 / R63C8: got &#39;-&#39;
+Warning: Expecting numeric in G64 / R64C7: got &#39;-&#39;
+Warning: Expecting numeric in H64 / R64C8: got &#39;-&#39;
+Warning: Expecting numeric in D65 / R65C4: got &#39;-&#39;
+Warning: Expecting numeric in G65 / R65C7: got &#39;-&#39;
+Warning: Expecting numeric in H65 / R65C8: got &#39;-&#39;
+Warning: Expecting numeric in I65 / R65C9: got &#39;-&#39;
+Warning: Expecting numeric in C66 / R66C3: got &#39;-&#39;
+Warning: Expecting numeric in G66 / R66C7: got &#39;-&#39;
+Warning: Expecting numeric in H66 / R66C8: got &#39;-&#39;
+Warning: Expecting numeric in I66 / R66C9: got &#39;-&#39;
+Warning: Expecting numeric in G69 / R69C7: got &#39;-&#39;
+Warning: Expecting numeric in G71 / R71C7: got &#39;-&#39;
+Warning: Expecting numeric in H71 / R71C8: got &#39;-&#39;
+Warning: Expecting numeric in C73 / R73C3: got &#39;-&#39;
+Warning: Expecting numeric in E73 / R73C5: got &#39;-&#39;
+Warning: Expecting numeric in F73 / R73C6: got &#39;-&#39;
+Warning: Expecting numeric in G73 / R73C7: got &#39;-&#39;
+Warning: Expecting numeric in H73 / R73C8: got &#39;-&#39;
+Warning: Expecting numeric in I73 / R73C9: got &#39;-&#39;
+Warning: Expecting numeric in G76 / R76C7: got &#39;-&#39;
+Warning: Expecting numeric in H76 / R76C8: got &#39;-&#39;
+Warning: Expecting numeric in E77 / R77C5: got &#39;-&#39;
+Warning: Expecting numeric in F77 / R77C6: got &#39;-&#39;
+Warning: Expecting numeric in G77 / R77C7: got &#39;-&#39;
+Warning: Expecting numeric in I77 / R77C9: got &#39;-&#39;
+Warning: Expecting numeric in G79 / R79C7: got &#39;-&#39;
+Warning: Expecting numeric in H79 / R79C8: got &#39;-&#39;
+Warning: Expecting numeric in J79 / R79C10: got &#39;-&#39;
+Warning: Expecting numeric in G80 / R80C7: got &#39;-&#39;
+Warning: Expecting numeric in I80 / R80C9: got &#39;-&#39;
+Warning: Expecting numeric in C81 / R81C3: got &#39;-&#39;
+Warning: Expecting numeric in G81 / R81C7: got &#39;-&#39;
+Warning: Expecting numeric in H81 / R81C8: got &#39;-&#39;
+Warning: Expecting numeric in C82 / R82C3: got &#39;-&#39;
+Warning: Expecting numeric in G82 / R82C7: got &#39;-&#39;
+Warning: Expecting numeric in H82 / R82C8: got &#39;-&#39;
+Warning: Expecting numeric in D83 / R83C4: got &#39;-&#39;
+Warning: Expecting numeric in G83 / R83C7: got &#39;-&#39;
+Warning: Expecting numeric in H83 / R83C8: got &#39;-&#39;
+Warning: Expecting numeric in C84 / R84C3: got &#39;-&#39;
+Warning: Expecting numeric in G84 / R84C7: got &#39;-&#39;
+Warning: Expecting numeric in H84 / R84C8: got &#39;-&#39;
+Warning: Expecting numeric in I84 / R84C9: got &#39;-&#39;
+Warning: Expecting numeric in J84 / R84C10: got &#39;-&#39;
+Warning: Expecting numeric in C85 / R85C3: got &#39;-&#39;
+Warning: Expecting numeric in D85 / R85C4: got &#39;-&#39;
+Warning: Expecting numeric in E85 / R85C5: got &#39;-&#39;
+Warning: Expecting numeric in H85 / R85C8: got &#39;-&#39;
+Warning: Expecting numeric in I85 / R85C9: got &#39;-&#39;
+Warning: Expecting numeric in J85 / R85C10: got &#39;-&#39;
+Warning: Expecting numeric in C86 / R86C3: got &#39;-&#39;
+Warning: Expecting numeric in D86 / R86C4: got &#39;-&#39;
+Warning: Expecting numeric in G86 / R86C7: got &#39;-&#39;
+Warning: Expecting numeric in H86 / R86C8: got &#39;-&#39;
+Warning: Expecting numeric in J86 / R86C10: got &#39;-&#39;
+Warning: Expecting numeric in G87 / R87C7: got &#39;-&#39;
+Warning: Expecting numeric in G89 / R89C7: got &#39;-&#39;
+Warning: Expecting numeric in G90 / R90C7: got &#39;-&#39;
+Warning: Expecting numeric in H90 / R90C8: got &#39;-&#39;
+Warning: Expecting numeric in I91 / R91C9: got &#39;-&#39;
+Warning: Expecting numeric in G92 / R92C7: got &#39;-&#39;
+Warning: Expecting numeric in H92 / R92C8: got &#39;-&#39;
+Warning: Expecting numeric in C93 / R93C3: got &#39;-&#39;
+Warning: Expecting numeric in E93 / R93C5: got &#39;-&#39;
+Warning: Expecting numeric in H93 / R93C8: got &#39;-&#39;
+Warning: Expecting numeric in I93 / R93C9: got &#39;-&#39;
+Warning: Expecting numeric in H94 / R94C8: got &#39;-&#39;
+Warning: Expecting numeric in I94 / R94C9: got &#39;-&#39;
+Warning: Expecting numeric in H95 / R95C8: got &#39;-&#39;
+Warning: Expecting numeric in G96 / R96C7: got &#39;-&#39;
+Warning: Expecting numeric in H96 / R96C8: got &#39;-&#39;
+Warning: Expecting numeric in J96 / R96C10: got &#39;-&#39;
+Warning: Expecting numeric in G97 / R97C7: got &#39;-&#39;
+Warning: Expecting numeric in H97 / R97C8: got &#39;-&#39;
+Warning: Expecting numeric in G98 / R98C7: got &#39;-&#39;
+Warning: Expecting numeric in H98 / R98C8: got &#39;-&#39;
+Warning: Expecting numeric in G99 / R99C7: got &#39;-&#39;
+Warning: Expecting numeric in H99 / R99C8: got &#39;-&#39;
+Warning: Expecting numeric in J99 / R99C10: got &#39;-&#39;
+Warning: Expecting numeric in G100 / R100C7: got &#39;-&#39;
+Warning: Expecting numeric in B101 / R101C2: got &#39;-&#39;
+Warning: Expecting numeric in C101 / R101C3: got &#39;-&#39;
+Warning: Expecting numeric in D101 / R101C4: got &#39;-&#39;
+Warning: Expecting numeric in E101 / R101C5: got &#39;-&#39;
+Warning: Expecting numeric in F101 / R101C6: got &#39;-&#39;
+Warning: Expecting numeric in G101 / R101C7: got &#39;-&#39;
+Warning: Expecting numeric in H101 / R101C8: got &#39;-&#39;
+Warning: Expecting numeric in I101 / R101C9: got &#39;-&#39;
+Warning: Expecting numeric in C103 / R103C3: got &#39;-&#39;
+Warning: Expecting numeric in D103 / R103C4: got &#39;-&#39;
+Warning: Expecting numeric in E103 / R103C5: got &#39;-&#39;
+Warning: Expecting numeric in G103 / R103C7: got &#39;-&#39;
+Warning: Expecting numeric in H103 / R103C8: got &#39;-&#39;
+Warning: Expecting numeric in I103 / R103C9: got &#39;-&#39;
+Warning: Expecting numeric in B104 / R104C2: got &#39;-&#39;
+Warning: Expecting numeric in C104 / R104C3: got &#39;-&#39;
+Warning: Expecting numeric in D104 / R104C4: got &#39;-&#39;
+Warning: Expecting numeric in E104 / R104C5: got &#39;-&#39;
+Warning: Expecting numeric in F104 / R104C6: got &#39;-&#39;
+Warning: Expecting numeric in G104 / R104C7: got &#39;-&#39;
+Warning: Expecting numeric in H104 / R104C8: got &#39;-&#39;
+Warning: Expecting numeric in I104 / R104C9: got &#39;-&#39;
+Warning: Expecting numeric in C105 / R105C3: got &#39;-&#39;
+Warning: Expecting numeric in D105 / R105C4: got &#39;-&#39;
+Warning: Expecting numeric in E105 / R105C5: got &#39;-&#39;
+Warning: Expecting numeric in G105 / R105C7: got &#39;-&#39;
+Warning: Expecting numeric in H105 / R105C8: got &#39;-&#39;
+Warning: Expecting numeric in I105 / R105C9: got &#39;-&#39;
+Warning: Expecting numeric in B106 / R106C2: got &#39;-&#39;
+Warning: Expecting numeric in C106 / R106C3: got &#39;-&#39;
+Warning: Expecting numeric in D106 / R106C4: got &#39;-&#39;
+Warning: Expecting numeric in E106 / R106C5: got &#39;-&#39;
+Warning: Expecting numeric in F106 / R106C6: got &#39;-&#39;
+Warning: Expecting numeric in G106 / R106C7: got &#39;-&#39;
+Warning: Expecting numeric in H106 / R106C8: got &#39;-&#39;
+Warning: Expecting numeric in I106 / R106C9: got &#39;-&#39;
+Warning: Expecting numeric in J106 / R106C10: got &#39;-&#39;
+Warning: Expecting numeric in C108 / R108C3: got &#39;-&#39;
+Warning: Expecting numeric in D108 / R108C4: got &#39;-&#39;
+Warning: Expecting numeric in E108 / R108C5: got &#39;-&#39;
+Warning: Expecting numeric in G108 / R108C7: got &#39;-&#39;
+Warning: Expecting numeric in H108 / R108C8: got &#39;-&#39;
+Warning: Expecting numeric in I108 / R108C9: got &#39;-&#39;
+Warning: Expecting numeric in G110 / R110C7: got &#39;-&#39;
+Warning: Expecting numeric in H110 / R110C8: got &#39;-&#39;
+Warning: Expecting numeric in H111 / R111C8: got &#39;-&#39;
+Warning: Expecting numeric in G112 / R112C7: got &#39;-&#39;
+Warning: Expecting numeric in J112 / R112C10: got &#39;-&#39;
+Warning: Expecting numeric in B113 / R113C2: got &#39;-&#39;
+Warning: Expecting numeric in C113 / R113C3: got &#39;-&#39;
+Warning: Expecting numeric in D113 / R113C4: got &#39;-&#39;
+Warning: Expecting numeric in E113 / R113C5: got &#39;-&#39;
+Warning: Expecting numeric in F113 / R113C6: got &#39;-&#39;
+Warning: Expecting numeric in G113 / R113C7: got &#39;-&#39;
+Warning: Expecting numeric in H113 / R113C8: got &#39;-&#39;
+Warning: Expecting numeric in I113 / R113C9: got &#39;-&#39;
+Warning: Expecting numeric in J113 / R113C10: got &#39;-&#39;
+Warning: Expecting numeric in C114 / R114C3: got &#39;-&#39;
+Warning: Expecting numeric in D114 / R114C4: got &#39;-&#39;
+Warning: Expecting numeric in E114 / R114C5: got &#39;-&#39;
+Warning: Expecting numeric in G114 / R114C7: got &#39;-&#39;
+Warning: Expecting numeric in I114 / R114C9: got &#39;-&#39;
+Warning: Expecting numeric in H116 / R116C8: got &#39;-&#39;
+Warning: Expecting numeric in C117 / R117C3: got &#39;-&#39;
+Warning: Expecting numeric in G117 / R117C7: got &#39;-&#39;
+Warning: Expecting numeric in G118 / R118C7: got &#39;-&#39;
+Warning: Expecting numeric in H118 / R118C8: got &#39;-&#39;
+Warning: Expecting numeric in I118 / R118C9: got &#39;-&#39;
+Warning: Expecting numeric in J118 / R118C10: got &#39;-&#39;
+Warning: Expecting numeric in E119 / R119C5: got &#39;-&#39;
+Warning: Expecting numeric in F119 / R119C6: got &#39;-&#39;
+Warning: Expecting numeric in G119 / R119C7: got &#39;-&#39;
+Warning: Expecting numeric in H119 / R119C8: got &#39;-&#39;
+Warning: Expecting numeric in J119 / R119C10: got &#39;-&#39;
+Warning: Expecting numeric in C120 / R120C3: got &#39;-&#39;
+Warning: Expecting numeric in D120 / R120C4: got &#39;-&#39;
+Warning: Expecting numeric in E120 / R120C5: got &#39;-&#39;
+Warning: Expecting numeric in F120 / R120C6: got &#39;-&#39;
+Warning: Expecting numeric in G120 / R120C7: got &#39;-&#39;
+Warning: Expecting numeric in I120 / R120C9: got &#39;-&#39;
+Warning: Expecting numeric in G122 / R122C7: got &#39;-&#39;
+Warning: Expecting numeric in H122 / R122C8: got &#39;-&#39;
+Warning: Expecting numeric in G124 / R124C7: got &#39;-&#39;
+Warning: Expecting numeric in H124 / R124C8: got &#39;-&#39;
+Warning: Expecting numeric in J124 / R124C10: got &#39;-&#39;
+Warning: Expecting numeric in B125 / R125C2: got &#39;-&#39;
+Warning: Expecting numeric in C125 / R125C3: got &#39;-&#39;
+Warning: Expecting numeric in D125 / R125C4: got &#39;-&#39;
+Warning: Expecting numeric in E125 / R125C5: got &#39;-&#39;
+Warning: Expecting numeric in F125 / R125C6: got &#39;-&#39;
+Warning: Expecting numeric in G125 / R125C7: got &#39;-&#39;
+Warning: Expecting numeric in H125 / R125C8: got &#39;-&#39;
+Warning: Expecting numeric in I125 / R125C9: got &#39;-&#39;
+Warning: Expecting numeric in J125 / R125C10: got &#39;-&#39;
+Warning: Expecting numeric in C126 / R126C3: got &#39;-&#39;
+Warning: Expecting numeric in E126 / R126C5: got &#39;-&#39;
+Warning: Expecting numeric in F126 / R126C6: got &#39;-&#39;
+Warning: Expecting numeric in G126 / R126C7: got &#39;-&#39;
+Warning: Expecting numeric in I126 / R126C9: got &#39;-&#39;
+Warning: Expecting numeric in H128 / R128C8: got &#39;-&#39;
+Warning: Expecting numeric in G129 / R129C7: got &#39;-&#39;
+Warning: Expecting numeric in G130 / R130C7: got &#39;-&#39;
+Warning: Expecting numeric in H130 / R130C8: got &#39;-&#39;
+Warning: Expecting numeric in I130 / R130C9: got &#39;-&#39;
+Warning: Expecting numeric in C131 / R131C3: got &#39;-&#39;
+Warning: Expecting numeric in D131 / R131C4: got &#39;-&#39;
+Warning: Expecting numeric in F131 / R131C6: got &#39;-&#39;
+Warning: Expecting numeric in G131 / R131C7: got &#39;-&#39;
+Warning: Expecting numeric in H131 / R131C8: got &#39;-&#39;
+Warning: Expecting numeric in I131 / R131C9: got &#39;-&#39;
+Warning: Expecting numeric in J131 / R131C10: got &#39;-&#39;
+Warning: Expecting numeric in C132 / R132C3: got &#39;-&#39;
+Warning: Expecting numeric in D132 / R132C4: got &#39;-&#39;
+Warning: Expecting numeric in E132 / R132C5: got &#39;-&#39;
+Warning: Expecting numeric in F132 / R132C6: got &#39;-&#39;
+Warning: Expecting numeric in G132 / R132C7: got &#39;-&#39;
+Warning: Expecting numeric in I132 / R132C9: got &#39;-&#39;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgYCAtPiBgLi4uMWBcbiogYGAgLT4gYC4uLjJgXG4qIGBgIC0+IGAuLi4zYFxuKiBgYCAtPiBgLi4uNGBcbiogYGAgLT4gYC4uLjVgXG4qIGBgIC0+IGAuLi42YFxuKiBgYCAtPiBgLi4uN2BcbiogYGAgLT4gYC4uLjhgXG4qIGBgIC0+IGAuLi45YFxuKiBgYCAtPiBgLi4uMTBgXG4ifQ== -->
+<pre><code>New names:
+* `` -&gt; `...1`
+* `` -&gt; `...2`
+* `` -&gt; `...3`
+* `` -&gt; `...4`
+* `` -&gt; `...5`
+* `` -&gt; `...6`
+* `` -&gt; `...7`
+* `` -&gt; `...8`
+* `` -&gt; `...9`
+* `` -&gt; `...10`</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEwIC8gUjEwQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMCAvIFIxMEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAgLyBSMTBDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEwIC8gUjEwQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMCAvIFIxMEMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExIC8gUjExQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMSAvIFIxMUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTEgLyBSMTFDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjExIC8gUjExQzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTIgLyBSMTJDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEyIC8gUjEyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMiAvIFIxMkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTIgLyBSMTJDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjEyIC8gUjEyQzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTMgLyBSMTNDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEzIC8gUjEzQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMyAvIFIxM0MxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDE0IC8gUjE0QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxNCAvIFIxNEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTQgLyBSMTRDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzE2IC8gUjE2Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxNyAvIFIxN0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTggLyBSMThDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDE4IC8gUjE4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxOSAvIFIxOUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTkgLyBSMTlDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDIwIC8gUjIwQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcyMCAvIFIyMEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMjAgLyBSMjBDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzIzIC8gUjIzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgyMyAvIFIyM0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMjYgLyBSMjZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDI2IC8gUjI2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMyNyAvIFIyN0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMjcgLyBSMjdDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjI3IC8gUjI3QzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcyNyAvIFIyN0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMjcgLyBSMjdDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjI3IC8gUjI3QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMjggLyBSMjhDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDI4IC8gUjI4QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYyOCAvIFIyOEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMjggLyBSMjhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDI4IC8gUjI4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMyOSAvIFIyOUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMjkgLyBSMjlDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTI5IC8gUjI5QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcyOSAvIFIyOUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMjkgLyBSMjlDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTI5IC8gUjI5Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMzMSAvIFIzMUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMzEgLyBSMzFDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzMxIC8gUjMxQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgzMSAvIFIzMUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMzEgLyBSMzFDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDMzIC8gUjMzQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUzMyAvIFIzM0M1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMzMgLyBSMzNDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDMzIC8gUjMzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMzNCAvIFIzNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMzQgLyBSMzRDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzM0IC8gUjM0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgzNCAvIFIzNEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMzUgLyBSMzVDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTM1IC8gUjM1QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYzNSAvIFIzNUM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMzUgLyBSMzVDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDM1IC8gUjM1Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMzNiAvIFIzNkMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMzYgLyBSMzZDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTM2IC8gUjM2QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEczNiAvIFIzNkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMzYgLyBSMzZDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTM2IC8gUjM2Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQzOCAvIFIzOEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMzggLyBSMzhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDM4IC8gUjM4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ0MCAvIFI0MEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNDAgLyBSNDBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDQwIC8gUjQwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM0MSAvIFI0MUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBENDEgLyBSNDFDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTQxIC8gUjQxQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc0MSAvIFI0MUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINDEgLyBSNDFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTQxIC8gUjQxQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM0MyAvIFI0M0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFNDMgLyBSNDNDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzQzIC8gUjQzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg0MyAvIFI0M0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNDQgLyBSNDRDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDQ0IC8gUjQ0Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc0NSAvIFI0NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNDYgLyBSNDZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTQ2IC8gUjQ2QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc0NiAvIFI0NkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINDYgLyBSNDZDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTQ2IC8gUjQ2Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ0NyAvIFI0N0M0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINDcgLyBSNDdDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTQ3IC8gUjQ3Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU0OSAvIFI0OUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGNDkgLyBSNDlDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzQ5IC8gUjQ5Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg0OSAvIFI0OUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJNDkgLyBSNDlDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzUwIC8gUjUwQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg1MCAvIFI1MEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINTEgLyBSNTFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzUyIC8gUjUyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg1NCAvIFI1NEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNTUgLyBSNTVDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTU1IC8gUjU1QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc1NSAvIFI1NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINTUgLyBSNTVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzU2IC8gUjU2Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc1NyAvIFI1N0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINTcgLyBSNTdDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjU4IC8gUjU4QzI6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM1OCAvIFI1OEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBENTggLyBSNThDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTU4IC8gUjU4QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEY1OCAvIFI1OEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNTggLyBSNThDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDU4IC8gUjU4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk1OCAvIFI1OEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjEgLyBSNjFDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDYxIC8gUjYxQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc2MiAvIFI2MkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINjIgLyBSNjJDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzYzIC8gUjYzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg2MyAvIFI2M0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjQgLyBSNjRDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDY0IC8gUjY0Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc2NSAvIFI2NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBINjUgLyBSNjVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzY2IC8gUjY2QzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ2NiAvIFI2NkM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFNjYgLyBSNjZDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzY2IC8gUjY2Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg2NiAvIFI2NkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNjggLyBSNjhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDY4IC8gUjY4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg3MSAvIFI3MUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzIgLyBSNzJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjczIC8gUjczQzI6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM3MyAvIFI3M0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBENzMgLyBSNzNDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTczIC8gUjczQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEY3MyAvIFI3M0M2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzMgLyBSNzNDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDczIC8gUjczQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk3MyAvIFI3M0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHNzYgLyBSNzZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDc2IC8gUjc2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEI3NyAvIFI3N0MyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDNzcgLyBSNzdDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDc3IC8gUjc3QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU3NyAvIFI3N0M1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGNzcgLyBSNzdDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzc3IC8gUjc3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg3NyAvIFI3N0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJNzcgLyBSNzdDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzc5IC8gUjc5Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg3OSAvIFI3OUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHODAgLyBSODBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDgwIC8gUjgwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg4MSAvIFI4MUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKODEgLyBSODFDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc4MiAvIFI4MkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIODIgLyBSODJDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzgzIC8gUjgzQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ4MyAvIFI4M0M0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHODMgLyBSODNDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDgzIC8gUjgzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk4MyAvIFI4M0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKODMgLyBSODNDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM4NCAvIFI4NEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHODQgLyBSODRDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDg0IC8gUjg0Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk4NCAvIFI4NEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKODQgLyBSODRDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEM4NSAvIFI4NUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEODUgLyBSODVDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTg1IC8gUjg1QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc4NSAvIFI4NUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIODUgLyBSODVDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjg1IC8gUjg1QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDODYgLyBSODZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDg2IC8gUjg2QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEU4NiAvIFI4NkM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHODYgLyBSODZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDg2IC8gUjg2Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk4NiAvIFI4NkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKODYgLyBSODZDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQ4NyAvIFI4N0M0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFODcgLyBSODdDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzg3IC8gUjg3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk4NyAvIFI4N0M5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTAgLyBSOTBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDkwIC8gUjkwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc5MSAvIFI5MUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIOTEgLyBSOTFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzkyIC8gUjkyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg5MiAvIFI5MkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDOTMgLyBSOTNDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTkzIC8gUjkzQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc5MyAvIFI5M0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIOTMgLyBSOTNDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTkzIC8gUjkzQzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEo5MyAvIFI5M0MxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzk0IC8gUjk0Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk5NCAvIFI5NEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTUgLyBSOTVDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDk1IC8gUjk1Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk5NSAvIFI5NUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDOTYgLyBSOTZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTk2IC8gUjk2QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEc5NiAvIFI5NkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIOTYgLyBSOTZDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzk3IC8gUjk3Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg5NyAvIFI5N0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHOTggLyBSOThDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDk4IC8gUjk4Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEk5OCAvIFI5OEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDOTkgLyBSOTlDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzk5IC8gUjk5Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEg5OSAvIFI5OUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTAwIC8gUjEwMEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTAwIC8gUjEwMEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAwIC8gUjEwMEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTAxIC8gUjEwMUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTAxIC8gUjEwMUM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTAxIC8gUjEwMUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTAxIC8gUjEwMUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAxIC8gUjEwMUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTAxIC8gUjEwMUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTAzIC8gUjEwM0MzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTAzIC8gUjEwM0M0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTAzIC8gUjEwM0M2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTAzIC8gUjEwM0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTA0IC8gUjEwNEMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTA0IC8gUjEwNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTA0IC8gUjEwNEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTA0IC8gUjEwNEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTA0IC8gUjEwNEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTA0IC8gUjEwNEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTA0IC8gUjEwNEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTA0IC8gUjEwNEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTA1IC8gUjEwNUMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTA1IC8gUjEwNUM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTA1IC8gUjEwNUM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTA1IC8gUjEwNUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTA1IC8gUjEwNUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTA1IC8gUjEwNUM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTA1IC8gUjEwNUMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjEwNiAvIFIxMDZDMjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEwNiAvIFIxMDZDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDEwNiAvIFIxMDZDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEwNiAvIFIxMDZDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjEwNiAvIFIxMDZDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEwNiAvIFIxMDZDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEwNiAvIFIxMDZDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEwNiAvIFIxMDZDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEwNyAvIFIxMDdDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjEwOCAvIFIxMDhDMjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEwOCAvIFIxMDhDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDEwOCAvIFIxMDhDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEwOCAvIFIxMDhDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjEwOCAvIFIxMDhDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEwOCAvIFIxMDhDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEwOCAvIFIxMDhDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEwOCAvIFIxMDhDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExMCAvIFIxMTBDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExMSAvIFIxMTFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExMiAvIFIxMTJDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExMiAvIFIxMTJDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjExMiAvIFIxMTJDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMTMgLyBSMTEzQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMTMgLyBSMTEzQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMTMgLyBSMTEzQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMTMgLyBSMTEzQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMTMgLyBSMTEzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMTMgLyBSMTEzQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMTMgLyBSMTEzQzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTE0IC8gUjExNEMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTE0IC8gUjExNEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTE0IC8gUjExNEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTE0IC8gUjExNEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTE0IC8gUjExNEM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE0IC8gUjExNEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTE0IC8gUjExNEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTE0IC8gUjExNEM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE2IC8gUjExNkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTE3IC8gUjExN0M3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTE3IC8gUjExN0M4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTE4IC8gUjExOEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTE4IC8gUjExOEM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTE4IC8gUjExOEM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTE4IC8gUjExOEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTE4IC8gUjExOEMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzExOSAvIFIxMTlDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDExOSAvIFIxMTlDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRjExOSAvIFIxMTlDNjogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzExOSAvIFIxMTlDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDExOSAvIFIxMTlDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTExOSAvIFIxMTlDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjExOSAvIFIxMTlDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMjAgLyBSMTIwQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMjAgLyBSMTIwQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMjAgLyBSMTIwQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMjAgLyBSMTIwQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjAgLyBSMTIwQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjAgLyBSMTIwQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjIgLyBSMTIyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjIgLyBSMTIyQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjMgLyBSMTIzQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMjQgLyBSMTI0QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjQgLyBSMTI0Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEIxMjUgLyBSMTI1QzI6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMjUgLyBSMTI1QzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMjUgLyBSMTI1QzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMjUgLyBSMTI1QzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMjUgLyBSMTI1QzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMjUgLyBSMTI1Qzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMjUgLyBSMTI1Qzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMjUgLyBSMTI1Qzk6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEoxMjUgLyBSMTI1QzEwOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBCMTI2IC8gUjEyNkMyOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTI2IC8gUjEyNkMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBEMTI2IC8gUjEyNkM0OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBFMTI2IC8gUjEyNkM1OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBGMTI2IC8gUjEyNkM2OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTI2IC8gUjEyNkM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTI2IC8gUjEyNkM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBJMTI2IC8gUjEyNkM5OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTI5IC8gUjEyOUM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTI5IC8gUjEyOUM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTMwIC8gUjEzMEMzOiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBHMTMwIC8gUjEzMEM3OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBIMTMwIC8gUjEzMEM4OiBnb3QgJy0nXG5XYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBKMTMwIC8gUjEzMEMxMDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzEzMSAvIFIxMzFDMzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRDEzMSAvIFIxMzFDNDogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRTEzMSAvIFIxMzFDNTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gRzEzMSAvIFIxMzFDNzogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSDEzMSAvIFIxMzFDODogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSTEzMSAvIFIxMzFDOTogZ290ICctJ1xuV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gSjEzMSAvIFIxMzFDMTA6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEIxMzIgLyBSMTMyQzI6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxMzIgLyBSMTMyQzM6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEQxMzIgLyBSMTMyQzQ6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEUxMzIgLyBSMTMyQzU6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEYxMzIgLyBSMTMyQzY6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEcxMzIgLyBSMTMyQzc6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEgxMzIgLyBSMTMyQzg6IGdvdCAnLSdcbldhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEkxMzIgLyBSMTMyQzk6IGdvdCAnLSdcbiJ9 -->
+<pre><code>Warning: Expecting numeric in E10 / R10C5: got &#39;-&#39;
+Warning: Expecting numeric in G10 / R10C7: got &#39;-&#39;
+Warning: Expecting numeric in H10 / R10C8: got &#39;-&#39;
+Warning: Expecting numeric in I10 / R10C9: got &#39;-&#39;
+Warning: Expecting numeric in J10 / R10C10: got &#39;-&#39;
+Warning: Expecting numeric in G11 / R11C7: got &#39;-&#39;
+Warning: Expecting numeric in H11 / R11C8: got &#39;-&#39;
+Warning: Expecting numeric in I11 / R11C9: got &#39;-&#39;
+Warning: Expecting numeric in J11 / R11C10: got &#39;-&#39;
+Warning: Expecting numeric in F12 / R12C6: got &#39;-&#39;
+Warning: Expecting numeric in G12 / R12C7: got &#39;-&#39;
+Warning: Expecting numeric in H12 / R12C8: got &#39;-&#39;
+Warning: Expecting numeric in I12 / R12C9: got &#39;-&#39;
+Warning: Expecting numeric in J12 / R12C10: got &#39;-&#39;
+Warning: Expecting numeric in H13 / R13C8: got &#39;-&#39;
+Warning: Expecting numeric in I13 / R13C9: got &#39;-&#39;
+Warning: Expecting numeric in J13 / R13C10: got &#39;-&#39;
+Warning: Expecting numeric in D14 / R14C4: got &#39;-&#39;
+Warning: Expecting numeric in E14 / R14C5: got &#39;-&#39;
+Warning: Expecting numeric in G14 / R14C7: got &#39;-&#39;
+Warning: Expecting numeric in G16 / R16C7: got &#39;-&#39;
+Warning: Expecting numeric in H17 / R17C8: got &#39;-&#39;
+Warning: Expecting numeric in G18 / R18C7: got &#39;-&#39;
+Warning: Expecting numeric in H18 / R18C8: got &#39;-&#39;
+Warning: Expecting numeric in G19 / R19C7: got &#39;-&#39;
+Warning: Expecting numeric in H19 / R19C8: got &#39;-&#39;
+Warning: Expecting numeric in D20 / R20C4: got &#39;-&#39;
+Warning: Expecting numeric in G20 / R20C7: got &#39;-&#39;
+Warning: Expecting numeric in H20 / R20C8: got &#39;-&#39;
+Warning: Expecting numeric in G23 / R23C7: got &#39;-&#39;
+Warning: Expecting numeric in H23 / R23C8: got &#39;-&#39;
+Warning: Expecting numeric in G26 / R26C7: got &#39;-&#39;
+Warning: Expecting numeric in H26 / R26C8: got &#39;-&#39;
+Warning: Expecting numeric in C27 / R27C3: got &#39;-&#39;
+Warning: Expecting numeric in D27 / R27C4: got &#39;-&#39;
+Warning: Expecting numeric in F27 / R27C6: got &#39;-&#39;
+Warning: Expecting numeric in G27 / R27C7: got &#39;-&#39;
+Warning: Expecting numeric in H27 / R27C8: got &#39;-&#39;
+Warning: Expecting numeric in J27 / R27C10: got &#39;-&#39;
+Warning: Expecting numeric in C28 / R28C3: got &#39;-&#39;
+Warning: Expecting numeric in D28 / R28C4: got &#39;-&#39;
+Warning: Expecting numeric in F28 / R28C6: got &#39;-&#39;
+Warning: Expecting numeric in G28 / R28C7: got &#39;-&#39;
+Warning: Expecting numeric in H28 / R28C8: got &#39;-&#39;
+Warning: Expecting numeric in C29 / R29C3: got &#39;-&#39;
+Warning: Expecting numeric in D29 / R29C4: got &#39;-&#39;
+Warning: Expecting numeric in E29 / R29C5: got &#39;-&#39;
+Warning: Expecting numeric in G29 / R29C7: got &#39;-&#39;
+Warning: Expecting numeric in H29 / R29C8: got &#39;-&#39;
+Warning: Expecting numeric in I29 / R29C9: got &#39;-&#39;
+Warning: Expecting numeric in C31 / R31C3: got &#39;-&#39;
+Warning: Expecting numeric in D31 / R31C4: got &#39;-&#39;
+Warning: Expecting numeric in G31 / R31C7: got &#39;-&#39;
+Warning: Expecting numeric in H31 / R31C8: got &#39;-&#39;
+Warning: Expecting numeric in I31 / R31C9: got &#39;-&#39;
+Warning: Expecting numeric in D33 / R33C4: got &#39;-&#39;
+Warning: Expecting numeric in E33 / R33C5: got &#39;-&#39;
+Warning: Expecting numeric in G33 / R33C7: got &#39;-&#39;
+Warning: Expecting numeric in H33 / R33C8: got &#39;-&#39;
+Warning: Expecting numeric in C34 / R34C3: got &#39;-&#39;
+Warning: Expecting numeric in D34 / R34C4: got &#39;-&#39;
+Warning: Expecting numeric in G34 / R34C7: got &#39;-&#39;
+Warning: Expecting numeric in H34 / R34C8: got &#39;-&#39;
+Warning: Expecting numeric in D35 / R35C4: got &#39;-&#39;
+Warning: Expecting numeric in E35 / R35C5: got &#39;-&#39;
+Warning: Expecting numeric in F35 / R35C6: got &#39;-&#39;
+Warning: Expecting numeric in G35 / R35C7: got &#39;-&#39;
+Warning: Expecting numeric in H35 / R35C8: got &#39;-&#39;
+Warning: Expecting numeric in C36 / R36C3: got &#39;-&#39;
+Warning: Expecting numeric in D36 / R36C4: got &#39;-&#39;
+Warning: Expecting numeric in E36 / R36C5: got &#39;-&#39;
+Warning: Expecting numeric in G36 / R36C7: got &#39;-&#39;
+Warning: Expecting numeric in H36 / R36C8: got &#39;-&#39;
+Warning: Expecting numeric in I36 / R36C9: got &#39;-&#39;
+Warning: Expecting numeric in D38 / R38C4: got &#39;-&#39;
+Warning: Expecting numeric in G38 / R38C7: got &#39;-&#39;
+Warning: Expecting numeric in H38 / R38C8: got &#39;-&#39;
+Warning: Expecting numeric in D40 / R40C4: got &#39;-&#39;
+Warning: Expecting numeric in G40 / R40C7: got &#39;-&#39;
+Warning: Expecting numeric in H40 / R40C8: got &#39;-&#39;
+Warning: Expecting numeric in C41 / R41C3: got &#39;-&#39;
+Warning: Expecting numeric in D41 / R41C4: got &#39;-&#39;
+Warning: Expecting numeric in E41 / R41C5: got &#39;-&#39;
+Warning: Expecting numeric in G41 / R41C7: got &#39;-&#39;
+Warning: Expecting numeric in H41 / R41C8: got &#39;-&#39;
+Warning: Expecting numeric in I41 / R41C9: got &#39;-&#39;
+Warning: Expecting numeric in C43 / R43C3: got &#39;-&#39;
+Warning: Expecting numeric in E43 / R43C5: got &#39;-&#39;
+Warning: Expecting numeric in G43 / R43C7: got &#39;-&#39;
+Warning: Expecting numeric in H43 / R43C8: got &#39;-&#39;
+Warning: Expecting numeric in G44 / R44C7: got &#39;-&#39;
+Warning: Expecting numeric in H44 / R44C8: got &#39;-&#39;
+Warning: Expecting numeric in G45 / R45C7: got &#39;-&#39;
+Warning: Expecting numeric in C46 / R46C3: got &#39;-&#39;
+Warning: Expecting numeric in E46 / R46C5: got &#39;-&#39;
+Warning: Expecting numeric in G46 / R46C7: got &#39;-&#39;
+Warning: Expecting numeric in H46 / R46C8: got &#39;-&#39;
+Warning: Expecting numeric in I46 / R46C9: got &#39;-&#39;
+Warning: Expecting numeric in D47 / R47C4: got &#39;-&#39;
+Warning: Expecting numeric in H47 / R47C8: got &#39;-&#39;
+Warning: Expecting numeric in I47 / R47C9: got &#39;-&#39;
+Warning: Expecting numeric in E49 / R49C5: got &#39;-&#39;
+Warning: Expecting numeric in F49 / R49C6: got &#39;-&#39;
+Warning: Expecting numeric in G49 / R49C7: got &#39;-&#39;
+Warning: Expecting numeric in H49 / R49C8: got &#39;-&#39;
+Warning: Expecting numeric in I49 / R49C9: got &#39;-&#39;
+Warning: Expecting numeric in G50 / R50C7: got &#39;-&#39;
+Warning: Expecting numeric in H50 / R50C8: got &#39;-&#39;
+Warning: Expecting numeric in H51 / R51C8: got &#39;-&#39;
+Warning: Expecting numeric in G52 / R52C7: got &#39;-&#39;
+Warning: Expecting numeric in H54 / R54C8: got &#39;-&#39;
+Warning: Expecting numeric in C55 / R55C3: got &#39;-&#39;
+Warning: Expecting numeric in E55 / R55C5: got &#39;-&#39;
+Warning: Expecting numeric in G55 / R55C7: got &#39;-&#39;
+Warning: Expecting numeric in H55 / R55C8: got &#39;-&#39;
+Warning: Expecting numeric in G56 / R56C7: got &#39;-&#39;
+Warning: Expecting numeric in G57 / R57C7: got &#39;-&#39;
+Warning: Expecting numeric in H57 / R57C8: got &#39;-&#39;
+Warning: Expecting numeric in B58 / R58C2: got &#39;-&#39;
+Warning: Expecting numeric in C58 / R58C3: got &#39;-&#39;
+Warning: Expecting numeric in D58 / R58C4: got &#39;-&#39;
+Warning: Expecting numeric in E58 / R58C5: got &#39;-&#39;
+Warning: Expecting numeric in F58 / R58C6: got &#39;-&#39;
+Warning: Expecting numeric in G58 / R58C7: got &#39;-&#39;
+Warning: Expecting numeric in H58 / R58C8: got &#39;-&#39;
+Warning: Expecting numeric in I58 / R58C9: got &#39;-&#39;
+Warning: Expecting numeric in G61 / R61C7: got &#39;-&#39;
+Warning: Expecting numeric in H61 / R61C8: got &#39;-&#39;
+Warning: Expecting numeric in G62 / R62C7: got &#39;-&#39;
+Warning: Expecting numeric in H62 / R62C8: got &#39;-&#39;
+Warning: Expecting numeric in G63 / R63C7: got &#39;-&#39;
+Warning: Expecting numeric in H63 / R63C8: got &#39;-&#39;
+Warning: Expecting numeric in G64 / R64C7: got &#39;-&#39;
+Warning: Expecting numeric in H64 / R64C8: got &#39;-&#39;
+Warning: Expecting numeric in G65 / R65C7: got &#39;-&#39;
+Warning: Expecting numeric in H65 / R65C8: got &#39;-&#39;
+Warning: Expecting numeric in C66 / R66C3: got &#39;-&#39;
+Warning: Expecting numeric in D66 / R66C4: got &#39;-&#39;
+Warning: Expecting numeric in E66 / R66C5: got &#39;-&#39;
+Warning: Expecting numeric in G66 / R66C7: got &#39;-&#39;
+Warning: Expecting numeric in H66 / R66C8: got &#39;-&#39;
+Warning: Expecting numeric in G68 / R68C7: got &#39;-&#39;
+Warning: Expecting numeric in H68 / R68C8: got &#39;-&#39;
+Warning: Expecting numeric in H71 / R71C8: got &#39;-&#39;
+Warning: Expecting numeric in G72 / R72C7: got &#39;-&#39;
+Warning: Expecting numeric in B73 / R73C2: got &#39;-&#39;
+Warning: Expecting numeric in C73 / R73C3: got &#39;-&#39;
+Warning: Expecting numeric in D73 / R73C4: got &#39;-&#39;
+Warning: Expecting numeric in E73 / R73C5: got &#39;-&#39;
+Warning: Expecting numeric in F73 / R73C6: got &#39;-&#39;
+Warning: Expecting numeric in G73 / R73C7: got &#39;-&#39;
+Warning: Expecting numeric in H73 / R73C8: got &#39;-&#39;
+Warning: Expecting numeric in I73 / R73C9: got &#39;-&#39;
+Warning: Expecting numeric in G76 / R76C7: got &#39;-&#39;
+Warning: Expecting numeric in H76 / R76C8: got &#39;-&#39;
+Warning: Expecting numeric in B77 / R77C2: got &#39;-&#39;
+Warning: Expecting numeric in C77 / R77C3: got &#39;-&#39;
+Warning: Expecting numeric in D77 / R77C4: got &#39;-&#39;
+Warning: Expecting numeric in E77 / R77C5: got &#39;-&#39;
+Warning: Expecting numeric in F77 / R77C6: got &#39;-&#39;
+Warning: Expecting numeric in G77 / R77C7: got &#39;-&#39;
+Warning: Expecting numeric in H77 / R77C8: got &#39;-&#39;
+Warning: Expecting numeric in I77 / R77C9: got &#39;-&#39;
+Warning: Expecting numeric in G79 / R79C7: got &#39;-&#39;
+Warning: Expecting numeric in H79 / R79C8: got &#39;-&#39;
+Warning: Expecting numeric in G80 / R80C7: got &#39;-&#39;
+Warning: Expecting numeric in H80 / R80C8: got &#39;-&#39;
+Warning: Expecting numeric in H81 / R81C8: got &#39;-&#39;
+Warning: Expecting numeric in J81 / R81C10: got &#39;-&#39;
+Warning: Expecting numeric in G82 / R82C7: got &#39;-&#39;
+Warning: Expecting numeric in H82 / R82C8: got &#39;-&#39;
+Warning: Expecting numeric in C83 / R83C3: got &#39;-&#39;
+Warning: Expecting numeric in D83 / R83C4: got &#39;-&#39;
+Warning: Expecting numeric in G83 / R83C7: got &#39;-&#39;
+Warning: Expecting numeric in H83 / R83C8: got &#39;-&#39;
+Warning: Expecting numeric in I83 / R83C9: got &#39;-&#39;
+Warning: Expecting numeric in J83 / R83C10: got &#39;-&#39;
+Warning: Expecting numeric in C84 / R84C3: got &#39;-&#39;
+Warning: Expecting numeric in G84 / R84C7: got &#39;-&#39;
+Warning: Expecting numeric in H84 / R84C8: got &#39;-&#39;
+Warning: Expecting numeric in I84 / R84C9: got &#39;-&#39;
+Warning: Expecting numeric in J84 / R84C10: got &#39;-&#39;
+Warning: Expecting numeric in C85 / R85C3: got &#39;-&#39;
+Warning: Expecting numeric in D85 / R85C4: got &#39;-&#39;
+Warning: Expecting numeric in E85 / R85C5: got &#39;-&#39;
+Warning: Expecting numeric in G85 / R85C7: got &#39;-&#39;
+Warning: Expecting numeric in H85 / R85C8: got &#39;-&#39;
+Warning: Expecting numeric in J85 / R85C10: got &#39;-&#39;
+Warning: Expecting numeric in C86 / R86C3: got &#39;-&#39;
+Warning: Expecting numeric in D86 / R86C4: got &#39;-&#39;
+Warning: Expecting numeric in E86 / R86C5: got &#39;-&#39;
+Warning: Expecting numeric in G86 / R86C7: got &#39;-&#39;
+Warning: Expecting numeric in H86 / R86C8: got &#39;-&#39;
+Warning: Expecting numeric in I86 / R86C9: got &#39;-&#39;
+Warning: Expecting numeric in J86 / R86C10: got &#39;-&#39;
+Warning: Expecting numeric in D87 / R87C4: got &#39;-&#39;
+Warning: Expecting numeric in E87 / R87C5: got &#39;-&#39;
+Warning: Expecting numeric in G87 / R87C7: got &#39;-&#39;
+Warning: Expecting numeric in I87 / R87C9: got &#39;-&#39;
+Warning: Expecting numeric in G90 / R90C7: got &#39;-&#39;
+Warning: Expecting numeric in H90 / R90C8: got &#39;-&#39;
+Warning: Expecting numeric in G91 / R91C7: got &#39;-&#39;
+Warning: Expecting numeric in H91 / R91C8: got &#39;-&#39;
+Warning: Expecting numeric in G92 / R92C7: got &#39;-&#39;
+Warning: Expecting numeric in H92 / R92C8: got &#39;-&#39;
+Warning: Expecting numeric in C93 / R93C3: got &#39;-&#39;
+Warning: Expecting numeric in E93 / R93C5: got &#39;-&#39;
+Warning: Expecting numeric in G93 / R93C7: got &#39;-&#39;
+Warning: Expecting numeric in H93 / R93C8: got &#39;-&#39;
+Warning: Expecting numeric in I93 / R93C9: got &#39;-&#39;
+Warning: Expecting numeric in J93 / R93C10: got &#39;-&#39;
+Warning: Expecting numeric in G94 / R94C7: got &#39;-&#39;
+Warning: Expecting numeric in I94 / R94C9: got &#39;-&#39;
+Warning: Expecting numeric in G95 / R95C7: got &#39;-&#39;
+Warning: Expecting numeric in H95 / R95C8: got &#39;-&#39;
+Warning: Expecting numeric in I95 / R95C9: got &#39;-&#39;
+Warning: Expecting numeric in C96 / R96C3: got &#39;-&#39;
+Warning: Expecting numeric in E96 / R96C5: got &#39;-&#39;
+Warning: Expecting numeric in G96 / R96C7: got &#39;-&#39;
+Warning: Expecting numeric in H96 / R96C8: got &#39;-&#39;
+Warning: Expecting numeric in G97 / R97C7: got &#39;-&#39;
+Warning: Expecting numeric in H97 / R97C8: got &#39;-&#39;
+Warning: Expecting numeric in G98 / R98C7: got &#39;-&#39;
+Warning: Expecting numeric in H98 / R98C8: got &#39;-&#39;
+Warning: Expecting numeric in I98 / R98C9: got &#39;-&#39;
+Warning: Expecting numeric in C99 / R99C3: got &#39;-&#39;
+Warning: Expecting numeric in G99 / R99C7: got &#39;-&#39;
+Warning: Expecting numeric in H99 / R99C8: got &#39;-&#39;
+Warning: Expecting numeric in C100 / R100C3: got &#39;-&#39;
+Warning: Expecting numeric in G100 / R100C7: got &#39;-&#39;
+Warning: Expecting numeric in H100 / R100C8: got &#39;-&#39;
+Warning: Expecting numeric in C101 / R101C3: got &#39;-&#39;
+Warning: Expecting numeric in D101 / R101C4: got &#39;-&#39;
+Warning: Expecting numeric in E101 / R101C5: got &#39;-&#39;
+Warning: Expecting numeric in G101 / R101C7: got &#39;-&#39;
+Warning: Expecting numeric in H101 / R101C8: got &#39;-&#39;
+Warning: Expecting numeric in I101 / R101C9: got &#39;-&#39;
+Warning: Expecting numeric in C103 / R103C3: got &#39;-&#39;
+Warning: Expecting numeric in D103 / R103C4: got &#39;-&#39;
+Warning: Expecting numeric in F103 / R103C6: got &#39;-&#39;
+Warning: Expecting numeric in H103 / R103C8: got &#39;-&#39;
+Warning: Expecting numeric in B104 / R104C2: got &#39;-&#39;
+Warning: Expecting numeric in C104 / R104C3: got &#39;-&#39;
+Warning: Expecting numeric in D104 / R104C4: got &#39;-&#39;
+Warning: Expecting numeric in E104 / R104C5: got &#39;-&#39;
+Warning: Expecting numeric in F104 / R104C6: got &#39;-&#39;
+Warning: Expecting numeric in G104 / R104C7: got &#39;-&#39;
+Warning: Expecting numeric in H104 / R104C8: got &#39;-&#39;
+Warning: Expecting numeric in I104 / R104C9: got &#39;-&#39;
+Warning: Expecting numeric in C105 / R105C3: got &#39;-&#39;
+Warning: Expecting numeric in D105 / R105C4: got &#39;-&#39;
+Warning: Expecting numeric in E105 / R105C5: got &#39;-&#39;
+Warning: Expecting numeric in G105 / R105C7: got &#39;-&#39;
+Warning: Expecting numeric in H105 / R105C8: got &#39;-&#39;
+Warning: Expecting numeric in I105 / R105C9: got &#39;-&#39;
+Warning: Expecting numeric in J105 / R105C10: got &#39;-&#39;
+Warning: Expecting numeric in B106 / R106C2: got &#39;-&#39;
+Warning: Expecting numeric in C106 / R106C3: got &#39;-&#39;
+Warning: Expecting numeric in D106 / R106C4: got &#39;-&#39;
+Warning: Expecting numeric in E106 / R106C5: got &#39;-&#39;
+Warning: Expecting numeric in F106 / R106C6: got &#39;-&#39;
+Warning: Expecting numeric in G106 / R106C7: got &#39;-&#39;
+Warning: Expecting numeric in H106 / R106C8: got &#39;-&#39;
+Warning: Expecting numeric in I106 / R106C9: got &#39;-&#39;
+Warning: Expecting numeric in G107 / R107C7: got &#39;-&#39;
+Warning: Expecting numeric in B108 / R108C2: got &#39;-&#39;
+Warning: Expecting numeric in C108 / R108C3: got &#39;-&#39;
+Warning: Expecting numeric in D108 / R108C4: got &#39;-&#39;
+Warning: Expecting numeric in E108 / R108C5: got &#39;-&#39;
+Warning: Expecting numeric in F108 / R108C6: got &#39;-&#39;
+Warning: Expecting numeric in G108 / R108C7: got &#39;-&#39;
+Warning: Expecting numeric in H108 / R108C8: got &#39;-&#39;
+Warning: Expecting numeric in I108 / R108C9: got &#39;-&#39;
+Warning: Expecting numeric in G110 / R110C7: got &#39;-&#39;
+Warning: Expecting numeric in H111 / R111C8: got &#39;-&#39;
+Warning: Expecting numeric in G112 / R112C7: got &#39;-&#39;
+Warning: Expecting numeric in H112 / R112C8: got &#39;-&#39;
+Warning: Expecting numeric in J112 / R112C10: got &#39;-&#39;
+Warning: Expecting numeric in C113 / R113C3: got &#39;-&#39;
+Warning: Expecting numeric in D113 / R113C4: got &#39;-&#39;
+Warning: Expecting numeric in E113 / R113C5: got &#39;-&#39;
+Warning: Expecting numeric in F113 / R113C6: got &#39;-&#39;
+Warning: Expecting numeric in G113 / R113C7: got &#39;-&#39;
+Warning: Expecting numeric in H113 / R113C8: got &#39;-&#39;
+Warning: Expecting numeric in J113 / R113C10: got &#39;-&#39;
+Warning: Expecting numeric in B114 / R114C2: got &#39;-&#39;
+Warning: Expecting numeric in C114 / R114C3: got &#39;-&#39;
+Warning: Expecting numeric in D114 / R114C4: got &#39;-&#39;
+Warning: Expecting numeric in E114 / R114C5: got &#39;-&#39;
+Warning: Expecting numeric in F114 / R114C6: got &#39;-&#39;
+Warning: Expecting numeric in G114 / R114C7: got &#39;-&#39;
+Warning: Expecting numeric in H114 / R114C8: got &#39;-&#39;
+Warning: Expecting numeric in I114 / R114C9: got &#39;-&#39;
+Warning: Expecting numeric in G116 / R116C7: got &#39;-&#39;
+Warning: Expecting numeric in G117 / R117C7: got &#39;-&#39;
+Warning: Expecting numeric in H117 / R117C8: got &#39;-&#39;
+Warning: Expecting numeric in C118 / R118C3: got &#39;-&#39;
+Warning: Expecting numeric in D118 / R118C4: got &#39;-&#39;
+Warning: Expecting numeric in E118 / R118C5: got &#39;-&#39;
+Warning: Expecting numeric in H118 / R118C8: got &#39;-&#39;
+Warning: Expecting numeric in J118 / R118C10: got &#39;-&#39;
+Warning: Expecting numeric in C119 / R119C3: got &#39;-&#39;
+Warning: Expecting numeric in D119 / R119C4: got &#39;-&#39;
+Warning: Expecting numeric in F119 / R119C6: got &#39;-&#39;
+Warning: Expecting numeric in G119 / R119C7: got &#39;-&#39;
+Warning: Expecting numeric in H119 / R119C8: got &#39;-&#39;
+Warning: Expecting numeric in I119 / R119C9: got &#39;-&#39;
+Warning: Expecting numeric in J119 / R119C10: got &#39;-&#39;
+Warning: Expecting numeric in C120 / R120C3: got &#39;-&#39;
+Warning: Expecting numeric in D120 / R120C4: got &#39;-&#39;
+Warning: Expecting numeric in E120 / R120C5: got &#39;-&#39;
+Warning: Expecting numeric in F120 / R120C6: got &#39;-&#39;
+Warning: Expecting numeric in G120 / R120C7: got &#39;-&#39;
+Warning: Expecting numeric in H120 / R120C8: got &#39;-&#39;
+Warning: Expecting numeric in G122 / R122C7: got &#39;-&#39;
+Warning: Expecting numeric in H122 / R122C8: got &#39;-&#39;
+Warning: Expecting numeric in G123 / R123C7: got &#39;-&#39;
+Warning: Expecting numeric in D124 / R124C4: got &#39;-&#39;
+Warning: Expecting numeric in H124 / R124C8: got &#39;-&#39;
+Warning: Expecting numeric in B125 / R125C2: got &#39;-&#39;
+Warning: Expecting numeric in C125 / R125C3: got &#39;-&#39;
+Warning: Expecting numeric in D125 / R125C4: got &#39;-&#39;
+Warning: Expecting numeric in E125 / R125C5: got &#39;-&#39;
+Warning: Expecting numeric in F125 / R125C6: got &#39;-&#39;
+Warning: Expecting numeric in G125 / R125C7: got &#39;-&#39;
+Warning: Expecting numeric in H125 / R125C8: got &#39;-&#39;
+Warning: Expecting numeric in I125 / R125C9: got &#39;-&#39;
+Warning: Expecting numeric in J125 / R125C10: got &#39;-&#39;
+Warning: Expecting numeric in B126 / R126C2: got &#39;-&#39;
+Warning: Expecting numeric in C126 / R126C3: got &#39;-&#39;
+Warning: Expecting numeric in D126 / R126C4: got &#39;-&#39;
+Warning: Expecting numeric in E126 / R126C5: got &#39;-&#39;
+Warning: Expecting numeric in F126 / R126C6: got &#39;-&#39;
+Warning: Expecting numeric in G126 / R126C7: got &#39;-&#39;
+Warning: Expecting numeric in H126 / R126C8: got &#39;-&#39;
+Warning: Expecting numeric in I126 / R126C9: got &#39;-&#39;
+Warning: Expecting numeric in G129 / R129C7: got &#39;-&#39;
+Warning: Expecting numeric in H129 / R129C8: got &#39;-&#39;
+Warning: Expecting numeric in C130 / R130C3: got &#39;-&#39;
+Warning: Expecting numeric in G130 / R130C7: got &#39;-&#39;
+Warning: Expecting numeric in H130 / R130C8: got &#39;-&#39;
+Warning: Expecting numeric in J130 / R130C10: got &#39;-&#39;
+Warning: Expecting numeric in C131 / R131C3: got &#39;-&#39;
+Warning: Expecting numeric in D131 / R131C4: got &#39;-&#39;
+Warning: Expecting numeric in E131 / R131C5: got &#39;-&#39;
+Warning: Expecting numeric in G131 / R131C7: got &#39;-&#39;
+Warning: Expecting numeric in H131 / R131C8: got &#39;-&#39;
+Warning: Expecting numeric in I131 / R131C9: got &#39;-&#39;
+Warning: Expecting numeric in J131 / R131C10: got &#39;-&#39;
+Warning: Expecting numeric in B132 / R132C2: got &#39;-&#39;
+Warning: Expecting numeric in C132 / R132C3: got &#39;-&#39;
+Warning: Expecting numeric in D132 / R132C4: got &#39;-&#39;
+Warning: Expecting numeric in E132 / R132C5: got &#39;-&#39;
+Warning: Expecting numeric in F132 / R132C6: got &#39;-&#39;
+Warning: Expecting numeric in G132 / R132C7: got &#39;-&#39;
+Warning: Expecting numeric in H132 / R132C8: got &#39;-&#39;
+Warning: Expecting numeric in I132 / R132C9: got &#39;-&#39;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgYCAtPiBgLi4uMWBcbiogYGAgLT4gYC4uLjJgXG4qIGBgIC0+IGAuLi4zYFxuKiBgYCAtPiBgLi4uNGBcbiogYGAgLT4gYC4uLjVgXG4qIGBgIC0+IGAuLi42YFxuKiBgYCAtPiBgLi4uN2BcbiogYGAgLT4gYC4uLjhgXG4qIGBgIC0+IGAuLi45YFxuKiBgYCAtPiBgLi4uMTBgXG5gc3VtbWFyaXNlKClgIGhhcyBncm91cGVkIG91dHB1dCBieSAnc3ViX2dyb3VwJywgJ3NoZWV0JywgJzMnLiBZb3UgY2FuXG5vdmVycmlkZSB1c2luZyB0aGUgYC5ncm91cHNgIGFyZ3VtZW50LlxuIn0= -->
+<pre><code>New names:
+* `` -&gt; `...1`
+* `` -&gt; `...2`
+* `` -&gt; `...3`
+* `` -&gt; `...4`
+* `` -&gt; `...5`
+* `` -&gt; `...6`
+* `` -&gt; `...7`
+* `` -&gt; `...8`
+* `` -&gt; `...9`
+* `` -&gt; `...10`
+`summarise()` has grouped output by &#39;sub_group&#39;, &#39;sheet&#39;, &#39;3&#39;. You can
+override using the `.groups` argument.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-plot-begin eyJoZWlnaHQiOjM5My42OTU5LCJ3aWR0aCI6NjM3LCJzaXplX2JlaGF2aW9yIjowLCJjb25kaXRpb25zIjpbXX0= -->
+<p><img src="data:image/png;base64,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" /></p>
+<!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2002,7 +2740,7 @@ my_xl_df %&gt;%
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkl0ZXJhdGUgY3Jhd2xpbmcgYW5kIGRvd25sb2FkaW5nIGZpbGVzIg0KYXV0aG9yOiAiSm9obiBMaXR0bGUiDQpkYXRlOiAiYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGxlc3NvbiB3aWxsIHNob3cgaG93IHRvIHVzZSB0aGUgYHJ2ZXN0YCBwYWNrYWdlIHRvIGZhY2lsaXRhdGUgd2ViIGNyYXdsaW5nIGZvciBkYXRhLiBCZWxvdyB5b3Ugd2lsbCBzZWUgYW4gYWJyaWRnZWQgcHJlc2VudGF0aW9uIGJhc2VkIG9uIGEgbG9uZ2VyIFt3b3Jrc2hvcCBvbiB3ZWIgY3Jhd2xpbmddKGh0dHBzOi8vcmZ1bi5saWJyYXJ5LmR1a2UuZWR1L3BvcnRmb2xpby9zY3JhcGluZ193b3Jrc2hvcC8pLiAgVGhlIGRvd25sb2FkZWQgZGF0YSAgYXJlIGV4Y2VsIHdvcmtib29rIGZpbGVzLCBlYWNoIGNvbnRhaW5pbmcgYXBwcm94aW1hdGVseSA1MCB3b3Jrc2hlZXRzLiAgQWx0aG91Z2ggc29tZSBsaWtlbHkgbmV4dCBzdGVwcyBjb3VsZCBpbmNsdWRlIGl0ZXJhdGluZyBvdmVyIHdvcmtzaGVldHMgd2l0aGluIGVhY2ggd29ya2Jvb2ssIEkgd2lsbCBzdG9wIHNob3J0IG9mIHByZXNlbnRpbmcgZnVydGhlciBbZGF0YSB3cmFuZ2xpbmcgdGVjaG5pcXVlcyBmb3IgY29uY2F0ZW5hdGluZyByZWFkeGwgd29ya2Zsb3dzXShodHRwczovL3JlYWR4bC50aWR5dmVyc2Uub3JnL2FydGljbGVzL3JlYWR4bC13b3JrZmxvd3MuaHRtbCkuIEFkZGl0aW9uYWxseSwgYmVjYXVzZSB0aGUgZmlsZXMgYXJlIHZvbHVtaW5vdXMsIGF0IHRoZSBlbmQgb2YgdGhpcyBzY3JpcHQgSSBpbmNsdWRlIGEgZnVuY3Rpb24gdG8gZGVsZXRlIHRoZSBkb3dubG9hZGVkIHdvcmtib29rIGZpbGVzLiAgDQoNClRoYXQgYWR2YW5jZWQgd29ya3NoZWV0IHdyYW5nbGluZyBjYW4gYmUgZ2xlYW5lZCBieSByZWFkaW5nIGFuIGV4Y2VsbGVudCBhcnRpY2xlIG9uIF9yZWFkeGwgd29ya2Zsb3dzXywgcGFydGljdWxhcmx5IGJ1dCBub3QgbGltaXRlZCB0byB0aGUgc2VjdGlvbiBfY29uY2F0ZW5hdGUgd29ya3NoZWV0cyBpbnRvIG9uZSBkYXRhIGZyYW1lXy4gDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KHJlYWR4bCkNCmxpYnJhcnkoZnMpDQpsaWJyYXJ5KHJ2ZXN0KQ0KYGBgDQoNCiMjIERhdGENCg0KVGhlIGRhdGEgd2Ugd2lsbCBzY3JhcGUgaXMgZnJvbSB0aGUgW1VTIENlbnN1cyBwdWxzZSBzdXJ2ZXldKGh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvbmV3c3Jvb20vcHJlc3Mta2l0cy8yMDIwL3B1bHNlLXN1cnZleXMuaHRtbCkuICBTZXBjaWZpY2FsbHkgd2Ugd2lsbCBsb29rIGF0IHRoZSBkYXRhIGZyb20gdGhlIFtwdWxzZSBzdXJ2ZXlzIGhvdXNlaG9sZCBleHBlcmllbmNlXShodHRwczovL3d3dy5jZW5zdXMuZ292L2RhdGEvZXhwZXJpbWVudGFsLWRhdGEtcHJvZHVjdHMvaG91c2Vob2xkLXB1bHNlLXN1cnZleS5odG1sKSANCg0KVGhlIHRhcmdldCBob3VzZWhvbGQgZGF0YSBpcyBvdXRsaW5lZCBhdCB0aGlzIFtzdW1tYXJ5IG5hdmlnYXRpb24gcGFnZV0oaHR0cHM6Ly93d3cuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2hvdXNlaG9sZC1wdWxzZS1zdXJ2ZXkvZGF0YS5odG1sKS4gIFtUaGUgd2Vla2x5IHB1bHNlIHN1cnZleXNdKGh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvZGF0YS90YWJsZXMvMjAyMC9kZW1vL2hocC9oaHAxMy5odG1sKSBhcmUgbGlua2VkIGhlcmUgYW5kIGVhY2ggZmlsZSBoYXMgYSBkaWZmZXJlbnQgYW5kIHNvbWV3aGF0IHVucHJlZGljdGFibGUgVVJMLiAgDQoNCj4gV2UgY2FuIHVzZSBgcnZlc3RgIHRvIGNyYXdsIHRoZSBzdW1tYXJ5IHBhZ2UgYW5kIGhhcnZlc3QgdGhlIHVybHMgb2YgdGFyZ2V0IGZpbGVzLiAgY3VybF9kb3dubG9hZCgpIHRvIGRvd25sb2FkIGVhY2ggZmlsZSBpbnRvIGEgdGFyZ2V0IGRpcmVjdG9yeSB3aXRoaW4gdGhlIFJTdHVkaW8gcHJvamVjdCBvbiAgdGhlIGxvY2FsIGZpbGUgc3lzdGVtLiANCg0KSGVyZSBhcmUgc29tZSBleGFtcGxlIGZpbGVzIG9mIHRoZSBob3VzaW5nIHB1bHNlIHN1cnZleSBmaWxlIDJiICANCi0gW2hvdXNpbmcyYl9zZV93ZWVrNy54bHN4XShodHRwczovL3d3dzIuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2RlbW8vdGFibGVzL2hocC8yMDIwL3drNy9ob3VzaW5nMmJfc2Vfd2VlazcueGxzeCkNCi0gW2hvdXNpbmcyYl9zZV93ZWVrMTMueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMC93azEzL2hvdXNpbmcyYl9zZV93ZWVrMTMueGxzeCkNCi0gW2hvdXNpbmcyYl93ZWVrMzcueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMS93azM3L2hvdXNpbmcyYl93ZWVrMzcueGxzeCkNCi0gW2hvdXNpbmcyYl93ZWVrNDUueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMi93azQ1L2hvdXNpbmcyYl93ZWVrNDUueGxzeCkNCg0KYA0KIyMgU2V0LXVwDQoNCkFzc2lnbiBzb21lIG9iamVjdCBuYW1lcyB0byB1c2VmdWwgVVJMcyBhbmQgdXNlIGByZWFkX2h0bWwoKWAgdG8gaW5nZXN0IHRoZSByYXcgSFRNTCBvZiB0aGUgZXhhbXBsZSBwYWdlLg0KDQpgYGB7cn0NCm15X3VybCA8LSAiaHR0cHM6Ly93d3cuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2hvdXNlaG9sZC1wdWxzZS1zdXJ2ZXkvZGF0YS5odG1sIg0KYmFzZV91cmwgPC0gImh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvIg0KDQpteV9yZXN1bHRzIDwtIHJlYWRfaHRtbChteV91cmwpDQpgYGANCg0KQ3Jhd2wgdGhlIHRhcmdldCB3ZWJwYWdlcyB0byBnYXRoZXIgYSBsaXN0IG9mIFVSTHMgZm9yIGZpbGVzIHRoYXQgbWF5IGJlIGRvd25sb2FkDQoNCmBgYHtyfQ0KbGlua190ZXh0XzEgPC0gbXlfcmVzdWx0cyAlPiUgDQogIGh0bWxfbm9kZXMoIi51c2NiLXRpdGxlLTMiKSAlPiUgDQogIGh0bWxfdGV4dDIoKQ0KDQpsaW5rX3VybCA8LSBteV9yZXN1bHRzICU+JSANCiAgaHRtbF9ub2RlcygiYS51c2NiLWxpc3QtaXRlbSIpICU+JSANCiAgaHRtbF9hdHRyKCJocmVmIikNCiAgDQoNCm15X2NyYXdsIDwtIHRpYmJsZShsaW5rX3RleHRfMSwgbGlua191cmwsIGJhc2VfdXJsKSAlPiUgDQogIGZpbHRlcihzdHJfZGV0ZWN0KGxpbmtfdGV4dF8xLCAiSG91c2Vob2xkIFB1bHNlIFN1cnZleToiKSkgJT4lIA0KICB1bml0ZShmdWxsX3VybCwgYmFzZV91cmwsIGxpbmtfdXJsLCByZW1vdmUgPSBUUlVFLCBzZXAgPSAiIikgJT4lIA0KICBtdXRhdGUoZnVsbF91cmwgPSBzdHJfcmVwbGFjZShmdWxsX3VybCwgJ2dvdi8vZGF0YScsICdnb3YvZGF0YScpKSAlPiUgDQogIHJlbG9jYXRlKGZ1bGxfdXJsKQ0KbXlfY3Jhd2wNCmBgYA0KDQpVc2UgYG1hcCgpYCB3aXRoIGBuZXN0KClgLCBgU3lzLnNsZWVwKClgIGFuZCBgbGliYXJ5KHJ2ZXN0KWAgdG8gZ2F0aGVyIHRoZSB0YXJnZXQgVVJMcyB0aGF0IHdpbGwgYmUgZG93bmxvYWRlZC4NCg0KYGBge3J9DQpjcmF3bF9yZXN1bHRzIDwtIA0KICBteV9jcmF3bCAlPiUgDQogIHNsaWNlKDE6NikgJT4lIA0KICBzZWxlY3QobGlua190ZXh0XzEsIGZ1bGxfdXJsKSAlPiUgDQogIG5lc3QoZGF0YSA9IC1saW5rX3RleHRfMSkgJT4lIA0KICBtdXRhdGUobXlfcmF3aHRtbCA9IG1hcChkYXRhLCB+IHsNCiAgICBTeXMuc2xlZXAoMikgICAgIyMgRE8gVEhJUy4gIFBhdXNlIDIgc2Vjb25kcyBiZXR3ZWVuIGVhY2ggZmlsZS4gICMjDQogICAgLnggJT4lDQogICAgICBwdWxsKGZ1bGxfdXJsKSAlPiUgDQogICAgICByZWFkX2h0bWwoKSAlPiUgDQogICAgICBodG1sX25vZGVzKCJhIikgJT4lDQogICAgICBodG1sX2F0dHIoImhyZWYiKSAlPiUgDQogICAgICB0aWJibGUoKSANCiAgICB9KSkNCmBgYA0KDQoNClN1YnNldCB0aGUgbGlzdCBvZiBkb3dubG9hZGFibGUgZmlsZXMgdG8gb25seSB0aGUgYGhvdXNpbmcyYmAgZmlsZXMuDQoNCmBgYHtyfQ0KZG93bmxvYWRfdGFyZ2V0X3VybHMgPC0gY3Jhd2xfcmVzdWx0cyAlPiUgDQogIHVubmVzdChteV9yYXdodG1sKSAlPiUgDQogIHJlbmFtZShyYXdodG1sID0gMykgJT4lIA0KICBmaWx0ZXIoc3RyX2RldGVjdChyYXdodG1sLCAiaG91c2luZzJiIikpICU+JSANCiAgbXV0YXRlKGRvd25sb2FkX3h3b3JrYm9va191cmwgPSBzdHJfZ2x1ZSgiaHR0cHM6e3Jhd2h0bWx9IikgKSAlPiUgDQogIG11dGF0ZShteV9maWxlbmFtZSA9IGZzOjpwYXRoX2ZpbGUocmF3aHRtbCkpIA0KZG93bmxvYWRfdGFyZ2V0X3VybHMNCmBgYA0KDQpEb3dubG9hZCB0aGUgZmlsZXMgDQoNCmBgYHtyfQ0KZnM6OmRpcl9jcmVhdGUoImRhdGEveGxfd29ya2Jvb2tzIikNCg0Kd2FsazIoZG93bmxvYWRfdGFyZ2V0X3VybHMkZG93bmxvYWRfeHdvcmtib29rX3VybCwgDQogICAgICBzdHJfZ2x1ZSgiZGF0YS94bF93b3JrYm9va3Mve2Rvd25sb2FkX3RhcmdldF91cmxzJG15X2ZpbGVuYW1lfSIpLCANCiAgICAgIGN1cmw6OmN1cmxfZG93bmxvYWQsIG1vZGUgPSAid2IiKQ0KYGBgDQoNCldoYXQgZmlsZXMgZGlkIEkganVzdCBkb3dubG9hZD8NCg0KYGBge3J9DQpmczo6ZGlyX2xzKCJkYXRhL3hsX3dvcmtib29rcyIpICU+JSANCiAgZW5mcmFtZSgpDQpgYGANCg0KIyMgUHV0IGEgYm93IG9uIGl0Lg0KDQpCZWxvdyBzaG93cyBpbmdlc3RpbmcgYSBzaW5nbGUgZXhjZWwgZmlsZSBmcm9tIGFtb25nIHRoZSBzZXZlcmFsIHRoYXQgd2VyZSBkb3dubG9hZGVkLiAgVG8gZG8gbW9yZSBwcm9jZXNzaW5nIG9mIHRoZSBtdWx0aXBsZSB3b3JrYm9vayBmaWxlcyBzZWUgdGhlIGVhcmxpZXIgbGVzc29ucy4gIFRvIGxlYXJuIG1vcmUgYWJvdXQgd29ya2luZyB3aXRoIHRoZSBtdWx0aXBsZSB3b3Jrc2hlZXRzIHdpdGhpbmcgdGhlIHdvcmtib29rcywgcmVhZCBhYm91dCBbcmVhZHhsIHdvcmtmbG93c10oaHR0cHM6Ly9yZWFkeGwudGlkeXZlcnNlLm9yZy9hcnRpY2xlcy9yZWFkeGwtd29ya2Zsb3dzLmh0bWwpDQoNCmBgYHtyfQ0KbXlfZmlsZXMgPC0gZnM6OmRpcl9scygiZGF0YS94bF93b3JrYm9va3MiLCBnbG9iID0gIioueGxzeCIpDQoNCm15X2ZpbGVzIDwtIGVuZnJhbWUobXlfZmlsZXMpICU+JSANCiAgZmlsdGVyKHN0cl9kZXRlY3QobmFtZSwgIjJiX3ciKSkgJT4lIA0KICBzbGljZSgxKSAlPiUNCiAgcHVsbChuYW1lKQ0KbXlfZmlsZXMNCg0KbXlfeGxfZGYgPC0gcmVhZF94bHN4KG15X2ZpbGVzLA0KICAgICAgICAgICAgICAgICAgICAgIHNoZWV0ID0gIk5DIiwgDQogICAgICAgICAgICAgICAgICAgICAgc2tpcCA9IDQpDQoNCm15X3hsX2RmIDwtIG15X3hsX2RmICU+JSANCiAgamFuaXRvcjo6Y2xlYW5fbmFtZXMoKQ0KDQpteV94bF9kZiAlPiUgDQogIGZpbHRlcihzZWxlY3RfY2hhcmFjdGVyaXN0aWNzICE9ICJUb3RhbCIpICU+JSANCiAgbXV0YXRlKHN1Yl9ncm91cCA9IGlmX2Vsc2UoaXMubmEodG90YWwxKSwgc2VsZWN0X2NoYXJhY3RlcmlzdGljcywgTkFfY2hhcmFjdGVyXykpICU+JSANCiAgZmlsbChzdWJfZ3JvdXAsIC5kaXJlY3Rpb24gPSAiZG93biIpICU+JSANCiAgcmVsb2NhdGUoc3ViX2dyb3VwKSAlPiUgDQogIGZpbHRlcihzdWJfZ3JvdXAgPT0gIkVkdWNhdGlvbiIpDQpgYGANCiMjIERlbGV0ZSB0aGUgZG93bmxvYWRlZCBmaWxlcw0KDQpgYGB7cn0NCmZzOjpkaXJfZGVsZXRlKCJkYXRhL3hsX3dvcmtib29rcyIpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkl0ZXJhdGUgY3Jhd2xpbmcgYW5kIGRvd25sb2FkaW5nIGZpbGVzIg0KYXV0aG9yOiAiSm9obiBMaXR0bGUiDQpkYXRlOiAiYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGxlc3NvbiB3aWxsIHNob3cgaG93IHRvIHVzZSB0aGUgYHJ2ZXN0YCBwYWNrYWdlIHRvIGZhY2lsaXRhdGUgd2ViIGNyYXdsaW5nIGZvciBkYXRhLiBCZWxvdyB5b3Ugd2lsbCBzZWUgYW4gYWJyaWRnZWQgcHJlc2VudGF0aW9uIGJhc2VkIG9uIGEgbG9uZ2VyIFt3b3Jrc2hvcCBvbiB3ZWIgY3Jhd2xpbmddKGh0dHBzOi8vcmZ1bi5saWJyYXJ5LmR1a2UuZWR1L3BvcnRmb2xpby9zY3JhcGluZ193b3Jrc2hvcC8pLiAgVGhlIGRvd25sb2FkZWQgZGF0YSAgYXJlIGV4Y2VsIHdvcmtib29rIGZpbGVzLCBlYWNoIGNvbnRhaW5pbmcgYXBwcm94aW1hdGVseSA1MCB3b3Jrc2hlZXRzLiAgQWx0aG91Z2ggc29tZSBsaWtlbHkgbmV4dCBzdGVwcyBjb3VsZCBpbmNsdWRlIGl0ZXJhdGluZyBvdmVyIHdvcmtzaGVldHMgd2l0aGluIGVhY2ggd29ya2Jvb2ssIEkgd2lsbCBzdG9wIHNob3J0IG9mIHByZXNlbnRpbmcgZnVydGhlciBbZGF0YSB3cmFuZ2xpbmcgdGVjaG5pcXVlcyBmb3IgY29uY2F0ZW5hdGluZyByZWFkeGwgd29ya2Zsb3dzXShodHRwczovL3JlYWR4bC50aWR5dmVyc2Uub3JnL2FydGljbGVzL3JlYWR4bC13b3JrZmxvd3MuaHRtbCkuIEFkZGl0aW9uYWxseSwgYmVjYXVzZSB0aGUgZmlsZXMgYXJlIHZvbHVtaW5vdXMsIGF0IHRoZSBlbmQgb2YgdGhpcyBzY3JpcHQgSSBpbmNsdWRlIGEgZnVuY3Rpb24gdG8gZGVsZXRlIHRoZSBkb3dubG9hZGVkIHdvcmtib29rIGZpbGVzLiAgDQoNClRoYXQgYWR2YW5jZWQgd29ya3NoZWV0IHdyYW5nbGluZyBjYW4gYmUgZ2xlYW5lZCBieSByZWFkaW5nIGFuIGV4Y2VsbGVudCBhcnRpY2xlIG9uIF9yZWFkeGwgd29ya2Zsb3dzXywgcGFydGljdWxhcmx5IGJ1dCBub3QgbGltaXRlZCB0byB0aGUgc2VjdGlvbiBfY29uY2F0ZW5hdGUgd29ya3NoZWV0cyBpbnRvIG9uZSBkYXRhIGZyYW1lXy4gDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KHJlYWR4bCkNCmxpYnJhcnkoZnMpDQpsaWJyYXJ5KHJ2ZXN0KQ0KYGBgDQoNCiMjIERhdGENCg0KVGhlIGRhdGEgd2Ugd2lsbCBzY3JhcGUgaXMgZnJvbSB0aGUgW1VTIENlbnN1cyBwdWxzZSBzdXJ2ZXldKGh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvbmV3c3Jvb20vcHJlc3Mta2l0cy8yMDIwL3B1bHNlLXN1cnZleXMuaHRtbCkuICBTZXBjaWZpY2FsbHkgd2Ugd2lsbCBsb29rIGF0IHRoZSBkYXRhIGZyb20gdGhlIFtwdWxzZSBzdXJ2ZXlzIGhvdXNlaG9sZCBleHBlcmllbmNlXShodHRwczovL3d3dy5jZW5zdXMuZ292L2RhdGEvZXhwZXJpbWVudGFsLWRhdGEtcHJvZHVjdHMvaG91c2Vob2xkLXB1bHNlLXN1cnZleS5odG1sKSANCg0KVGhlIHRhcmdldCBob3VzZWhvbGQgZGF0YSBpcyBvdXRsaW5lZCBhdCB0aGlzIFtzdW1tYXJ5IG5hdmlnYXRpb24gcGFnZV0oaHR0cHM6Ly93d3cuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2hvdXNlaG9sZC1wdWxzZS1zdXJ2ZXkvZGF0YS5odG1sKS4gIFtUaGUgd2Vla2x5IHB1bHNlIHN1cnZleXNdKGh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvZGF0YS90YWJsZXMvMjAyMC9kZW1vL2hocC9oaHAxMy5odG1sKSBhcmUgbGlua2VkIGhlcmUgYW5kIGVhY2ggZmlsZSBoYXMgYSBkaWZmZXJlbnQgYW5kIHNvbWV3aGF0IHVucHJlZGljdGFibGUgVVJMLiAgDQoNCj4gV2UgY2FuIHVzZSBgcnZlc3RgIHRvIGNyYXdsIHRoZSBzdW1tYXJ5IHBhZ2UgYW5kIGhhcnZlc3QgdGhlIHVybHMgb2YgdGFyZ2V0IGZpbGVzLiAgY3VybF9kb3dubG9hZCgpIHRvIGRvd25sb2FkIGVhY2ggZmlsZSBpbnRvIGEgdGFyZ2V0IGRpcmVjdG9yeSB3aXRoaW4gdGhlIFJTdHVkaW8gcHJvamVjdCBvbiAgdGhlIGxvY2FsIGZpbGUgc3lzdGVtLiANCg0KSGVyZSBhcmUgc29tZSBleGFtcGxlIGZpbGVzIG9mIHRoZSBob3VzaW5nIHB1bHNlIHN1cnZleSBmaWxlIDJiICANCi0gW2hvdXNpbmcyYl9zZV93ZWVrNy54bHN4XShodHRwczovL3d3dzIuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2RlbW8vdGFibGVzL2hocC8yMDIwL3drNy9ob3VzaW5nMmJfc2Vfd2VlazcueGxzeCkNCi0gW2hvdXNpbmcyYl9zZV93ZWVrMTMueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMC93azEzL2hvdXNpbmcyYl9zZV93ZWVrMTMueGxzeCkNCi0gW2hvdXNpbmcyYl93ZWVrMzcueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMS93azM3L2hvdXNpbmcyYl93ZWVrMzcueGxzeCkNCi0gW2hvdXNpbmcyYl93ZWVrNDUueGxzeF0oaHR0cHM6Ly93d3cyLmNlbnN1cy5nb3YvcHJvZ3JhbXMtc3VydmV5cy9kZW1vL3RhYmxlcy9oaHAvMjAyMi93azQ1L2hvdXNpbmcyYl93ZWVrNDUueGxzeCkNCg0KYA0KIyMgU2V0LXVwDQoNCkFzc2lnbiBzb21lIG9iamVjdCBuYW1lcyB0byB1c2VmdWwgVVJMcyBhbmQgdXNlIGByZWFkX2h0bWwoKWAgdG8gaW5nZXN0IHRoZSByYXcgSFRNTCBvZiB0aGUgZXhhbXBsZSBwYWdlLg0KDQpgYGB7cn0NCm15X3VybCA8LSAiaHR0cHM6Ly93d3cuY2Vuc3VzLmdvdi9wcm9ncmFtcy1zdXJ2ZXlzL2hvdXNlaG9sZC1wdWxzZS1zdXJ2ZXkvZGF0YS5odG1sIg0KYmFzZV91cmwgPC0gImh0dHBzOi8vd3d3LmNlbnN1cy5nb3YvIg0KDQpteV9yZXN1bHRzIDwtIHJlYWRfaHRtbChteV91cmwpDQpgYGANCg0KQ3Jhd2wgdGhlIHRhcmdldCB3ZWJwYWdlcyB0byBnYXRoZXIgYSBsaXN0IG9mIFVSTHMgZm9yIGZpbGVzIHRoYXQgbWF5IGJlIGRvd25sb2FkDQoNCmBgYHtyfQ0KbGlua190ZXh0IDwtIG15X3Jlc3VsdHMgJT4lIA0KICBodG1sX25vZGVzKCIudXNjYi10aXRsZS0zIikgJT4lIA0KICBodG1sX3RleHQyKCkNCg0KbGlua191cmwgPC0gbXlfcmVzdWx0cyAlPiUgDQogIGh0bWxfbm9kZXMoImEudXNjYi1saXN0LWl0ZW0iKSAlPiUgDQogIGh0bWxfYXR0cigiaHJlZiIpDQogIA0KDQpteV9jcmF3bCA8LSB0aWJibGUobGlua190ZXh0LCBsaW5rX3VybCwgYmFzZV91cmwpICU+JSANCiAgZmlsdGVyKHN0cl9kZXRlY3QobGlua190ZXh0LCAiSG91c2Vob2xkIFB1bHNlIFN1cnZleToiKSkgJT4lIA0KICB1bml0ZShmdWxsX3VybCwgYmFzZV91cmwsIGxpbmtfdXJsLCByZW1vdmUgPSBUUlVFLCBzZXAgPSAiIikgJT4lIA0KICBtdXRhdGUoZnVsbF91cmwgPSBzdHJfcmVwbGFjZShmdWxsX3VybCwgJ2dvdi8vZGF0YScsICdnb3YvZGF0YScpKSAlPiUgDQogIHJlbG9jYXRlKGZ1bGxfdXJsKQ0KbXlfY3Jhd2wNCmBgYA0KDQpVc2UgYG1hcCgpYCB3aXRoIGBuZXN0KClgLCBgU3lzLnNsZWVwKClgIGFuZCBgbGliYXJ5KHJ2ZXN0KWAgdG8gZ2F0aGVyIHRoZSB0YXJnZXQgVVJMcyB0aGF0IHdpbGwgYmUgZG93bmxvYWRlZC4NCg0KYGBge3J9DQpjcmF3bF9yZXN1bHRzIDwtIA0KICBteV9jcmF3bCAlPiUgDQogIHNsaWNlKDE6NikgJT4lIA0KICAjIHNlbGVjdChsaW5rX3RleHRfMSwgZnVsbF91cmwpICU+JSANCiAgbmVzdChwYXJlbnR1cmwgPSAtbGlua190ZXh0KSAlPiUgDQogIG11dGF0ZShteV9yYXdodG1sID0gbWFwKHBhcmVudHVybCwgfiB7DQogICAgU3lzLnNsZWVwKDIpICAgICMjIERPIFRISVMuICBQYXVzZSAyIHNlY29uZHMgYmV0d2VlbiBlYWNoIGZpbGUuICAjIw0KICAgIC54ICU+JQ0KICAgICAgcHVsbChmdWxsX3VybCkgJT4lIA0KICAgICAgcmVhZF9odG1sKCkgJT4lIA0KICAgICAgaHRtbF9ub2RlcygiYSIpICU+JQ0KICAgICAgaHRtbF9hdHRyKCJocmVmIikgJT4lIA0KICAgICAgdGliYmxlKCkgDQogICAgfSkpDQpgYGANCg0KU3Vic2V0IHRoZSBsaXN0IG9mIGRvd25sb2FkYWJsZSBmaWxlcyB0byBvbmx5IHRoZSBgaG91c2luZzJiYCBmaWxlcy4NCg0KYGBge3J9DQpkb3dubG9hZF90YXJnZXRfdXJscyA8LSBjcmF3bF9yZXN1bHRzICU+JSANCiAgdW5uZXN0KG15X3Jhd2h0bWwpICU+JSANCiAgcmVuYW1lKHJhd2h0bWwgPSAzKSAlPiUgDQogIGZpbHRlcihzdHJfZGV0ZWN0KHJhd2h0bWwsICJob3VzaW5nMmIiKSkgJT4lIA0KICBtdXRhdGUoZG93bmxvYWRfeHdvcmtib29rX3VybCA9IHN0cl9nbHVlKCJodHRwczp7cmF3aHRtbH0iKSApICU+JSANCiAgbXV0YXRlKG15X2ZpbGVuYW1lID0gZnM6OnBhdGhfZmlsZShyYXdodG1sKSkgDQpkb3dubG9hZF90YXJnZXRfdXJscw0KYGBgDQoNCkRvd25sb2FkIHRoZSBmaWxlcyANCg0KYGBge3J9DQpmczo6ZGlyX2NyZWF0ZSgiZGF0YS94bF93b3JrYm9va3MiKQ0KDQp3YWxrMihkb3dubG9hZF90YXJnZXRfdXJscyRkb3dubG9hZF94d29ya2Jvb2tfdXJsLCANCiAgICAgIHN0cl9nbHVlKCJkYXRhL3hsX3dvcmtib29rcy97ZG93bmxvYWRfdGFyZ2V0X3VybHMkbXlfZmlsZW5hbWV9IiksIA0KICAgICAgY3VybDo6Y3VybF9kb3dubG9hZCwgbW9kZSA9ICJ3YiIpDQpgYGANCg0KV2hhdCBmaWxlcyBkaWQgSSBqdXN0IGRvd25sb2FkPw0KDQpgYGB7cn0NCmZzOjpkaXJfbHMoImRhdGEveGxfd29ya2Jvb2tzIikgJT4lIA0KICBlbmZyYW1lKCkNCmBgYA0KDQojIyBQdXQgYSBib3cgb24gaXQuDQoNCkJlbG93IHNob3dzIGluZ2VzdGluZyBhIHNpbmdsZSBleGNlbCBmaWxlIGZyb20gYW1vbmcgdGhlIHNldmVyYWwgdGhhdCB3ZXJlIGRvd25sb2FkZWQuICBUbyBkbyBtb3JlIHByb2Nlc3Npbmcgb2YgdGhlIG11bHRpcGxlIHdvcmtib29rIGZpbGVzIHNlZSB0aGUgZWFybGllciBsZXNzb25zLiAgVG8gbGVhcm4gbW9yZSBhYm91dCB3b3JraW5nIHdpdGggdGhlIG11bHRpcGxlIHdvcmtzaGVldHMgd2l0aGluZyB0aGUgd29ya2Jvb2tzLCByZWFkIGFib3V0IFtyZWFkeGwgd29ya2Zsb3dzXShodHRwczovL3JlYWR4bC50aWR5dmVyc2Uub3JnL2FydGljbGVzL3JlYWR4bC13b3JrZmxvd3MuaHRtbCkNCg0KYGBge3J9DQpteV9maWxlcyA8LSBmczo6ZGlyX2xzKCJkYXRhL3hsX3dvcmtib29rcyIsIGdsb2IgPSAiKi54bHN4IikNCg0KbXlfZmlsZXMgPC0gZW5mcmFtZShteV9maWxlcykgJT4lIA0KICBmaWx0ZXIoc3RyX2RldGVjdChuYW1lLCAiMmJfdyIpKSAlPiUgDQogIHNsaWNlKDEpICU+JQ0KICBwdWxsKG5hbWUpDQpteV9maWxlcw0KDQpteV94bF9kZiA8LSByZWFkX3hsc3gobXlfZmlsZXMsDQogICAgICAgICAgICAgICAgICAgICAgc2hlZXQgPSAiTkMiLCANCiAgICAgICAgICAgICAgICAgICAgICBza2lwID0gNCkNCg0KbXlfeGxfZGYgPC0gbXlfeGxfZGYgJT4lIA0KICBqYW5pdG9yOjpjbGVhbl9uYW1lcygpDQoNCm15X3hsX2RmICU+JSANCiAgZmlsdGVyKHNlbGVjdF9jaGFyYWN0ZXJpc3RpY3MgIT0gIlRvdGFsIikgJT4lIA0KICBtdXRhdGUoc3ViX2dyb3VwID0gaWZfZWxzZShpcy5uYSh0b3RhbDEpLCBzZWxlY3RfY2hhcmFjdGVyaXN0aWNzLCBOQV9jaGFyYWN0ZXJfKSkgJT4lIA0KICBmaWxsKHN1Yl9ncm91cCwgLmRpcmVjdGlvbiA9ICJkb3duIikgJT4lIA0KICByZWxvY2F0ZShzdWJfZ3JvdXApICU+JSANCiAgZmlsdGVyKHN1Yl9ncm91cCA9PSAiRWR1Y2F0aW9uIikNCmBgYA0KYGBge3J9DQojIHJlYWRfZXhjZWwobXlfZmlsZXMsIHNoZWV0ID0gIk5DIiwgcmFuZ2UgPSAiQTg6SjEzMiIpDQojIHJlYWRfZXhjZWwobXlfZmlsZXMsIHNoZWV0ID0gIlNDIiwgcmFuZ2UgPSAiQTg6SjEzMiIpDQoNCm15X2ZpbGVzICU+JQ0KICBleGNlbF9zaGVldHMoKSAlPiUgICANCiAgc2V0X25hbWVzKCkgJT4lIA0KICBncmVwKCJbTlNdQyIsIC4sIHZhbHVlID0gVFJVRSkgJT4lIA0KICBtYXBfZGYoLiwgfiByZWFkX2V4Y2VsKHBhdGgsIHNoZWV0ID0gLngpLCAuaWQgPSAic2hlZXQiKQ0KDQpyYW5nZXMgPC0gbGlzdCgiQTg6SjEzMiIsIGNlbGxfcm93cyg4OjEzMikpDQpteV9maWxlcyAlPiUNCiAgZXhjZWxfc2hlZXRzKCkgJT4lICAgDQogIHNldF9uYW1lcygpICU+JSANCiAgZ3JlcCgiW05TXUMiLCAuLCB2YWx1ZSA9IFRSVUUpICU+JSANCiAgbWFwMl9kZiguLCByYW5nZXMsIH4gcmVhZF9leGNlbChwYXRoLCBzaGVldCA9IC54LCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByYW5nZSA9ICJBODpKMTMyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xfbmFtZXMgPSBGQUxTRSksIC5pZCA9ICJzaGVldCIpDQpteV9maWxlcyAlPiUNCiAgZXhjZWxfc2hlZXRzKCkgJT4lICAgDQogIHNldF9uYW1lcygpICU+JSANCiAgZ3JlcCgiW05TXUMiLCAuLCB2YWx1ZSA9IFRSVUUpICU+JSANCiAgbWFwX2RmKC4sIH4gcmVhZF9leGNlbChwYXRoLCBzaGVldCA9IC54LCANCiAgICAgICAgICAgICAgICAgICAgICAgICByYW5nZSA9ICJBODpKMTMyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb2xfbmFtZXMgPSBGQUxTRSksIC5pZCA9ICJzaGVldCIpDQpteV9maWxlcyAlPiUNCiAgZXhjZWxfc2hlZXRzKCkgJT4lICAgDQogIHNldF9uYW1lcygpICU+JSANCiAgZ3JlcCgiW05TXUMiLCAuLCB2YWx1ZSA9IFRSVUUpICU+JSANCiAgbWFwX2RmKC4sIH4gcmVhZF9leGNlbChwYXRoLCBzaGVldCA9IC54LCANCiAgICAgICAgICAgICAgICAgICAgICAgICByYW5nZSA9ICJBODpKMTMyIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb2xfbmFtZXMgPSBGQUxTRSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb2xfdHlwZXMgPSBjKCJ0ZXh0IiwgcmVwKCJudW1lcmljIiwgOSkpKSwNCiAgICAgICAgIC5pZCA9ICJzaGVldCIpICU+JSANCiAgZmlsdGVyKGAuLi4xYCAhPSAiVG90YWwiKSAlPiUgDQogIG11dGF0ZShzdWJfZ3JvdXAgPSBpZl9lbHNlKGlzLm5hKGAuLi4yYCksIGAuLi4xYCwgTkFfY2hhcmFjdGVyXykpICU+JSANCiAgZmlsbChzdWJfZ3JvdXAsIC5kaXJlY3Rpb24gPSAiZG93biIpICU+JSANCiAgcmVsb2NhdGUoc3ViX2dyb3VwKSAlPiUgDQogIGRyb3BfbmEoNCkgJT4lIA0KICBmaWx0ZXIoc3ViX2dyb3VwID09ICJFZHVjYXRpb24iKSAlPiUgDQogIHBpdm90X2xvbmdlcig0Omxhc3RfY29sKCksIG5hbWVzX3RvID0gIm15X2NhdGVnb3J5IikgJT4lIA0KICBncm91cF9ieShzdWJfZ3JvdXAsIHNoZWV0LCAzLCBteV9jYXRlZ29yeSkgJT4lIA0KICBzdW1tYXJpc2UodG90YWxzID0gc3VtKHZhbHVlLCBuYS5ybSA9IFRSVUUpKSAlPiUgDQogIGdncGxvdChhZXMobXlfY2F0ZWdvcnksIHRvdGFscykpICsNCiAgZ2VvbV9jb2woKSArDQogIGNvb3JkX2ZsaXAoKSArDQogIGZhY2V0X3dyYXAofiBzaGVldCkNCmBgYA0KDQojIyBEZWxldGUgdGhlIGRvd25sb2FkZWQgZmlsZXMNCg0KYGBge3J9DQpmczo6ZGlyX2RlbGV0ZSgiZGF0YS94bF93b3JrYm9va3MiKQ0KYGBgDQoNCg==</div>
 
 
 
