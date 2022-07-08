@@ -137,12 +137,17 @@ my_xl_df %>%
   relocate(sub_group) %>% 
   filter(sub_group == "Education")
 ```
+
+
 ```{r}
 # read_excel(my_files, sheet = "NC", range = "A8:J132")
 # read_excel(my_files, sheet = "SC", range = "A8:J132")
 
-my_files %>%
-  excel_sheets() %>%   
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
+path <- my_files[8]
+
+my_files[8] %>%
+  excel_sheets() %>% 
   set_names() %>% 
   grep("[NS]C", ., value = TRUE) %>% 
   map_df(., ~ read_excel(path, sheet = .x), .id = "sheet")
@@ -162,6 +167,148 @@ my_files %>%
   map_df(., ~ read_excel(path, sheet = .x, 
                          range = "A8:J132",
                          col_names = FALSE), .id = "sheet")
+```
+
+```{r}
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
+path <- my_files[8]
+
+my_files[8] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[8], sheet = .x), .id = "sheet")
+
+
+foo_files <- my_files %>% 
+  enframe() %>% 
+  filter(str_detect(value, "2b_w")) %>% 
+  pull(name)
+  
+grep_sheets <- function(my_vec) {
+  my_vec %>% 
+    excel_sheets() %>% 
+    set_names() %>% 
+    grep("[NS]C", ., value = TRUE) %>% 
+    list()
+}
+
+foo_files 
+xl_to_read <- map(foo_files,  grep_sheets) %>% unlist()
+xl_to_read
+
+xl_to_read <- map(foo_files,  grep_sheets)
+xl_to_read %>% as.character()
+
+ranges <- list("A5:F15", cell_rows(5:15))
+
+
+
+map2_df(foo_files, xl_to_read, ~ read_excel(.x, sheet = .y), id = "sheet")
+map2_df(foo_files, , ~ read_excel(.x, sheet = .y), id = "sheet")
+
+map2_df(xl_to_read %>% as.character(), foo_files, ~read_excel(.y, sheet = .x), id = "sheet")
+
+foo_files %>% 
+    excel_sheets() %>% 
+    set_names() %>% 
+    grep("[NS]C", ., value = TRUE) %>% 
+    list()
+
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>% 
+  nest(-value) %>% 
+  # slice_head(n = 1) %>% unnest()
+  mutate(my_sheet = map(data, pull)) %>% unnest(my_sheet)
+  map_chr(my_sheet2 = map_chr(my_sheet, excel_sheets))
+  
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>%
+  mutate(my_esh = map(name, excel_sheets))  %>% 
+  mutate(my_setnames = map(my_esh, set_names)) %>% 
+  mutate(my_grep = map(my_setnames, ~ grep("[NS]C", .x, value = TRUE))) %>% 
+  mutate(me_xldf = map(my_grep, ~ read_excel(name, sheet = .x), id = "sheet"))
+  # pull(my_grep)
+  
+my_files
+
+my_files %>% 
+  enframe() %>% 
+  pull(name) %>% 
+  excel_sheets() %>% 
+  set_names() 
+    
+my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(read_xlsx)
+
+nc_df <- tibble( me_df = my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(~ read_xlsx, sheet = "NC"), id = "sheet") %>% 
+  unnest(me_df)
+nc_df
+
+sc_df <- tibble( me_df = my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(read_xlsx, sheet = "SC")) %>% 
+  unnest(me_df)
+sc_df
+
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>% 
+
+
+my_files[8] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) -> flump
+```
+
+```{r}
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx") %>% 
+  grep("2b_w", ., value = TRUE)
+
+my_files[3] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[3], sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet")
+
+my_df_build <- my_files[1] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[3], sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet")
+my_df_build
+
+i <-  1
+
+for(i in 1:length(my_files)) {
+# for(i in 1:2) {
+  my_iterate_df <-   my_files[i] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[i], sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet", path = my_files[i])
+
+  my_df_build <- bind_rows(my_df_build, my_iterate_df)
+}
+
+
+```
+
+
+
+```{r}
 my_files %>%
   excel_sheets() %>%   
   set_names() %>% 
