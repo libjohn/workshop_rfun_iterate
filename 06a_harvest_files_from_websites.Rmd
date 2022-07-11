@@ -1,0 +1,484 @@
+---
+title: "Iterate crawling and downloading files"
+author: "John Little"
+date: "`r Sys.Date()`"
+output: html_notebook
+---
+
+This lesson will show how to use the `rvest` package to facilitate web crawling for data. Below you will see an abridged presentation based on a longer [workshop on web crawling](https://rfun.library.duke.edu/portfolio/scraping_workshop/).  The downloaded data  are excel workbook files, each containing approximately 50 worksheets.  Although some likely next steps could include iterating over worksheets within each workbook, I will stop short of presenting further [data wrangling techniques for concatenating readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html). Additionally, because the files are voluminous, at the end of this script I include a function to delete the downloaded workbook files.  
+
+That advanced worksheet wrangling can be gleaned by reading an excellent article on _readxl workflows_, particularly but not limited to the section _concatenate worksheets into one data frame_. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(fs)
+library(rvest)
+```
+
+## Data
+
+The data we will scrape is from the [US Census pulse survey](https://www.census.gov/newsroom/press-kits/2020/pulse-surveys.html).  Sepcifically we will look at the data from the [pulse surveys household experience](https://www.census.gov/data/experimental-data-products/household-pulse-survey.html) 
+
+The target household data is outlined at this [summary navigation page](https://www.census.gov/programs-surveys/household-pulse-survey/data.html).  [The weekly pulse surveys](https://www.census.gov/data/tables/2020/demo/hhp/hhp13.html) are linked here and each file has a different and somewhat unpredictable URL.  
+
+> We can use `rvest` to crawl the summary page and harvest the urls of target files.  curl_download() to download each file into a target directory within the RStudio project on  the local file system. 
+
+Here are some example files of the housing pulse survey file 2b  
+- [housing2b_se_week7.xlsx](https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk7/housing2b_se_week7.xlsx)
+- [housing2b_se_week13.xlsx](https://www2.census.gov/programs-surveys/demo/tables/hhp/2020/wk13/housing2b_se_week13.xlsx)
+- [housing2b_week37.xlsx](https://www2.census.gov/programs-surveys/demo/tables/hhp/2021/wk37/housing2b_week37.xlsx)
+- [housing2b_week45.xlsx](https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx)
+
+`
+## Set-up
+
+Assign some object names to useful URLs and use `read_html()` to ingest the raw HTML of the example page.
+
+```{r}
+my_url <- "https://www.census.gov/programs-surveys/household-pulse-survey/data.html"
+base_url <- "https://www.census.gov/"
+
+my_results <- read_html(my_url)
+```
+
+Crawl the target webpages to gather a list of URLs for files that may be download
+
+```{r}
+link_text <- my_results %>% 
+  html_nodes(".uscb-title-3") %>% 
+  html_text2()
+
+link_url <- my_results %>% 
+  html_nodes("a.uscb-list-item") %>% 
+  html_attr("href")
+  
+
+my_crawl <- tibble(link_text, link_url, base_url) %>% 
+  filter(str_detect(link_text, "Household Pulse Survey:")) %>% 
+  unite(full_url, base_url, link_url, remove = TRUE, sep = "") %>% 
+  mutate(full_url = str_replace(full_url, 'gov//data', 'gov/data')) %>% 
+  relocate(full_url)
+my_crawl
+```
+
+Use `map()` with `nest()`, `Sys.sleep()` and `libary(rvest)` to gather the target URLs that will be downloaded.
+
+```{r}
+crawl_results <- 
+  my_crawl %>% 
+  slice(1:6) %>% 
+  # select(link_text_1, full_url) %>% 
+  nest(parenturl = -link_text) %>% 
+  mutate(my_rawhtml = map(parenturl, ~ {
+    Sys.sleep(2)    ## DO THIS.  Pause 2 seconds between each file.  ##
+    .x %>%
+      pull(full_url) %>% 
+      read_html() %>% 
+      html_nodes("a") %>%
+      html_attr("href") %>% 
+      tibble() 
+    }))
+```
+
+Subset the list of downloadable files to only the `housing2b` files.
+
+```{r}
+download_target_urls <- crawl_results %>% 
+  unnest(my_rawhtml) %>% 
+  rename(rawhtml = 3) %>% 
+  filter(str_detect(rawhtml, "housing2b")) %>% 
+  mutate(download_xworkbook_url = str_glue("https:{rawhtml}") ) %>% 
+  mutate(my_filename = fs::path_file(rawhtml)) 
+download_target_urls
+```
+
+Download the files 
+
+```{r}
+fs::dir_create("data/xl_workbooks")
+
+walk2(download_target_urls$download_xworkbook_url, 
+      str_glue("data/xl_workbooks/{download_target_urls$my_filename}"), 
+      curl::curl_download, mode = "wb")
+```
+
+What files did I just download?
+
+```{r}
+fs::dir_ls("data/xl_workbooks") %>% 
+  enframe()
+```
+
+## Put a bow on it.
+
+Below shows ingesting a single excel file from among the several that were downloaded.  To do more processing of the multiple workbook files see the earlier lessons.  To learn more about working with the multiple worksheets withing the workbooks, read about [readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html)
+
+```{r}
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
+
+my_files <- enframe(my_files) %>% 
+  filter(str_detect(name, "2b_w")) %>% 
+  slice(1) %>%
+  pull(name)
+my_files
+
+my_xl_df <- read_xlsx(my_files,
+                      sheet = "NC", 
+                      skip = 4)
+
+my_xl_df <- my_xl_df %>% 
+  janitor::clean_names()
+
+my_xl_df %>% 
+  filter(select_characteristics != "Total") %>% 
+  mutate(sub_group = if_else(is.na(total1), select_characteristics, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  filter(sub_group == "Education")
+```
+
+
+```{r}
+# read_excel(my_files, sheet = "NC", range = "A8:J132")
+# read_excel(my_files, sheet = "SC", range = "A8:J132")
+
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
+path <- my_files[8]
+
+my_files[8] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x), .id = "sheet")
+
+ranges <- list("A8:J132", cell_rows(8:132))
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map2_df(., ranges, ~ read_excel(path, sheet = .x, 
+                                  range = "A8:J132",
+                                  col_names = FALSE), .id = "sheet")
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet")
+```
+
+```{r}
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx")
+path <- my_files[8]
+
+my_files[8] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[8], sheet = .x), .id = "sheet")
+
+
+foo_files <- my_files %>% 
+  enframe() %>% 
+  filter(str_detect(value, "2b_w")) %>% 
+  pull(name)
+  
+grep_sheets <- function(my_vec) {
+  my_vec %>% 
+    excel_sheets() %>% 
+    set_names() %>% 
+    grep("[NS]C", ., value = TRUE) %>% 
+    list()
+}
+
+foo_files 
+xl_to_read <- map(foo_files,  grep_sheets) %>% unlist()
+xl_to_read
+
+xl_to_read <- map(foo_files,  grep_sheets)
+xl_to_read %>% as.character()
+
+ranges <- list("A5:F15", cell_rows(5:15))
+
+
+
+map2_df(foo_files, xl_to_read, ~ read_excel(.x, sheet = .y), id = "sheet")
+map2_df(foo_files, , ~ read_excel(.x, sheet = .y), id = "sheet")
+
+map2_df(xl_to_read %>% as.character(), foo_files, ~read_excel(.y, sheet = .x), id = "sheet")
+
+foo_files %>% 
+    excel_sheets() %>% 
+    set_names() %>% 
+    grep("[NS]C", ., value = TRUE) %>% 
+    list()
+
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>% 
+  nest(-value) %>% 
+  # slice_head(n = 1) %>% unnest()
+  mutate(my_sheet = map(data, pull)) %>% unnest(my_sheet)
+  map_chr(my_sheet2 = map_chr(my_sheet, excel_sheets))
+  
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>%
+  mutate(my_esh = map(name, excel_sheets))  %>% 
+  mutate(my_setnames = map(my_esh, set_names)) %>% 
+  mutate(my_grep = map(my_setnames, ~ grep("[NS]C", .x, value = TRUE))) %>% 
+  mutate(me_xldf = map(my_grep, ~ read_excel(name, sheet = .x), id = "sheet"))
+  # pull(my_grep)
+  
+my_files
+
+my_files %>% 
+  enframe() %>% 
+  pull(name) %>% 
+  excel_sheets() %>% 
+  set_names() 
+    
+my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(read_xlsx)
+
+nc_df <- tibble( me_df = my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(~ read_xlsx, sheet = "NC"), id = "sheet") %>% 
+  unnest(me_df)
+nc_df
+
+sc_df <- tibble( me_df = my_files %>% 
+  grep("2b_w", ., value = TRUE) %>% 
+  map_df(read_xlsx, sheet = "SC")) %>% 
+  unnest(me_df)
+sc_df
+
+my_files %>% 
+  enframe() %>% 
+  filter(str_detect(name, "2b_w")) %>% 
+
+
+my_files[8] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) -> flump
+```
+
+```{r}
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx") %>% 
+  grep("2b_w", ., value = TRUE)
+
+my_files[3] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[3], sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet") %>% 
+  mutate(file = my_files[3]) %>% 
+  relocate(file)
+
+my_df_build <- my_files[1] %>%
+  excel_sheets() %>% 
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE)  %>% 
+  map_df(., ~ read_excel(my_files[1], sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE), .id = "sheet") %>% 
+    mutate(file = my_files[1]) %>% 
+    relocate(file)
+my_df_build
+my_df_build <- tibble()
+# i <-  1
+```
+
+### This works!!!
+
+```{r}
+# get filenames and limit to relevant files 'housing2b_week999'
+my_files <- fs::dir_ls("data/xl_workbooks", glob = "*.xlsx") %>% 
+  grep("2b_w", ., value = TRUE)
+
+# get and repair filenames
+getcolnamesa <- read_excel(my_files[1], range = "A5:J5")
+getcolnamesb <- read_excel(my_files[1], range = "A6:J6")
+getcolnames <-
+  c(names(getcolnamesa[1:2]), 
+    names(getcolnamesb[3:8]), 
+    names(getcolnamesa[9:10]))
+# getcolnames
+getcolnames[1] <- "select_characteristics"
+getcolnames[2] <- "total"
+
+# for Loop to build big data frame
+my_df_build <- tibble()
+for(i in 1:length(my_files)) {
+  my_iterate_df <-   my_files[i] %>%
+    excel_sheets() %>% 
+    set_names() %>% 
+    grep("[NS]C", ., value = TRUE)  %>% 
+    map_df(., ~ read_excel(my_files[i], sheet = .x, 
+                           range = "A8:J132",
+                           col_names = FALSE), .id = "sheet") %>% 
+    mutate(file = my_files[i]) %>% 
+    relocate(file, .before = sheet)
+
+  my_df_build <- bind_rows(my_df_build, my_iterate_df)
+}
+
+# Assign proper filenames
+names(my_df_build)[3:12] <- getcolnames
+# names(my_df_build)
+```
+
+```{r}
+ls()
+```
+
+
+```{r}
+wrangle_df <- . %>% 
+  filter(select_characteristics != "Total") %>% 
+  mutate(sub_group = if_else(is.na(total), 
+                             select_characteristics, 
+                             NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  drop_na(total) %>% 
+  filter(sub_group == "Education") %>% 
+  mutate(across(total:last_col(), as.numeric))
+
+# wrangle_df <- function(my_df, ...) {
+#   {{my_df}} %>% 
+#     filter(select_characteristics != "Total") %>% 
+#     mutate(sub_group = if_else(is.na(total), 
+#                                select_characteristics, 
+#                                NA_character_)) %>% 
+#     fill(sub_group, .direction = "down") %>% 
+#     relocate(sub_group) %>% 
+#     drop_na(total) %>% 
+#     filter(sub_group == "Education") %>% 
+#     mutate(across(total:last_col(), as.numeric))
+# }
+
+prep_barplot_df <- function(my_df, ...) { 
+  {{my_df}} %>% 
+  pivot_longer(total:last_col(), names_to = "my_category") %>% 
+  group_by(sub_group, file, sheet, select_characteristics, my_category)  %>% 
+  summarise(totals = sum(value, na.rm = TRUE)) %>% 
+  ungroup()
+  }
+
+make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
+  ggplot(data = {{my_df}}, aes({{xaxis}}, {{yaxis}})) +
+    geom_col() +
+    coord_flip() +
+    facet_wrap(vars({{my_facet}}))
+  }
+```
+
+
+```{r}
+my_df_build %>%
+  wrangle_df() %>%
+  nest(data = -c(sub_group, file, sheet)) %>%
+  head(1) %>%                                   #
+  unnest(data) %>%                              #
+  # mutate(barplot_df = map(data, prep_barplot_df))
+  prep_barplot_df() %>% 
+  make_barblot(my_category, totals, select_characteristics) 
+
+my_df_build %>%
+  wrangle_df() %>%
+  nest(data = -c(sub_group, file, sheet)) %>%
+  mutate(foo_df = map(data, pivot_longer, total:last_col(), names_to = "my_category")) %>% 
+  mutate(foo_df = map(foo_df, ~ .x %>%  group_by, sub_group, file, sheet, select_characteristics, my_category))  %>%
+  mutate(foo_df = map(foo_df, summarise, totals = sum(value, na.rm = TRUE))) %>% 
+  # head(1) %>%                                   #
+  unnest(foo_df)      
+#
+
+my_df_build %>%
+  wrangle_df() %>% 
+  pivot_longer(total:last_col(), names_to = "my_category") %>% 
+  group_by(sub_group, file, sheet, select_characteristics, my_category)  %>% 
+  summarise(totals = sum(value, na.rm = TRUE)) %>% 
+  # ungroup() %>% 
+  nest(data = -c(sub_group, file, sheet)) %>% 
+  mutate(myplot = map(data, make_barblot, my_category, totals, select_characteristics)) %>% 
+  mutate(plot_title = fs::path_ext_remove(fs::path_file(file))) %>%
+  mutate(myplot = map(myplot, ~ .x + ggtitle(str_glue("{sheet} {sub_group}: {plot_title}")))) %>% 
+  pull(myplot)
+```
+
+
+```{r}
+my_df_build %>% 
+  filter(`...3` != "Total") %>% 
+  mutate(sub_group = if_else(is.na(`...4`), `...3`, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  drop_na(`...4`) %>% 
+  filter(sub_group == "Education") %>% 
+  nest(-c(1:3))
+
+my_df_build %>% 
+  filter(`...3` != "Total") %>% 
+  mutate(sub_group = if_else(is.na(`...4`), `...3`, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  drop_na(`...4`) %>% 
+  filter(sub_group == "Education") %>% 
+  nest(-c(1:3)) %>%
+  head(1) %>%
+  unnest() %>% 
+  pivot_longer(5:last_col(), names_to = "my_category") %>% 
+  filter(value != "-") %>% 
+  mutate(value = as.numeric(value)) %>% 
+  group_by(sub_group, file, sheet, `...3`, my_category)  %>% 
+  summarise(totals = sum(value, na.rm = TRUE)) %>% 
+  ggplot(aes(my_category, totals)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~ `...3`)
+  
+  
+  
+```
+
+
+
+```{r}
+my_files %>%
+  excel_sheets() %>%   
+  set_names() %>% 
+  grep("[NS]C", ., value = TRUE) %>% 
+  map_df(., ~ read_excel(path, sheet = .x, 
+                         range = "A8:J132",
+                         col_names = FALSE,
+                         col_types = c("text", rep("numeric", 9))),
+         .id = "sheet") %>% 
+  filter(`...1` != "Total") %>% 
+  mutate(sub_group = if_else(is.na(`...2`), `...1`, NA_character_)) %>% 
+  fill(sub_group, .direction = "down") %>% 
+  relocate(sub_group) %>% 
+  drop_na(4) %>% 
+  filter(sub_group == "Education") %>% 
+  pivot_longer(4:last_col(), names_to = "my_category") %>% 
+  group_by(sub_group, sheet, 3, my_category) %>% 
+  summarise(totals = sum(value, na.rm = TRUE)) %>% 
+  ggplot(aes(my_category, totals)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~ sheet)
+```
+
+## Delete the downloaded files
+
+```{r}
+fs::dir_delete("data/xl_workbooks")
+```
+
