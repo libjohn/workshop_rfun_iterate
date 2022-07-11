@@ -175,6 +175,35 @@ names(my_df_build)[3:12] <- getcolnames
 # names(my_df_build)
 ```
 
+### Useful vectors
+
+Making vectors of character data can be useful to writing clear code.  
+
+```{r}
+my_levels_categories <- 
+  rev(c("No at all confident",
+        "Slightly confident",
+        "Moderately confident",
+        "Highly confident",
+        "Payment is/will be deferred", 
+        "Did not report",
+        "total",
+        "Occupied without rent",
+        "Did not report to tenure"
+  ))
+
+remove_from_table <- c("total",
+                       "Occupied without rent",
+                       "Did not report to tenure")
+
+my_levels_characteristics <- 
+  rev(c("Bachelor’s degree or higher", 
+        "Some college/associate’s degree",
+        "High school or GED",
+        "Less than high school"))
+```
+
+
 ### Custom Functions
 
 ```{r}
@@ -199,7 +228,7 @@ wrangle_df <- . %>%
            fct_relevel(select_characteristics, my_levels_characteristics))
 
 make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
-  ggplot(data = {{my_df}}, aes({{xaxis}}, {{yaxis}})) +
+  ggplot(data = my_df, aes({{xaxis}}, {{yaxis}})) +
     geom_col() +
     scale_y_continuous(
       labels = scales::label_comma(scale_cut = scales::cut_short_scale())) +
@@ -212,29 +241,6 @@ make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
 ### Generate a bunch of plots
 
 ```{r}
-my_levels_categories <- 
-  rev(c("No at all confident",
-        "Slightly confident",
-        "Moderately confident",
-        "Highly confident",
-        "Payment is/will be deferred", 
-        "Did not report",
-        "total",
-        "Occupied without rent",
-        "Did not report to tenure"
-  ))
-
-remove_from_table <- c("total",
-                       "Occupied without rent",
-                       "Did not report to tenure")
-
-my_levels_characteristics <- 
-  rev(c("Bachelor’s degree or higher", 
-        "Some college/associate’s degree",
-        "High school or GED",
-        "Less than high school"))
-  
-
 my_df <- my_df_build %>%
   wrangle_df() %>% 
   nest(data = -c(sub_group, file, sheet)) %>% 
