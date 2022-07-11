@@ -5,9 +5,11 @@ date: "`r Sys.Date()`"
 output: html_notebook
 ---
 
-This lesson will show how to use the `rvest` package to facilitate web crawling for data. Below you will see an abridged presentation based on a longer [workshop on web crawling](https://rfun.library.duke.edu/portfolio/scraping_workshop/).  The downloaded data  are excel workbook files, each containing approximately 50 worksheets.  Although some likely next steps could include iterating over worksheets within each workbook, I will stop short of presenting further [data wrangling techniques for concatenating readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html). Additionally, because the files are voluminous, at the end of this script I include a function to delete the downloaded workbook files.  
+This lesson will show how to use the `rvest` package to facilitate web crawling for data. Below you will see an abridged presentation based on a longer [workshop on web crawling](https://rfun.library.duke.edu/portfolio/scraping_workshop/).  The downloaded data  are excel workbook files, each containing approximately 50 worksheets.  
 
-That advanced worksheet wrangling can be gleaned by reading an excellent article on _readxl workflows_, particularly but not limited to the section _concatenate worksheets into one data frame_. 
+A likely next steps will iterate over worksheets within each workbook. Developing a worksheet wrangling workflow is based on the article about  [readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html), particularly but not limited to the section _concatenate worksheets into one data frame_. 
+
+Additionally, because the files are voluminous, at the end of this script I include functions to delete the downloaded workbook files.  
 
 ```{r}
 library(tidyverse)
@@ -31,7 +33,7 @@ Here are some example files of the housing pulse survey file 2b
 - [housing2b_week45.xlsx](https://www2.census.gov/programs-surveys/demo/tables/hhp/2022/wk45/housing2b_week45.xlsx)
 
 `
-## Set-up
+## Set-up: scrape = crawl + parse; bulk-download
 
 Assign some object names so I have an easy way to refer to my needed URLs. Use `read_html()` to ingest the raw HTML of the example page.
 
@@ -61,6 +63,8 @@ my_crawl <- tibble(link_text, link_url, base_url) %>%
   relocate(full_url)
 my_crawl
 ```
+
+### Iterate with `map`
 
 Use `map()` with `nest()`, `Sys.sleep()` and `libary(rvest)` to gather the target URLs that will be downloaded.
 
@@ -93,7 +97,7 @@ download_target_urls <- crawl_results %>%
 download_target_urls
 ```
 
-Download the files 
+### Download the Excel files 
 
 `walk()` is like `map()` (in the same package:  `purrr`) and used for it's secondary characteristics.  In this case, the characteristic I need is downloaded files.
 
@@ -114,8 +118,7 @@ fs::dir_ls("data/xl_workbooks") %>%
 
 ## Put a bow on it.
 
-Below shows ingesting a single excel file from among the several that were downloaded.  To do more processing of the multiple workbook files see the earlier lessons.  To learn more about working with the multiple worksheets withing the workbooks, read about [readxl workflows](https://readxl.tidyverse.org/articles/readxl-workflows.html)
-
+In lesson five a single excel file was downloaded, wrangled, and then visualized.  In this lesson, above, multiple files are downloaded.  Multiple worksheets from multiple workbook files are ingested and wrangled into a single data frame with the goal of generating multiple bar plots. Custom functions, `map`, and a _for_ loop are used advantageously.  
 
 ```{r}
 # get filenames and limit to relevant files 'housing2b_week999'
@@ -166,7 +169,7 @@ names(my_df_build)[3:12] <- getcolnames
 # names(my_df_build)
 ```
 
-Functions to map
+### Custom Functions
 
 ```{r}
 wrangle_df <- . %>% 
@@ -179,7 +182,6 @@ wrangle_df <- . %>%
   drop_na(total) %>% 
   filter(sub_group == "Education") %>% 
   mutate(across(total:last_col(), as.numeric)) %>% 
-  #
   pivot_longer(total:last_col(), names_to = "my_category") %>% 
   filter(my_category != remove_from_table) %>% 
   group_by(sub_group, file, sheet, select_characteristics, my_category)  %>% 
@@ -201,7 +203,7 @@ make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
   }
 ```
 
-Generate a bunch of plots
+### Generate a bunch of plots
 
 ```{r}
 my_levels_categories <- 
@@ -250,7 +252,7 @@ walk2(my_df$filename_title, my_df$myplot, ggsave)
 ```
 ## Delete the downloaded files
 
-I wouldn't normally code to delete a directory, however, it's done here to keep the size of the repository as small as possible.  Since the code-chunk is set to `eval=FALSE`, this code chunk will not run unless you run it manually.
+Normally, I personally avoid using code to delete files in a directory.  However, the chunk below can be used to keep the size of the project as small as possible.  Since the code-chunk is set to `eval=FALSE`, this code chunk will not run unless you run it manually.
 
 ```{r eval=FALSE, include=TRUE}
 fs::dir_delete("data/xl_workbooks")
