@@ -11,6 +11,12 @@ A likely next steps will iterate over worksheets within each workbook. Developin
 
 Additionally, because the files are voluminous, at the end of this script I include functions to delete the downloaded workbook files.  
 
+### Data masking
+
+Putting all these iteration tasks together within R's Tidyverse dialect can be challenging because of the conveniences afforded by [data masking](https://dplyr.tidyverse.org/articles/programming.html#data-masking).  Data masking makes it easier to code faster as it requires less typing.  Paradoxically,  iterating becomes a bit challenging because of the need to indirectly refer to data variables while distinguishing from the assigned identity of environment variables.  In short this is often done by embracing variables using the double curly braces `{{ }}`.  But reality does get a bit technical and can be initially confusing -- although it's quite understandable and explained well in the [dplyr article that discusses indirection and tidy selection](https://dplyr.tidyverse.org/articles/programming.html#data-masking) along with additional useful information in the [ggplot2 article that discusses variables](https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function).  Stick with it and you'll find the processes and workflows work quite well.
+
+## Load library packages
+
 ```{r}
 library(tidyverse)
 library(readxl)
