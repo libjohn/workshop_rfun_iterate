@@ -223,9 +223,7 @@ wrangle_df <- . %>%
   summarise(totals = sum(value, na.rm = TRUE)) %>% 
   # ungroup() %>%
   mutate(my_category = 
-           fct_relevel(my_category, my_levels_categories)) %>% 
-  mutate(select_characteristics = 
-           fct_relevel(select_characteristics, my_levels_characteristics))
+           fct_relevel(my_category, my_levels_categories))
 
 make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
   ggplot(data = my_df, aes({{xaxis}}, {{yaxis}})) +
@@ -233,7 +231,7 @@ make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
     scale_y_continuous(
       labels = scales::label_comma(scale_cut = scales::cut_short_scale())) +
     coord_flip() +
-    facet_wrap(vars(fct_relevel({{my_facet}}))) +
+    facet_wrap(vars(fct_relevel({{my_facet}}, my_levels_characteristics))) +
     theme(plot.title.position = "plot")
   }
 ```
