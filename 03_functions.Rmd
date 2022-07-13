@@ -78,7 +78,7 @@ Or, a more complicated regex that accomplishes nearly the same goals as the cust
 
 ```{r}
 starwars |> 
-  mutate(foo = str_to_lower(str_replace(name, "(^\\w{3}).*\\s(\\w+$)", "\\2_\\1"))) |>
+  mutate(foo = str_to_lower(str_replace(name, "(^\\w{1,3}).*[-\\s](\\w+$)", "\\2_\\1"))) |>
   select(name, foo)
 ```
 
@@ -108,9 +108,13 @@ multiply_by_two(starwars) |>
   select(height, doubled)
 ```
 
+## Data masking and indirection
+
+Data masking makes it easy and efficient to code in R/Tidyverse. But it paradoxically makes some things harder.  I recommend reading about [Tidy evaluation](
+https://dplyr.tidyverse.org/articles/programming.html) to understand the differenced between enivronment variables and data variables.
 
 ```{r}
-foo_two <- function(my_df, my_var) {
+foo_two <- function(my_df, my_var, ...) {
   mutate(my_df, doubled = {{ my_var }} * 2) |>
   select({{ my_var}}, doubled)
 }
