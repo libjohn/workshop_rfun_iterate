@@ -22,7 +22,7 @@ regex symbol | regex function
 ------------:|:--------------  
         `\d` | a digit  
         `$`  | the end of the pattern  
-        `^`  | the begining of the pattern  
+        `^`  | the beginning of the pattern  
         `\w` | a word character  
         `+`  | a multiplier:  1 or more 
         `*`  | a multiplier:  0 or more 
@@ -34,7 +34,7 @@ regex symbol | regex function
 
 ```{r}
 starwars |> 
-  select(!is.list) |>
+  select(height, name) |>
   mutate(last_height_number = str_extract(height, "\\d$")) |> 
   mutate(first_height_number = str_extract(height, "^\\d")) |> 
   relocate(height, .after = first_height_number) |>
@@ -45,7 +45,7 @@ starwars |>
   relocate(name, .after = first_name) |>
   mutate(double_consonants = str_detect(name, "tt|ll|ff|ss|bb|cc|rr|gg")) |>
   mutate(replace_dashes = if_else(str_detect(name, "-"), str_replace_all(name, "-", " FOO "), "")) |>
-  mutate(repd = str_replace_all(name, "-", " FOO "))
+  mutate(repd = str_replace_all(name, "-", " FOO "))  
   # filter(str_detect(name, regex("skywalker", ignore_case = TRUE)))
 ```
 
