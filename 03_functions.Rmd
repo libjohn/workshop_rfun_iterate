@@ -34,8 +34,8 @@ plotcars(cars)
 
 
 ```{r}
-my_hm <- starwars %>% 
-  select(height, mass) %>% 
+my_hm <- starwars |>  
+  select(height, mass) |>  
   drop_na()
 
 plotcars(my_hm)
@@ -90,7 +90,7 @@ In short, you need to use curly-curly braces (i.e. _embrace_) around the tibble'
 
 ```{r}
 make_me_a_plot <- function(df) {
-  df %>% 
+  df |>  
     ggplot(aes(height, mass)) +
     geom_point() 
 }
