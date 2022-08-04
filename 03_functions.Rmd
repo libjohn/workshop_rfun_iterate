@@ -89,13 +89,15 @@ Read more about [Data maksing, env-variables, and indirection](https://dplyr.tid
 In short, you need to use curly-curly braces (i.e. _embrace_) around the tibble's variable names when referencing those variable names within your function.
 
 ```{r}
+foo_df <- starwars
+
 make_me_a_plot <- function(df) {
   df |>  
     ggplot(aes(height, mass)) +
     geom_point() 
 }
 
-make_me_a_plot(starwars)
+make_me_a_plot(foo_df)
 ```
 
 
