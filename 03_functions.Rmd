@@ -69,7 +69,7 @@ my_key_func <- function(df) {
   select(-first_part)
 }
 
-starwars %>% 
+starwars |>  
   my_key_func() |>
   select(name, key)
 ```
