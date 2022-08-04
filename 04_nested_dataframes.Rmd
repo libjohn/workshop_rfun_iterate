@@ -70,12 +70,12 @@ starwars |>
   mutate(my_model = map(data, ~ lm(mass ~ height, data = .x))) |>
   mutate(my_tidy_model = map(my_model, broom::tidy)) |> 
   unnest(my_tidy_model) #|>
-  # filter(term != "(Intercept)") |>
-  # filter(p.value < 0.05) |>
+  # filter(term != "(Intercept)") |> 
+  # filter(p.value < 0.05) |> 
   # mutate(my_reg_plot = map(data, ~ .x |>
   #                            ggplot(aes(height, mass)) +
   #                            geom_smooth(method = lm, se = FALSE) +
-  #                            geom_point())) |>
+  #                            geom_point())) |> 
   # pull(my_reg_plot)
 ```
 
