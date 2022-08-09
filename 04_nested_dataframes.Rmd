@@ -59,7 +59,7 @@ starwars |>
 
 ### Models and mapping other functions
 
-As with other functions, you can map linear regressions -- `lm()` -- and other functions.  Once the model is embeded as a list within a data frame, you can map the `broom::tidy()` function onto the model.  Then `unnest()` the tidied _model_  and manipulate the data with standard dplyr verbs.
+As with other functions, you can map linear regressions -- `lm()` -- and other functions.  Once the model is embedded as a list within a data frame, you can map the `broom::tidy()` function onto the model.  Then `unnest()` the tidied _model_  and manipulate the data with standard dplyr verbs.
 
 ```{r}
 starwars |>
