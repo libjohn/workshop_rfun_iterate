@@ -108,7 +108,8 @@ Aside from the code above, we'll make a copy of the the lightly transformed data
 
 ```{r}
 fs::dir_create("data/census-pulse-survey_cleaned")
-write_csv(my_df_wrangled, "data/census-pulse-survey_cleaned/housing2b_week1.csv")
+write_csv(my_df, "data/census-pulse-survey_cleaned/housing2b_week1.csv")
+write_csv(my_df_wrangled, "data/census-pulse-survey_cleaned/education_housing2b_week1.csv")
 # fs::dir_delete("data/excel")
 ```
 
