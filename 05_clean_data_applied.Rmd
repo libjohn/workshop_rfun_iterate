@@ -45,19 +45,19 @@ my_df <- read_xlsx("data/excel/housing2b_week1.xlsx",
 
 my_df_varnames <- read_xlsx("data/excel/housing2b_week1.xlsx", 
                             sheet = "NC",
-                            skip = 4)
+                            skip = 4, n_max = 2)
 
 chart_metadata <- read_xlsx("data/excel/housing2b_week1.xlsx", 
                             sheet = "NC",
                             n_max = 3,
-                            col_names = FALSE) %>% 
+                            col_names = FALSE) |> 
   pull(1)
 
 chart_title <- chart_metadata[1]
 chart_source <- chart_metadata[2]
 chart_subtitle <- chart_metadata[3]
 
-my_df <- my_df %>%
+my_df <- my_df |>
   janitor::clean_names()
 
 glimpse(my_df)
@@ -79,18 +79,20 @@ my_levels <- rev(c("No confidence",	"Slight confidence", "Moderate confidence",
 my_educ_levels <- c("Less than high school", "High school or GED", 
                     "Some college/associate’s degree", "Bachelor’s degree or higher")
 
-my_df %>% 
-  filter(select_characteristics != "Total") %>% 
-  mutate(sub_group = if_else(is.na(total), select_characteristics, NA_character_)) %>% 
-  fill(sub_group, .direction = "down") %>% 
-  relocate(sub_group) %>% 
-  drop_na(total) %>% 
-  filter(sub_group == "Education") %>% 
-  mutate(across(total:last_col(), ~ as.numeric(.x))) %>% 
-  pivot_longer(`No confidence`:`Did not report`, names_to = "my_category") %>%
-  group_by(sub_group, select_characteristics, my_category) %>% 
-  summarise(totals = sum(value, na.rm = TRUE)) %>% 
-  mutate(my_category = fct_relevel(my_category, my_levels)) %>%
+my_df_wrangled <- my_df |> 
+  filter(select_characteristics != "Total") |> 
+  mutate(sub_group = if_else(is.na(total), select_characteristics, NA_character_)) |> 
+  fill(sub_group, .direction = "down") |> 
+  relocate(sub_group) |> 
+  drop_na(total) |> 
+  filter(sub_group == "Education") |> 
+  mutate(across(total:last_col(), ~ as.numeric(.x))) |> 
+  pivot_longer(`No confidence`:`Did not report`, names_to = "my_category") |>
+  group_by(sub_group, select_characteristics, my_category) |> 
+  summarise(totals = sum(value, na.rm = TRUE)) |> 
+  mutate(my_category = fct_relevel(my_category, my_levels))
+
+my_df_wrangled |>
   ggplot(aes(totals, my_category)) +
   geom_col() +
   scale_x_continuous(labels = scales::label_comma(scale_cut = scales::cut_short_scale())) +  
@@ -106,7 +108,7 @@ Aside from the code above, we'll make a copy of the the lightly transformed data
 
 ```{r}
 fs::dir_create("data/census-pulse-survey_cleaned")
-write_csv(my_df, "data/census-pulse-survey_cleaned/housing2b_week1.csv")
+write_csv(my_df_wrangled, "data/census-pulse-survey_cleaned/housing2b_week1.csv")
 # fs::dir_delete("data/excel")
 ```
 

@@ -1,0 +1,25 @@
+sub_group,select_characteristics,my_category,totals
+Education,Bachelor’s degree or higher,Did not report,0
+Education,Bachelor’s degree or higher,High confidence,293197
+Education,Bachelor’s degree or higher,Moderate confidence,49940
+Education,Bachelor’s degree or higher,No confidence,16893
+Education,Bachelor’s degree or higher,Payment is/will be deferred,1162
+Education,Bachelor’s degree or higher,Slight confidence,34950
+Education,High school or GED,Did not report,0
+Education,High school or GED,High confidence,223800
+Education,High school or GED,Moderate confidence,372713
+Education,High school or GED,No confidence,44211
+Education,High school or GED,Payment is/will be deferred,0
+Education,High school or GED,Slight confidence,98129
+Education,Less than high school,Did not report,0
+Education,Less than high school,High confidence,44132
+Education,Less than high school,Moderate confidence,24292
+Education,Less than high school,No confidence,30294
+Education,Less than high school,Payment is/will be deferred,0
+Education,Less than high school,Slight confidence,141844
+Education,Some college/associate’s degree,Did not report,0
+Education,Some college/associate’s degree,High confidence,306830
+Education,Some college/associate’s degree,Moderate confidence,198110
+Education,Some college/associate’s degree,No confidence,59711
+Education,Some college/associate’s degree,Payment is/will be deferred,6895
+Education,Some college/associate’s degree,Slight confidence,76435
