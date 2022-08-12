@@ -48,7 +48,7 @@ starwars |>
 
 Adding titles to the plots requires the `group_by()` function
 
-```{r}
+```{r, warning=TRUE}
 starwars |> 
   group_by(gender) |>
   nest(my_df = -gender) |> 
@@ -68,14 +68,14 @@ starwars |>
   mutate(my_plot = map(data, make_me_a_plot)) |>
   mutate(my_plott = map(my_plot, ~ .x + labs(title = sex))) |> 
   mutate(my_model = map(data, ~ lm(mass ~ height, data = .x))) |>
-  mutate(my_tidy_model = map(my_model, broom::tidy)) |> 
-  unnest(my_tidy_model) |>
-  filter(term != "(Intercept)") |>
-  filter(p.value < 0.05) |>
-  mutate(my_reg_plot = map(data, ~ .x |>
-                             ggplot(aes(height, mass)) +
-                             geom_smooth(method = lm, se = FALSE) +
-                             geom_point())) |>
-  pull(my_reg_plot)
+  mutate(my_tidy_model = map(my_model, broom::tidy)) #|> 
+  # unnest(my_tidy_model) |>
+  # filter(term != "(Intercept)") |>
+  # filter(p.value < 0.05) |>
+  # mutate(my_reg_plot = map(data, ~ .x |>
+  #                            ggplot(aes(height, mass)) +
+  #                            geom_smooth(method = lm, se = FALSE) +
+  #                            geom_point())) |>
+  # pull(my_reg_plot)
 ```
 
