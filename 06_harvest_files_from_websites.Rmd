@@ -53,19 +53,19 @@ my_results <- read_html(my_url)
 Crawl the target webpages to gather a list of URLs for files that may be download
 
 ```{r}
-link_text <- my_results %>% 
-  html_nodes(".uscb-title-3") %>% 
+link_text <- my_results |> 
+  html_nodes(".uscb-title-3") |> 
   html_text2()
 
-link_url <- my_results %>% 
-  html_nodes("a.uscb-list-item") %>% 
+link_url <- my_results |> 
+  html_nodes("a.uscb-list-item") |> 
   html_attr("href")
   
 
-my_crawl <- tibble(link_text, link_url, base_url) %>% 
-  filter(str_detect(link_text, "Household Pulse Survey:")) %>% 
-  unite(full_url, base_url, link_url, remove = TRUE, sep = "") %>% 
-  mutate(full_url = str_replace(full_url, 'gov//data', 'gov/data')) %>% 
+my_crawl <- tibble(link_text, link_url, base_url) |> 
+  filter(str_detect(link_text, "Household Pulse Survey:")) |> 
+  unite(full_url, base_url, link_url, remove = TRUE, sep = "") |> 
+  mutate(full_url = str_replace(full_url, 'gov//data', 'gov/data')) |> 
   relocate(full_url)
 my_crawl
 ```
@@ -76,17 +76,17 @@ Use `map()` with `nest()`, `Sys.sleep()` and `libary(rvest)` to gather the targe
 
 ```{r}
 crawl_results <- 
-  my_crawl %>% 
-  slice(1:6) %>% 
-  # select(link_text_1, full_url) %>% 
-  nest(parenturl = -link_text) %>% 
+  my_crawl |> 
+  slice(1:6) |> # limit the source data due to timing constraints in a workshop
+  # select(link_text_1, full_url) |> 
+  nest(parenturl = -link_text) |> 
   mutate(my_rawhtml = map(parenturl, ~ {
     Sys.sleep(2)    ## DO THIS.  Pause 2 seconds between each file.  ##
-    .x %>%
-      pull(full_url) %>% 
-      read_html() %>% 
-      html_nodes("a") %>%
-      html_attr("href") %>% 
+    .x |>
+      pull(full_url) |> 
+      read_html() |> 
+      html_nodes("a") |>
+      html_attr("href") |> 
       tibble() 
     }))
 ```
@@ -94,11 +94,11 @@ crawl_results <-
 Subset the list of downloadable files to only the `housing2b` files.
 
 ```{r}
-download_target_urls <- crawl_results %>% 
-  unnest(my_rawhtml) %>% 
-  rename(rawhtml = 3) %>% 
-  filter(str_detect(rawhtml, "housing2b")) %>% 
-  mutate(download_xworkbook_url = str_glue("https:{rawhtml}") ) %>% 
+download_target_urls <- crawl_results |> 
+  unnest(my_rawhtml) |> 
+  rename(rawhtml = 3) |> 
+  filter(str_detect(rawhtml, "housing2b")) |> 
+  mutate(download_xworkbook_url = str_glue("https:{rawhtml}") ) |> 
   mutate(my_filename = fs::path_file(rawhtml)) 
 download_target_urls
 ```
@@ -118,7 +118,7 @@ walk2(download_target_urls$download_xworkbook_url,
 What files did I just download?
 
 ```{r}
-fs::dir_ls("data/xl_workbooks") %>% 
+fs::dir_ls("data/xl_workbooks") |> 
   enframe()
 ```
 
@@ -144,7 +144,7 @@ getcolnames[1] <- "select_characteristics"
 getcolnames[2] <- "total"
 
 # Get a plot title that I will use later.
-table_title <- read_excel(my_files[1], range = "A1:A1", col_names = FALSE) %>% 
+table_title <- read_excel(my_files[1], range = "A1:A1", col_names = FALSE) |> 
   pull(1)
 ```
 
@@ -157,14 +157,14 @@ I found it convenient to use a _for_ loop in combination with `purrr::map`.  The
 my_df_build <- tibble()  
 
 for(i in 1:length(my_files)) {
-  my_iterate_df <-   my_files[i] %>%
-    excel_sheets() %>% 
+  my_iterate_df <-   my_files[i] |>
+    excel_sheets() |> 
     set_names() %>% 
     grep("[NS]C", ., value = TRUE)  %>% 
     map_df(., ~ read_excel(my_files[i], sheet = .x, 
                            range = "A8:J132",
-                           col_names = FALSE), .id = "sheet") %>% 
-    mutate(file = my_files[i]) %>% 
+                           col_names = FALSE), .id = "sheet") |> 
+    mutate(file = my_files[i]) |> 
     relocate(file, .before = sheet)
 
   my_df_build <- bind_rows(my_df_build, my_iterate_df)
@@ -239,17 +239,17 @@ make_barblot <- function(my_df, xaxis, yaxis, my_facet, ...) {
 ### Generate a bunch of plots
 
 ```{r}
-my_df <- my_df_build %>%
-  wrangle_df() %>% 
-  nest(data = -c(sub_group, file, sheet)) %>% 
+my_df <- my_df_build |>
+  wrangle_df() |> 
+  nest(data = -c(sub_group, file, sheet)) |> 
   mutate(myplot = map(data, make_barblot, 
-                      my_category, totals, select_characteristics)) %>% 
-  mutate(plot_title = fs::path_file(file)) %>%
+                      my_category, totals, select_characteristics)) |> 
+  mutate(plot_title = fs::path_file(file)) |>
   mutate(myplot = map(myplot, ~ .x + labs(
     title = str_wrap(table_title, 80),
     subtitle = str_glue("subset by {sheet} {sub_group}"),
     caption = str_glue("Source: U.S. Census Bureau Household Pulse Survey - {plot_title}"),
-    x = "", y = ""))) %>% 
+    x = "", y = ""))) |> 
   mutate(filename_title = str_glue("output/{fs::path_ext_remove(plot_title)}_{sheet}.svg"))
 
 my_df
