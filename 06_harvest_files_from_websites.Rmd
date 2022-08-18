@@ -181,16 +181,15 @@ Making vectors of character data can be useful to writing clear code.
 
 ```{r}
 my_levels_categories <- 
-  rev(c("No at all confident",
-        "Slightly confident",
+  rev(c("Highly confident",
         "Moderately confident",
-        "Highly confident",
+        "Slightly confident",
+        "No at all confident",
         "Payment is/will be deferred", 
-        "Did not report",
-        "total",
-        "Occupied without rent",
-        "Did not report to tenure"
-  ))
+        # "total",
+        # "Occupied without rent",
+        # "Did not report to tenure"
+        "Did not report"))
 
 remove_from_table <- c("total",
                        "Occupied without rent",
