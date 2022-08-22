@@ -110,9 +110,9 @@ imdb_names_df <- read_tsv("data/name.basics.tsv.gz", n_max = 1000) %>%
 imdb_names_df
 ```
 
-## Multi-value fields
+## Multivalue fields
 
-Introducing `separate_rows` and `separate()`, plus a very early view at using a regular expression, or regex to find patterns in text. In this case, counting the commas in a multi-value field.
+Introducing `separate_rows` and `separate()`, plus a very early view at using a regular expression, or regex to find patterns in text. In this case, counting the commas in a multivalue field.
 
 ```{r}
 imdb_names_df %>% 
