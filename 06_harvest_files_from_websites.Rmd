@@ -76,8 +76,8 @@ Use `map()` with `nest()`, `Sys.sleep()` and `libary(rvest)` to gather the targe
 
 ```{r}
 crawl_results <- 
-  my_crawl |> 
-  slice(1:7) |> # limit the source data due to timing constraints in a workshop
+  my_crawl |> filter(str_detect(full_url, "hhp4[1-6]")) |> # the filter statement imposed to coerce consistent workshop experience.
+  slice_tail(n = 6) |>   # slice(1:7) |> # limit the source data due to timing constraints in a workshop
   # select(link_text_1, full_url) |> 
   nest(parenturl = -link_text) |> 
   mutate(my_rawhtml = map(parenturl, ~ {
