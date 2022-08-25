@@ -26,7 +26,3 @@ uniting variable values, and nesting data.
     <https://oliviergimenez.github.io/tidyverse-tips/>  
 -   [The complications of privacy and research with scraped
     data](https://reallifemag.com/fair-game/)
-
-------------------------------------------------------------------------
-
-jrl

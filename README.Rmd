@@ -30,5 +30,4 @@ Practical R/data-wrangling **Tips** and **Tricks**: custom functions, regex, and
 - these awesome tips https://oliviergimenez.github.io/tidyverse-tips/  
 - [The complications of privacy and research with scraped data](https://reallifemag.com/fair-game/)
 
----
-jrl  
+ 
