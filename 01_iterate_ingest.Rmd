@@ -102,10 +102,10 @@ The `janitor` packages has a handy function: `clean_names()`. This helps keep yo
 imdb_df <- read_tsv("data/title.ratings.tsv.gz", n_max = 1000)
 imdb_df
 
-imdb_df %>% 
+imdb_df |> 
   janitor::clean_names()
 
-imdb_names_df <- read_tsv("data/name.basics.tsv.gz", n_max = 1000) %>% 
+imdb_names_df <- read_tsv("data/name.basics.tsv.gz", n_max = 1000) |>  
   janitor::clean_names()
 imdb_names_df
 ```
@@ -115,12 +115,12 @@ imdb_names_df
 Introducing `separate_rows` and `separate()`, plus a very early view at using a regular expression, or regex to find patterns in text. In this case, counting the commas in a multivalue field.
 
 ```{r}
-imdb_names_df %>% 
-  separate_rows(primary_profession) %>% 
+imdb_names_df |> 
+  separate_rows(primary_profession) |> 
   count(primary_name, sort = TRUE)
 
-imdb_names_df %>% 
-  mutate(prolficacy = str_count(known_for_titles, ",") + 1) %>% 
+imdb_names_df |> 
+  mutate(prolficacy = str_count(known_for_titles, ",") + 1) |> 
   separate(known_for_titles, into = c("foo_1", "foo_2", "foo_3", "foo_4"), sep = ",")
 ```
 
@@ -131,8 +131,8 @@ The process of using separate_rows has the effect of making the tibble **tall** 
 ```{r}
 imdb_names_df
 
-imdb_names_df %>% 
-  separate_rows(primary_profession, sep = ",") %>% 
+imdb_names_df |> 
+  separate_rows(primary_profession, sep = ",") |> 
   ggplot(aes(y = fct_rev(fct_infreq(primary_profession)))) +
   geom_bar()
 ```
