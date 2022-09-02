@@ -54,7 +54,7 @@ starwars |>
   nest(my_df = -gender) |> 
   mutate(my_plot = map(my_df, make_me_a_plot)) |> 
   mutate(my_plot_with_title = map(my_plot, ~ .x + ggtitle(gender))) |>
-  pull(my_plot_with_title)
+  pull(my_plot_with_title)                     # This can be executed more elegantly with map2(). See Below.
 ```
 
 ### Models and mapping other functions
@@ -77,5 +77,40 @@ starwars |>
   #                            geom_smooth(method = lm, se = FALSE) +
   #                            geom_point())) |>
   # pull(my_reg_plot)
+```
+
+
+## `map2()` - Iterating over more than a single parallel vector
+
+In the section about mapping custom functions, I use the `group_by()`, `nest()` and `map()` functions to generate plots with titles.  the `.x` pronoun refers to the object I want to iterate over.  That code works fine even if it's a little verbose.  It also demonstrates the value of additional {purrr} functions.  `map2()` iterates over two vectors in parallel. Similarly, `pmap()` iterates over a list of multiple vectors.  
+
+In the case of `map2()` the two vectors of a parent data-frame can be referred to by the pronouns `.x` and `.y`.  So, one vector is the title of the plot (`.y`), the other vector (`.x`) is the list-column tibble that contains the x-axis and y-axis vectors generating a scatter plot for each nested tibble.
+
+Essentially, coding with `map2()` creates the scatter plots with a bit less code
+
+```{r}
+starwars |> 
+  nest(my_df = -gender) |> 
+  mutate(my_plot = map2(my_df, gender, ~ .x |> 
+                          ggplot(aes(height, mass)) +
+                          geom_point() + 
+                          ggtitle(.y))) |>
+  pull(my_plot)  
+```
+
+Of course, the anonymous function can be written as a named function, making the code even more readable
+
+```{r}
+splot_title <- function(my_nested_df, my_title) {
+  my_nested_df |> 
+    ggplot(aes(height, mass)) +
+    geom_point() +
+    ggtitle(my_title)
+}
+
+starwars |> 
+  nest(my_df = -gender) |> 
+  mutate(my_plot = map2(my_df, gender, splot_title)) |>
+  pull(my_plot)  
 ```
 
