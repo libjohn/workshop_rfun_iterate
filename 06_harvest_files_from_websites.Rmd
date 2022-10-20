@@ -54,8 +54,8 @@ Crawl the target webpages to gather a list of URLs for files that may be downloa
 
 ```{r}
 link_text <- my_results |> 
-  html_nodes(".uscb-title-3") |> 
-  html_text2()
+  html_nodes(".uscb-heading-2") |> # .uscb-heading-2 | .uscb-title-3
+  html_text()
 
 link_url <- my_results |> 
   html_nodes("a.uscb-list-item") |> 
