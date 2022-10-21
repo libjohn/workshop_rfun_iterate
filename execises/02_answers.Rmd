@@ -1,0 +1,60 @@
+---
+title: "Exercise 02"
+subtitle: "pattern matching with regex and {stringr} ; case_when()"
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+my_regex_df <- tribble(
+  ~words,
+  "eugenia005",
+  "fred01",
+  "lillian8372",
+  "sukie64"
+)
+
+my_regex_df
+```
+
+Separate `words` into `names` and `id`.
+Remember the helpful, two-page {stringr} regex cheat sheet:  https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf
+
+```{r}
+my_regex_df <- my_regex_df |> 
+  mutate(id = str_extract(words, "\\d+$")) |> 
+  mutate(names = str_extract(words, "^\\D+"))
+my_regex_df
+  
+```
+
+Convert `names` to title case
+
+```{r}
+my_regex_df |> 
+  mutate(names = str_to_title(names))
+```
+
+Want more practice with regex?  Try https://regex101.com/  Be aware the regular expressions will not be identical but similar to how they are expressed in R.  See the stringr cheatsheet to translate into R.
+
+
+## case_when
+
+Make a new variable, `height_category`, that categorizes the height of `starwars` characters into "short", "medium", and "tall".  Use the `case_when()` function.  Hint:  See the complex combination example for the `dplyr::case_when()` documentation at https://dplyr.tidyverse.org/reference/case_when.html#ref-examples
+
+
+
+```{r}
+starwars |> 
+  select(name, height) |> 
+  mutate(height_category = case_when(
+    height >  190 ~ "tall",
+    height <= 167 ~ "short",
+    TRUE ~ "medium"
+  )) 
+```
+

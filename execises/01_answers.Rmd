@@ -1,0 +1,50 @@
+---
+title: "Exercise 01"
+subtitle: "Import compressed data; tidy names; unite multiple columns; separate multi-value fields; pivot long"
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+1. Import "data/title.ratings.tsv.gz"  
+
+
+```{r}
+my_tsv_df <- read_tsv("../data/title.ratings.tsv.gz") ; my_tsv_df
+```
+
+tidy the variable names with `janitor::clean_names()`
+
+```{r}
+my_tsv_df |> 
+  janitor::clean_names()
+```
+Unite the `average_rating` and `num_votes` fields into `combined_variable` consisting of a forward-slash `/` value-separator.  Slice the first 100 rows and assign into a tibble named `my_united_df`
+
+```{r}
+my_united_df <- my_tsv_df |> 
+  janitor::clean_names() |> 
+  unite("combined_variable", c(average_rating, num_votes), sep = "/") |> 
+  slice(1:100)
+my_united_df
+```
+
+Separate the rows of the `combined_variable` in `my_united_df`.  How many rows make up this new tibble?  convert `combined_variable` into a numeric vector
+
+
+```{r}
+my_united_df |> 
+  separate_rows(combined_variable) |> 
+  mutate(combined_variable = as.numeric(combined_variable))
+```
+
+In this case, the previous two operations would be simpler with `pivot_longer()`
+
+```{r}
+my_tsv_df |> 
+  janitor::clean_names() |> 
+  pivot_longer(cols = average_rating:num_votes, names_to = "var_type")
+```
+
