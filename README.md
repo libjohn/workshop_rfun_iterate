@@ -9,6 +9,11 @@ data-scraping, ingesting multiple files, transforming messy data into
 tidy data, quickly cleaning column names, separating multivalue fields,
 uniting variable values, and nesting data.
 
+## mybinder container
+
+[![Launch Rstudio
+Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/libjohn/workshop_rfun_iterate/main?urlpath=rstudio)
+
 ## Applied topics
 
 -   File handling: ingesting multiple CSV files ; multivalue fields  
@@ -26,3 +31,8 @@ uniting variable values, and nesting data.
     <https://oliviergimenez.github.io/tidyverse-tips/>  
 -   [The complications of privacy and research with scraped
     data](https://reallifemag.com/fair-game/)
+
+## License
+
+CC-BY 4.0 [Attribution 4.0 International (CC BY
+4.0)](https://creativecommons.org/licenses/by/4.0/)
