@@ -338,7 +338,7 @@
 <h2>Links / urls for today</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div class="countdown" id="timer_c503293d" data-update-every="1" tabindex="0" style="top:1;right:0;">
+<div class="countdown" id="timer_9afa6f49" data-update-every="1" tabindex="0" style="top:1;right:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -384,7 +384,10 @@
 <img data-src="images/who_are_we.svg" class="r-stretch"></section>
 <section id="outline" class="slide level2">
 <h2>Outline</h2>
-<p>Case study demonstration of iterating with custom functions. The case-study goal is data cleaning that involves web scraping, interaction with the local file system (LFS), and general data wrangling.</p>
+<p>Case study demonstration of iterating with custom functions.</p>
+<p><br></p>
+<p>The case-study goal is data cleaning that involves web scraping, interaction with the local file system (LFS), and general data wrangling.<br>
+<br></p>
 <p>In this case study, we will data-scrape and download about five excel workbooks files from a US Census web page (the Census pulse survey). Each workbook consists of approximately 51 worksheets, one for each state and DC.</p>
 </section>
 <section id="outline-continued" class="slide level2">
@@ -394,10 +397,10 @@
 <li><p>download data</p></li>
 <li><p>import the data into R</p></li>
 <li><p>wrangle, clean, and normalize data</p></li>
-<li><p>Make one big data frame</p></li>
+<li><p>bind into one big data frame</p></li>
 <li><p>subset the data for two states (i.e.&nbsp;two worksheets) from each workbook</p></li>
 <li><p>further subset the data for one category of data from the Census pulse survey</p></li>
-<li><p>generate ten faceted bar-graphs using ggplot2, and save those images back to the LFS</p></li>
+<li><p>generate faceted bar-graphs using ggplot2 (one for each worksheet), and export those images back to the LFS</p></li>
 <li><p>along the way we’ll use regex to find string patterns</p></li>
 </ul>
 </div>
@@ -410,19 +413,19 @@
 <ul>
 <li>“Functional Programming is an approach to replace iterative FOR loops – tidymodels book club</li>
 <li>Rule of thumb: <em>Do anything more than three-times: compose a function</em></li>
-<li>The tidyverse approach prefers <strong>tall</strong> data formats and <strong>data frames</strong> (contrast with wide data frames or lists). Purrr iteration leverages this convention.</li>
+<li>The Tidyverse approach prefers <strong>tall</strong> data formats and <strong>data frames</strong> (contrast with wide data frames or lists). Purrr iteration leverages this convention.</li>
 </ul></li>
 </ul>
 </section>
 <section id="motivation-continued" class="slide level2">
 <h2>Motivation (continued)</h2>
 <div style="font-size: 0.9em">
-<p>Recursive Iteration takes some getting used to</p>
+<p>Recursive iteration takes some getting used to</p>
 <ul>
-<li>Most people have heard of <strong>For loops</strong> for controlling the flow of the language. Instead of a for loop, we’re going to use {purrr} which uses the <code>map()</code> functions. (Similar to <code>lapply</code>, <code>mapply</code>, <code>sapply</code>)</li>
+<li>Most people have heard of <strong>FOR loops</strong> for controlling flow. Instead of a FOR loop, we’re going to use {purrr} which uses the <code>map()</code> functions. (Similar to <code>lapply</code>, <code>mapply</code>, <code>sapply</code>)</li>
 <li>FOR LOOPS ARE FINE ; The Tidyverse way is easier</li>
 <li><strong>Tidyverse means</strong> tall data in a data frame, looping is done by going 1-row-at-a-time over your <strong>data frame</strong></li>
-<li>If you prefer base-R and the list data-type, you can still use all those functions. I will be focusing the iconic tidyverse approach (à la <em>pythonic</em> approach in python)</li>
+<li>If you prefer, you can still use base-R, FOR loops, the apply functions, and list data-types. I will be focusing the iconic Tidyverse approach (à la <em>pythonic</em> approach in Python)</li>
 </ul>
 </div>
 </section>
@@ -435,22 +438,24 @@
 <li>Along the way we’re gong to learn some lesser known <em>dplyr</em> functions and techniques that apply to many data wrangling needs.</li>
 <li><code>unite</code>, <code>pivot</code>, <code>separate</code>, <code>separate_rows</code></li>
 </ul></li>
-<li>Introduce the stringr package to leverage regular expressions, or regex. (finding patterns in strings)</li>
-<li>Compose Custom functions; Introduce tidy evaluation, indirection, data masking, data variables and environment variables</li>
-<li>Nesting list columns of data frames. Use <code>purrr::map</code> to apply custom functions to each row of a parent data frame</li>
+<li>Introduce the {stringr} package to leverage regular expressions, or regex. (finding patterns in strings)</li>
+<li>Compose <em>custom</em> functions; Introduce tidy evaluation, indirection, data masking, data variables and environment variables</li>
+<li>Nest list columns of data frames. Use <code>purrr::map</code> to apply custom functions as a row-wise operation on a data frame</li>
 <li>Devise a strategy to manipulate a single excel workbook</li>
-<li>Map the procedures to a set of Census survey data in multiple Excel workbook files.</li>
+<li>Map the procedures to a set of Census survey data found in multiple Excel workbook files.</li>
 </ol>
 </div>
 </section>
 <section id="learing-in-this-workshop" class="slide level2">
 <h2>Learing in this workshop</h2>
 <ul>
-<li>Aim questions at presented material.<br>
+<li>Aim questions at presented material<br>
 </li>
-<li>Schedule me for one-on-one consultations.</li>
+<li>Schedule me for one-on-one consultations</li>
 </ul>
-<p>The best way to learn R it to take simple atomic problems with data that you know, and analyses that are familiar to you, then replicate the analysis in R. But, doing these things with familiar data is not always possible in a big diverse group. I invite you to schedule me for consultations.</p>
+<p>A great way to <em>learn</em> R is to take simple atomic problems perfected with other tools and replicate. ie. keep it simple; use with familiar data; use familiar analyses.</p>
+<p><br></p>
+<p>Using familiar data and analysis is not always possible in a diverse group or in a workshop setting. I invite you to schedule me for consultations.</p>
 </section>
 <section id="post-workshop-survey" class="slide level2">
 <h2>Post workshop survey</h2>
@@ -461,6 +466,7 @@
 <p>Data Science Librarian<br>
 Center for Data &amp; Visualization Sciences<br>
 Duke University Libraries</p>
+<p><br></p>
 <div style="font-size: 0.65em">
 <p>https://johnlittle.info<br>
 https://Rfun.library.duke.edu<br>
