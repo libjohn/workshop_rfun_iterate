@@ -175,6 +175,9 @@ names(my_df_build)[3:12] <- getcolnames
 # names(my_df_build)
 ```
 
+Improve this code?  Absolutely.  At the almost-bottom of this code see the above code-chunk optimized using the `map2()`  function
+
+
 ### Useful vectors
 
 Making vectors of character data can be useful to writing clear code.  
@@ -259,6 +262,42 @@ my_df |>
 fs::dir_create("output")
 walk2(my_df$filename_title, my_df$myplot, ggsave)
 ```
+
+## map2
+
+In the For loop section above, I combined a for loop with the `map()` function.  However, it's helpful to understand the map function has variants that allow you to more efficiently iterate over multiple arguments.  Thus, the map() and for loop code can be written more succinctly.  After importing all the data, 
+
+```{r}
+my_map2_df <- my_files |> 
+  enframe() |> 
+  mutate(sheet = map(value, excel_sheets)) |> 
+  mutate(sheet = map(sheet, set_names)) |> 
+  unnest(sheet) |> 
+  rename(file = name) |> 
+  filter(str_detect(sheet, "[NS]C")) |> 
+  mutate(myXLtbl = map2(file, sheet, read_excel, range = "A8:J132", col_names = FALSE)) |> 
+  unnest(myXLtbl) |> 
+  select(-value) 
+
+names(my_map2_df)[3:12] <- getcolnames
+
+my_map2_df |> 
+  wrangle_df() |> 
+  nest(data = -c(sub_group, file, sheet)) |> 
+  mutate(myplot = map(data, make_barblot, 
+                      my_category, totals, select_characteristics)) |> 
+  mutate(plot_title = fs::path_file(file)) |>
+  mutate(myplot = map(myplot, ~ .x + labs(
+    title = str_wrap(table_title, 80),
+    subtitle = str_glue("subset by {sheet} {sub_group}"),
+    caption = str_glue("Source: U.S. Census Bureau Household Pulse Survey - {plot_title}"),
+    x = "", y = ""))) |> 
+  mutate(filename_title = str_glue("output/{fs::path_ext_remove(plot_title)}_{sheet}.svg")) |> 
+  pull(myplot)
+```
+
+
+
 ## Delete the downloaded files
 
 Normally, I personally avoid using code to delete files in a directory.  However, the chunk below can be used to keep the size of the project as small as possible.  Since the code-chunk is set to `eval=FALSE`, this code chunk will not run unless you run it manually.
