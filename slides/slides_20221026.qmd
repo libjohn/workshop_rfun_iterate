@@ -8,7 +8,7 @@ logo: images/Rfun_logo.png
 footer: "CC-BY 4.0 | October 26, 2022 | Rfun.library.duke.edu"
 license: "CC-BY 4.0"
 format: revealjs
-editor: visual
+editor: source
 ---
 
 ## Links / urls for today
@@ -134,18 +134,18 @@ Using familiar data and analysis is not always possible in a diverse group or in
 
 ## Post workshop survey
 
-https://forms.gle/MmrzadXkq5TMHBqv5  
+https://forms.gle/MmrzadXkq5TMHBqv5
 
 ## John R Little
 
-Data Science Librarian  
-Center for Data & Visualization Sciences  
-Duke University Libraries  
+Data Science Librarian\
+Center for Data & Visualization Sciences\
+Duke University Libraries
 
 <br/>
 
 ::: {style="font-size: 0.65em"}
-https://johnlittle.info  
-https://Rfun.library.duke.edu  
-https://library.duke.edu/data  
+https://johnlittle.info\
+https://Rfun.library.duke.edu\
+https://library.duke.edu/data
 :::

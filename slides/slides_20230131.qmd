@@ -1,0 +1,192 @@
+---
+title: "R for data science"
+subtitle: "Custom functions and iteration"
+
+author: 
+  - name: John R Little
+    affiliations:
+      - name: Duke University
+      - department: Center for Data & Vizualization Sciences
+
+date: 'today'
+# date-modified: 'today'
+date-format: long
+
+logo:  images/Rfun_logo.png
+
+format: 
+  revealjs: 
+    theme: [solarized, mystyles/custom.scss]
+    footer: "CC BY 4.0 John R Little"
+    license: CC BY
+
+editor: source  
+---
+
+## URLs for today
+
+```{r}
+#| echo: false
+countdown::countdown(minutes = 15, seconds = 00)
+```
+
+I will post URLS in chat once we get started
+
+<!-- ::: {style="font-size: 0.6em"} -->
+
+- [**GH code repo**](https://github.com/libjohn/workshop_rfun_iterate): 
+    - https://github.com/libjohn/workshop_rfun_iterate
+    - Slides are in the GH repo.  
+
+- [YouTube playlist](https://www.youtube.com/watch?v=PrUnbYlC1kY&list=PLIUcX1JrVUNWW7RgPh9ysmJM3mBpIAlYG)
+
+<!-- ::: -->
+
+### Prerequisites
+
+Familiarity with R/RStudio/Tidyverse
+
+::: {.mediumtext}
+You may refer to earlier [Rfun](https://Rfun.library.duke.edu) workshops (code, video, slides, data)
+
+See: Rfun *quickStart* ★ https://rfun.library.duke.edu/portfolio/r_flipped
+:::
+
+## Land Acknowledgement
+
+[I would like to take a moment to honor the land in Durham, NC. Duke University sits on the ancestral lands of the Shakori, Eno and Catawba people. This institution of higher education is built on land stolen from those peoples. These tribes were here before the colonizers arrived. Additionally this land has borne witness to over 400 years of the enslavement, torture, and systematic mistreatment of African people and their descendants. Recognizing this history is an honest attempt to breakout beyond persistent patterns of colonization and to rewrite the erasure of Indigenous and Black peoples. There is value in acknowledging the history of our occupied spaces and places. I hope we can glimpse an understanding of these histories by recognizing the origins of collective journeys.]{.mediumtext}
+
+## Who are we {visibility="hidden"}
+
+nothing to see here
+
+## Setup
+
+R is a functional programming language that yields a powerful approach to iteration.\
+\
+[This workshop is a case study. **TODAY, in parts 3 and 4 we will demonstrate custom functions and iteration (purrr::map).**]{.mediumtext}\
+
+[Not today,]{.muted .mediumtext} [but by end of section 6, you will see a complete data project that leverages R as a key tool in a reproducible data project.  Together, the six parts show how functional programming in R works in all aspects of a data project including downloading, cleaning, and visualizing census data from a select subset of excel worksheets within workbooks released periodically by the US Census Bureau. The process will include steps such as file management (part 1), regular expression (part 2), and web scraping (part 6).  ]{.mediumtext}
+
+## 4 parts coding + 2 parts case study
+
+::: {.mediumtext}
+1.  **Iterate with vectorized functions** (`read_csv()`): import
+    -   [Along the way we're gong to learn some lesser known *dplyr* functions and techniques that apply to many data wrangling needs.]{.muted}
+    -   [`unite`, `pivot`, `separate`, `separate_rows`]{.muted}
+2.  Introduce the {stringr} package to leverage regular expressions, or regex. [(finding patterns in strings)]{.muted}
+3.  **Compose *custom* functions**: [Introduce tidy evaluation, indirection, data masking, data variables and environment variables]{.muted}
+4.  **Nest list columns of data frames**. [Use `purrr::map` to apply custom functions as a row-wise operation on a data frame]{.muted}
+5.  [Devise a strategy to manipulate a single excel workbook]{.muted}
+6.  [Map the procedures to a set of Census survey data found in multiple Excel workbook files.]{.muted}
+:::
+
+## Workshop videos {visibility="hidden"}
+
+Supporting [videos for this case study workshop](https://www.youtube.com/watch?v=PrUnbYlC1kY&list=PLIUcX1JrVUNWW7RgPh9ysmJM3mBpIAlYG) are available
+
+The [code can be distributed from GitHub](https://github.com/libjohn/workshop_rfun_iterate)
+
+## R Assumptions
+
+- Everything in R is a **function**,<br/>
+or a **data structure**: vector, list, or matrix
+
+- Data frames are specialized lists consisting of vectors
+
+- The Tidyverse has a strong preference for data frames (aka tibbles)
+
+## Iteration
+
+- We want to **act** on data, row by row, within a data frame
+
+- **Act**ions are typically functions made available from a package library (e.g. `dplyr::filter()`, ggplot2, `stats::lm()`, etc.)
+
+    - [We can compose customized functions]{.mediumtext}
+    - [Rule of Thumb:  Compose a custom function any time you perform an action more than three times]{.muted .mediumtext}
+
+- Functional programming languages ~= iterate efficiently without FOR loops [(purrr::map)]{.muted}
+
+
+## Outline {visibility="hidden"}
+
+Case study demonstration of iterating with custom functions.
+
+<br/>
+
+The case-study goal is data cleaning that involves web scraping, interaction with the local file system (LFS), and general data wrangling.\
+<br/>
+
+In this case study, we will data-scrape and download about five excel workbooks files from a US Census web page (the Census pulse survey). Each workbook consists of approximately 51 worksheets, one for each state and DC.
+
+## Outline (continued) {visibility="hidden"}
+
+::: {style="font-size: 0.8em"}
+-   download data
+
+-   import the data into R
+
+-   wrangle, clean, and normalize data
+
+-   bind into one big data frame
+
+-   subset the data for two states (i.e. two worksheets) from each workbook
+
+-   further subset the data for one category of data from the Census pulse survey
+
+-   generate faceted bar-graphs using ggplot2 (one for each worksheet), and export those images back to the LFS
+
+-   along the way we'll use regex to find string patterns
+:::
+
+## Motivation {visibility="hidden"}
+
+-   **data wrangling** is 50-80 percent of any data analysis project
+-   **R is a functional**, data-first programming language (no FOR loops ; iteration via recursion)
+    -   "Functional Programming is an approach to replace iterative FOR loops -- tidymodels book club
+    -   Rule of thumb: *Do anything more than three-times: compose a function*
+    -   The Tidyverse approach prefers **tall** data formats and **data frames** (contrast with wide data frames or lists). Purrr iteration leverages this convention.
+
+## Motivation (continued) {visibility="hidden"}
+
+::: {style="font-size: 0.9em"}
+Recursive iteration takes some getting used to
+
+-   Most people have heard of **FOR loops** for controlling flow. Instead of a FOR loop, we're going to use {purrr} which uses the `map()` functions. (Similar to `lapply`, `mapply`, `sapply`)
+-   FOR LOOPS ARE FINE ; The Tidyverse way is easier
+-   **Tidyverse means** tall data in a data frame, looping is done by going 1-row-at-a-time over your **data frame**
+-   If you prefer, you can still use base-R, FOR loops, the apply functions, and list data-types. I will be focusing the iconic Tidyverse approach (à la *pythonic* approach in Python)
+:::
+
+## Learing in this workshop {visibility="hidden"}
+
+-   Aim questions at presented material\
+-   Schedule me for one-on-one consultations
+
+A great way to *learn* R is to take simple atomic problems perfected with other tools and replicate. ie. keep it simple; use with familiar data; use familiar analyses.
+
+<br/>
+
+Using familiar data and analysis is not always possible in a diverse group or in a workshop setting. I invite you to schedule me for consultations.
+
+## Post workshop survey {visibility="hidden"}
+
+https://forms.gle/MmrzadXkq5TMHBqv5
+
+## Fin {transition="zoom"}
+
+::: {layout="[[-1], [1, 5]]"}
+![](images/Rfun_logo.png)
+
+John R Little\
+Data Science Librarian\
+[Center for Data & Visualization Sciences\
+Duke University Libraries]{.muted .mediumtext}\
+[https://JohnLittle.info ● https://Rfun.library.duke.edu ● https://Library.duke.edu/data]{.muted .smalltext}
+:::
+
+<center><i class="fab fa-creative-commons fa-2x"></i> <i class="fab fa-creative-commons-by fa-2x"></i>\
+[Creative Commons: Attribution 4.0 ● https://creativecommons.org/licenses/by-nc/4.0]{.muted .smalltext}</center>
+
+::: footer
+:::

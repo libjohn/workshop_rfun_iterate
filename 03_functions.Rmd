@@ -113,7 +113,7 @@ multiply_by_two(starwars) |>
 ## Data masking and indirection
 
 Data masking makes it easy and efficient to code in R/Tidyverse. But it paradoxically makes some things harder.  I recommend reading about [Tidy evaluation](
-https://dplyr.tidyverse.org/articles/programming.html) to understand the differenced between enivronment variables and data variables.
+https://dplyr.tidyverse.org/articles/programming.html) to understand the differences between environment variables and data variables.
 
 ```{r}
 foo_two <- function(my_df, my_var, ...) {

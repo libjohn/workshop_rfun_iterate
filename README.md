@@ -25,6 +25,12 @@ Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/libjohn/
     down”) and `pivot_longer()`
 -   Harvesting data from the web
 
+## Video
+
+A [YouTube
+playlist](https://www.youtube.com/watch?v=PrUnbYlC1kY&list=PLIUcX1JrVUNWW7RgPh9ysmJM3mBpIAlYG)
+explaining the code in this repo is available
+
 **See Also**
 
 -   these awesome tips
