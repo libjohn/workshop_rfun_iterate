@@ -117,7 +117,7 @@ Introducing `separate_rows` and `separate()`, plus a very early view at using a 
 ```{r}
 imdb_names_df |> 
   separate_rows(primary_profession) |> 
-  count(primary_name, sort = TRUE)
+  count(primary_profession, sort = TRUE)
 
 imdb_names_df |> 
   mutate(prolficacy = str_count(known_for_titles, ",") + 1) |> 
